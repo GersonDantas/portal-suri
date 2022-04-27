@@ -4,7 +4,10 @@
   "description": "This project is for testing chatbotmaker platform with news patterns",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --passWithNoTests",
+    "test:watch": "npm test -- --watch",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:ci": "npm test -- --coverage",
     "prepare": "husky install"
   },
   "keywords": [],
