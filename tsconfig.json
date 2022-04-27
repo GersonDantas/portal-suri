@@ -30,4 +30,5 @@
     "src",
     "tests"
   ],
+  "exclude": []
 }

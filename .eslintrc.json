@@ -4,9 +4,14 @@
       "version": "detect"
     }
   },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "extends": "standard-with-typescript",
   "rules": {
     "@typescript-eslint/consistent-type-definitions": "off",
-    "@typescript-eslint/strict-boolean-expressions": "off"
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-redeclare": "off"
   }
 }
