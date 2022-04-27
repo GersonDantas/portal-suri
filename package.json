@@ -4,7 +4,7 @@
   "description": "This project is for testing chatbotmaker platform with news patterns",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "prepare": "husky install"
   },
   "keywords": [],
