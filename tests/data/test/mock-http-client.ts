@@ -2,7 +2,10 @@ import { HttpPostClient } from '@/data/protocols/http'
 
 export class HttpPostClientSpy implements HttpPostClient {
   url?: string
-  async post (url: string): Promise<void> {
-    this.url = url
+  body?: any
+  async post (params: HttpPostClient.Request): Promise<void> {
+    this.url = params.url
+    this.body = params.body
+    return Promise.resolve()
   }
 }

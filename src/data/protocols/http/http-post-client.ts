@@ -1,3 +1,10 @@
 export interface HttpPostClient {
-  post: (url: string) => Promise<void>
+  post: (req: HttpPostClient.Request) => Promise<void>
+}
+
+export namespace HttpPostClient {
+  export type Request = {
+    url: string
+    body?: any
+  }
 }
