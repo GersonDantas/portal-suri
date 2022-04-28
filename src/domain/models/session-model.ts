@@ -1,7 +1,7 @@
 import { PlatformUserModel } from '@/domain/models'
 
 export type SessionModel = {
-  platformUser: SessionModel.PlatformUser
+  platformUser: PlatformUserModel
   name: string
   authenticationType: string
   isAuthenticated: boolean
@@ -9,9 +9,7 @@ export type SessionModel = {
   tokenSession: string
 }
 
-namespace SessionModel {
-  export type PlatformUser = PlatformUserModel
-
+export namespace SessionModel {
   export type Settings = {
     environment: 'PROD' | 'STG' | 'DEV'
     chatAppId: string
