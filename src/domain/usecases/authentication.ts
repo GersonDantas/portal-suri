@@ -4,7 +4,7 @@ export interface Authentication {
   auth: (params: Authentication.Params) => Promise<Authentication.Session>
 }
 
-namespace Authentication {
+export namespace Authentication {
   export type Params = {
     email: string
     password: string
