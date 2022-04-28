@@ -1,11 +1,11 @@
-export interface HttpPostClient<Resp = any> {
-  post: (req: HttpPostClient.Request) => Promise<HttpPostClient.Response<Resp>>
+export interface HttpPostClient<Resp = any, req = any> {
+  post: (req: HttpPostClient.Request<req>) => Promise<HttpPostClient.Response<Resp>>
 }
 
 export namespace HttpPostClient {
-  export type Request = {
+  export type Request<req = any> = {
     url: string
-    body?: any
+    body?: req
   }
 
   export type Response<Resp = any> = {
