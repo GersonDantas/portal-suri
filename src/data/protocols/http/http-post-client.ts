@@ -1,5 +1,5 @@
-export interface HttpPostClient {
-  post: (req: HttpPostClient.Request) => Promise<HttpPostClient.Response>
+export interface HttpPostClient<Resp = any> {
+  post: (req: HttpPostClient.Request) => Promise<HttpPostClient.Response<Resp>>
 }
 
 export namespace HttpPostClient {
@@ -8,9 +8,9 @@ export namespace HttpPostClient {
     body?: any
   }
 
-  export type Response = {
+  export type Response<Resp = any> = {
     statusCode: HttpStatusCode
-    body?: any
+    body?: Resp
   }
 }
 

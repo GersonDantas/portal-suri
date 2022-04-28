@@ -6,10 +6,10 @@ import { Authentication } from '@/domain/usecases'
 export class RemoteAuthentication {
   constructor (
     private readonly url: string,
-    private readonly httpClient: HttpPostClient
+    private readonly httpClient: HttpPostClient<RemoteAuthentication.Session>
   ) { }
 
-  async auth (params: Authentication.Params): Promise<void> {
+  async auth (params: Authentication.Params): Promise<Authentication.Session> {
     const httpResponse = await this.httpClient.post({
       url: this.url,
       body: params
@@ -21,4 +21,8 @@ export class RemoteAuthentication {
       default: throw new UnexpectedError()
     }
   }
+}
+
+export namespace RemoteAuthentication {
+  export type Session = Authentication.Session
 }

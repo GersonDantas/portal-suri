@@ -1,9 +1,9 @@
 import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http'
 
-export class HttpPostClientSpy implements HttpPostClient {
+export class HttpPostClientSpy<Resp = any> implements HttpPostClient<Resp> {
   url?: string
   body?: any
-  response: HttpPostClient.Response = {
+  response: HttpPostClient.Response<Resp> = {
     statusCode: HttpStatusCode.ok
   }
 
