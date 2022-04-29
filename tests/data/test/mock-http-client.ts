@@ -1,5 +1,11 @@
 import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http'
 
+import faker from '@faker-js/faker'
+
+export const mockPostRequest = (): HttpPostClient.Request => ({
+  url: faker.internet.url(),
+  body: faker.random.objectElement({})
+})
 export class HttpPostClientSpy<Resp = any> implements HttpPostClient<Resp> {
   url?: string
   body?: any
