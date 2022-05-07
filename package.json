@@ -8,9 +8,9 @@
     "build": "ionic build",
     "start-react": "react-scripts start",
     "build-react": "react-scripts build",
-    "test": "cross-env NODE_ICU_DATA=node_modules/full-icu react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)' --passWithNoTests --no-cache --runInBand",
+    "test": "cross-env NODE_ICU_DATA=node_modules/full-icu cross-env CI=true react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)' --passWithNoTests --no-cache --runInBand",
     "eject": "react-scripts eject",
-    "test:staged": "npm test -- --watchAll=false",
+    "test:staged": "npm run test -- --watchAll=false --env=jsdom --findRelatedTests",
     "test:ci": "npm test -- --coverage",
     "prepare": "husky install"
   },
