@@ -1,4 +1,4 @@
-import { SessionModel } from '@/domain/models'
+import { SessionModel } from 'src/domain/models'
 
 export interface Authentication {
   auth: (params: Authentication.Params) => Promise<Authentication.Session>

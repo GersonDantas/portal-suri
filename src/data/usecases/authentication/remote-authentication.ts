@@ -1,9 +1,9 @@
-import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http'
-import { InvalidCredentialError } from '@/domain/errors/http'
-import { UnexpectedError } from '@/domain/errors/http/unexpected-error'
-import { Authentication } from '@/domain/usecases'
+import { HttpPostClient, HttpStatusCode } from 'src/data/protocols/http'
+import { InvalidCredentialError } from 'src/domain/errors/http'
+import { UnexpectedError } from 'src/domain/errors/http/unexpected-error'
+import { Authentication } from 'src/domain/usecases'
 
-export class RemoteAuthentication {
+export class RemoteAuthentication implements Authentication {
   constructor (
     private readonly url: string,
     private readonly httpClient: HttpPostClient<RemoteAuthentication.Session>
@@ -16,7 +16,8 @@ export class RemoteAuthentication {
     })
 
     switch (httpResponse.statusCode) {
-      case HttpStatusCode.ok: return httpResponse.body
+      case HttpStatusCode.ok:
+        return httpResponse.body as Authentication.Session
       case HttpStatusCode.unauthorized: throw new InvalidCredentialError()
       default: throw new UnexpectedError()
     }

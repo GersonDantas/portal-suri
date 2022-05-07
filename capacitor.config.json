@@ -1,0 +1,6 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "portal-suri",
+  "webDir": "public",
+  "bundledWebRuntime": false
+}

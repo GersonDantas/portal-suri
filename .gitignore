@@ -1,3 +1,21 @@
 node_modules
+
+# testing
 coverage
+
+# production
+public
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .vscode
+.idea
+
+npm-debug.log*
+
+# Optional eslint cache
+.eslintcache

@@ -1,4 +1,4 @@
-import { PlatformUserModel } from '@/domain/models'
+import { PlatformUserModel } from 'src/domain/models'
 
 export type SessionModel = {
   platformUser: PlatformUserModel
