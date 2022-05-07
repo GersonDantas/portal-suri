@@ -11,7 +11,7 @@
     "test": "cross-env NODE_ICU_DATA=node_modules/full-icu react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)' --passWithNoTests --no-cache --runInBand",
     "eject": "react-scripts eject",
     "test:staged": "npm run test -- --watchAll=false --env=jsdom --findRelatedTests",
-    "test:ci": "npm test -- --coverage",
+    "test:ci": "npm test -- --coverage --watchAll=false",
     "prepare": "husky install"
   },
   "keywords": [],
