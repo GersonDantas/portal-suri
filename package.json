@@ -4,7 +4,7 @@
   "description": "This project is for testing chatbotmaker platform with news patterns",
   "main": "./src/main/index.js",
   "scripts": {
-    "start": "ionic start",
+    "start": "ionic serve",
     "build": "ionic build",
     "start-react": "react-scripts start",
     "build-react": "react-scripts build",
