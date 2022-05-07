@@ -1,0 +1,7 @@
+{
+  "name": "portal-suri",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
