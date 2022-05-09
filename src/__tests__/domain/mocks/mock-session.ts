@@ -2,6 +2,8 @@ import { SessionModel } from '../models'
 
 import faker from '@faker-js/faker'
 
+
+
 export const mockSettings = (): SessionModel.Settings => {
   return {
     environment: faker.random.arrayElement(['PROD', 'STG', 'DEV']),

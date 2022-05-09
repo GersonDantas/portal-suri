@@ -2,6 +2,8 @@ import { PlatformUserModel, CbmTeam } from 'src/domain/models'
 
 import faker from '@faker-js/faker'
 
+
+
 export const mockPlatformUser = (): PlatformUserModel => {
   return {
     id: faker.datatype.uuid(),

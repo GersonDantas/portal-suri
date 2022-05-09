@@ -42,6 +42,7 @@
     "babel-jest": "^28.0.3",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "cross-env": "^7.0.3",
+    "eslint-plugin-import-helpers": "^1.2.1",
     "git-commit-msg-linter": "4.1.2",
     "husky": "7.0.4",
     "ionicons": "5.4.0",
@@ -71,6 +72,9 @@
     "workbox-streams": "5.1.4"
   },
   "eslintConfig": {
+    "plugins": [
+      "eslint-plugin-import-helpers"
+    ],
     "extends": [
       "react-app",
       "react-app/jest"
@@ -79,7 +83,27 @@
       "**/*.scss"
     ],
     "rules": {
-      "@typescript-eslint/no-redeclare": "off"
+      "import-helpers/order-imports": [
+        "warn",
+        {
+          "newlinesBetween": "always",
+          "groups": [
+            [
+              "parent",
+              "sibling",
+              "index"
+            ],
+            "/^src/",
+            "module"
+          ],
+          "alphabetize": {
+            "order": "asc",
+            "ignoreCase": true
+          }
+        }
+      ],
+      "@typescript-eslint/no-redeclare": "off",
+      "jsx-a11y/anchor-is-valid": "off"
     }
   },
   "dependencies": {

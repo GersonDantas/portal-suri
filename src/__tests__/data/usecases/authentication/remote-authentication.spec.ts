@@ -1,10 +1,12 @@
+
 import { HttpPostClientSpy } from 'src/__tests__/data/test'
-import { RemoteAuthentication } from 'src/data/usecases'
 import { mockAuthenticationParams, mockPlatformUser, mockSettings } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
+import { RemoteAuthentication } from 'src/data/usecases'
 import { InvalidCredentialError, UnexpectedError } from 'src/domain/errors/http'
 
 import faker from '@faker-js/faker'
+
 
 type SutTypes = {
   httpPostClientSpy: HttpPostClientSpy

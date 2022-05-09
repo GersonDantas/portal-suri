@@ -1,8 +1,10 @@
+
+import { mockPostRequest } from 'src/__tests__/data/test'
 import { mockAxios, mockedHttpResponse } from 'src/__tests__/infra/http/mocks'
 import { AxiosHttpClient } from 'src/infra/http'
-import { mockPostRequest } from 'src/__tests__/data/test'
 
 import axios from 'axios'
+
 
 type SutTypes = {
   sut: AxiosHttpClient
