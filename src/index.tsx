@@ -1,5 +1,6 @@
 import { serviceWorkerRegistration, reportWebVitals } from 'src/main/config'
 import { Login } from 'src/presentation/pages'
+import './presentation/styles/global.scss'
 
 import React from 'react'
 import ReactDOM from 'react-dom'

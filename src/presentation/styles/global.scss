@@ -1,0 +1,39 @@
+@import './variables.module.scss';
+
+* {
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size  : 14px;
+  padding    : 0;
+  margin     : 0;
+  box-sizing : border-box;
+}
+
+body {
+  background-color: $backgroundLight;
+}
+
+button {
+  background-color: $primaryColor;
+  color           : $white;
+  border-radius   : $borderRadiusTertiary;
+  font-size       : 16px;
+  border          : none;
+  line-height     : 30px;
+
+  &:hover {
+    opacity: 0.9;
+    cursor : pointer;
+  }
+}
+
+input[type='password'],
+input[type=email] {
+  border       : 1px solid rgba($black, .5);
+  line-height  : 40px;
+  border-radius: $borderRadiusTertiary;
+  padding      : 0px 10px;
+
+  &:focus {
+    outline-color: $primaryColor;
+  }
+}
