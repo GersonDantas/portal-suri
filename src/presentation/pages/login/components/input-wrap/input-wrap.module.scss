@@ -1,0 +1,14 @@
+@import '../../../../styles/variables.module.scss';
+
+.inputWrap {
+  display       : flex;
+  flex-direction: column;
+  margin-bottom : 10px;
+
+  label {
+    margin-bottom: 5px;
+    font-weight  : 700;
+    font-size    : 13px;
+    color        : rgba($black, .6);
+  }
+}
