@@ -1,15 +1,12 @@
-import Styles from './spinner-styles.scss'
+import Styles from './spinner.module.scss'
 
 import React from 'react'
 
-type Props = React.HTMLAttributes<HTMLElement> & {
-  isNegative?: boolean
-}
+type Props = React.HTMLAttributes<HTMLElement>
 
-const Spinner: React.FC<Props> = ({ isNegative, ...props }: Props) => {
-  const negativeClass = isNegative ? Styles.negative : ''
+const Spinner: React.FC<Props> = (props) => {
   return (
-    <div {...props} data-testid="spinner" className={[Styles.spinner, negativeClass, props.className].join(' ')}>
+    <div {...props} className={[Styles.spinner, props.className].join(' ')}>
       <div />
       <div />
       <div />

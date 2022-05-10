@@ -82,26 +82,17 @@ input[type=email] {
       }
     }
 
-    .emailLabel {
-      margin-bottom: 5px;
-      font-weight  : 700;
-      font-size    : 13px;
-      color        : rgba($black, .6);
-    }
+    .inputWrap {
+      display       : flex;
+      flex-direction: column;
+      margin-bottom : 10px;
 
-    .email {
-      margin-bottom: 10px;
-    }
-
-    .passwordLabel {
-      margin-bottom: 5px;
-      font-weight  : 700;
-      font-size    : 13px;
-      color        : rgba($black, .6);
-    }
-
-    .password {
-      margin-bottom: 10px;
+      label {
+        margin-bottom: 5px;
+        font-weight  : 700;
+        font-size    : 13px;
+        color        : rgba($black, .6);
+      }
     }
 
     .forgot {
@@ -128,6 +119,20 @@ input[type=email] {
         &:hover {
           text-decoration: underline;
         }
+      }
+    }
+
+    .errorWrap {
+      display       : flex;
+      flex-direction: column;
+      align-items   : center;
+
+      .spinner {
+        margin-top: 30px;
+      }
+
+      .error {
+        margin-top: 30px;
       }
     }
   }
