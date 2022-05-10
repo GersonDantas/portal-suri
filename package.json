@@ -39,6 +39,7 @@
     "@types/react-dom": "16.9.10",
     "@types/react-router": "5.1.11",
     "@types/react-router-dom": "5.1.7",
+    "@typescript-eslint/parser": "^5.23.0",
     "babel-jest": "^28.0.3",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "cross-env": "^7.0.3",
@@ -56,7 +57,7 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "5.0.0",
     "ts-jest": "27.1.4",
-    "typescript": "4.1.3",
+    "typescript": "^4.1.3",
     "web-vitals": "0.2.4",
     "workbox-background-sync": "5.1.4",
     "workbox-broadcast-update": "5.1.4",
@@ -82,6 +83,7 @@
     "ignorePatterns": [
       "**/*.scss"
     ],
+    "parser": "@typescript-eslint/parser",
     "rules": {
       "import-helpers/order-imports": [
         "warn",

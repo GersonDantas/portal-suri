@@ -1,3 +1,134 @@
+@import '../../styles/variables.module.scss';
+
+* {
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size  : 14px;
+  padding    : 0;
+  margin     : 0;
+  box-sizing : border-box;
+}
+
+body {
+  background-color: $backgroundLight;
+}
+
+button {
+  background-color: $primaryColor;
+  color           : $white;
+  border-radius   : $borderRadiusTertiary;
+  font-size       : 16px;
+  border          : none;
+  line-height     : 30px;
+
+  &:hover {
+    opacity: 0.9;
+    cursor : pointer;
+  }
+}
+
+input[type='password'],
+input[type=email] {
+  border       : 1px solid rgba($black, .5);
+  line-height  : 40px;
+  border-radius: $borderRadiusTertiary;
+  padding      : 0px 10px;
+
+  &:focus {
+    outline-color: $primaryColor;
+  }
+}
+
 .loginWrap {
-  background-color: red;
+  display         : flex;
+  flex-direction  : column;
+  height          : 100vh;
+  justify-content : center;
+  background-color: $backgroundLight;
+
+  .form {
+    display         : flex;
+    flex-direction  : column;
+    background-color: $white;
+    width           : 450px;
+    height          : fit-content;
+    padding         : 40px;
+    align-self      : center;
+    box-shadow      : $boxShadow;
+    border-radius   : $borderRadiusSecondary;
+
+    header {
+      margin-bottom: 20px;
+
+      h1 {
+        display        : flex;
+        flex-direction : row;
+        justify-content: center;
+        flex-grow      : 1;
+        margin-bottom  : 10px;
+        height         : 75px;
+      }
+
+      h2 {
+        font-size    : 16px;
+        font-weight  : 600;
+        color        : rgba($black, .6);
+        margin-bottom: 5px;
+      }
+
+      h3 {
+        font-size  : 12px;
+        font-weight: 400;
+        color      : rgba($black, .55);
+      }
+    }
+
+    .emailLabel {
+      margin-bottom: 5px;
+      font-weight  : 700;
+      font-size    : 13px;
+      color        : rgba($black, .6);
+    }
+
+    .email {
+      margin-bottom: 10px;
+    }
+
+    .passwordLabel {
+      margin-bottom: 5px;
+      font-weight  : 700;
+      font-size    : 13px;
+      color        : rgba($black, .6);
+    }
+
+    .password {
+      margin-bottom: 10px;
+    }
+
+    .forgot {
+      font-size      : 12px;
+      text-decoration: none;
+      margin-bottom  : 20px;
+      text-align     : end;
+      color          : $primaryColor;
+    }
+
+    .button {
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 12px;
+      color    : rgba($black, .6);
+
+      a {
+        text-decoration: none;
+        color          : $primaryColor;
+        font-size      : 12px;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }
