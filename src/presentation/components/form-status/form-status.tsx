@@ -4,11 +4,16 @@ import { Spinner } from 'src/presentation/components'
 
 import React from 'react'
 
-const FormStatus: React.FC = () => {
+type Props = {
+  state: any
+}
+
+const FormStatus: React.FC<Props> = ({ state }) => {
+  const { isLoading, mainError } = state
   return (
-    <div className={Styles.errorWrap}>
-      <Spinner className={Styles.spinner} />
-      <span className={Styles.error}>Error</span>
+    <div data-testid='error-wrap' className={Styles.errorWrap}>
+      {isLoading && <Spinner className={Styles.spinner} />}
+      {mainError && <span className={Styles.error}>{mainError}</span>}
     </div>
   )
 }

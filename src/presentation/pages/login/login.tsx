@@ -1,7 +1,6 @@
-import { InputWrap, LoginHeader } from './components'
+import { InputWrap, LoginHeader, FormStatus } from './components'
 import Styles from './login.module.scss'
 
-import { FormStatus } from 'src/presentation/components'
 
 import { IonPage } from '@ionic/react'
 import React from 'react'
