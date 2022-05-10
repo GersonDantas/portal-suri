@@ -1,0 +1,27 @@
+@import '../../../../styles/variables.module.scss';
+
+.loginHeaderWrap {
+  margin-bottom: 20px;
+
+  h1 {
+    display        : flex;
+    flex-direction : row;
+    justify-content: center;
+    flex-grow      : 1;
+    margin-bottom  : 10px;
+    height         : 75px;
+  }
+
+  h2 {
+    font-size    : 16px;
+    font-weight  : 600;
+    color        : rgba($black, .6);
+    margin-bottom: 5px;
+  }
+
+  h3 {
+    font-size  : 12px;
+    font-weight: 400;
+    color      : rgba($black, .55);
+  }
+}

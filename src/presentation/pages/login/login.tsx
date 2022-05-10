@@ -1,6 +1,7 @@
+import { LoginHeader } from './components'
 import Styles from './login.module.scss'
 
-import { Logo, Spinner } from 'src/presentation/components'
+import { Spinner } from 'src/presentation/components'
 
 import React from 'react'
 
@@ -9,17 +10,7 @@ const Login: React.FC = () => {
   return (
     <div className={Styles.loginWrap}>
       <form className={Styles.form}>
-        <header>
-          <h1>
-            <Logo />
-          </h1>
-          <h2 className={Styles.title}>
-            Entre
-          </h2>
-          <h3 className={Styles.subtitle}>
-            E encante seus clietes
-          </h3>
-        </header>
+        <LoginHeader />
         <div className={Styles.inputWrap}>
           <label htmlFor='email-input' className={Styles.emailLabel}>Email</label>
           <input type='email' id='email-input' className={Styles.email} />
