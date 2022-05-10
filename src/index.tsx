@@ -1,6 +1,5 @@
 import { serviceWorkerRegistration, reportWebVitals } from 'src/main/config'
-import { Login } from 'src/presentation/pages'
-import './presentation/styles/global.scss'
+import Router from 'src/main/routes/router'
 
 import { IonApp } from '@ionic/react'
 import React from 'react'
@@ -11,7 +10,7 @@ import ReactDOM from 'react-dom'
 ReactDOM.render(
   <React.StrictMode>
     <IonApp>
-      <Login />
+      <Router />
     </IonApp>
   </React.StrictMode>,
   document.getElementById('root')
