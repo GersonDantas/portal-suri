@@ -31,25 +31,7 @@ describe('Login Component', () => {
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit')).toBeDisabled()
     expect(screen.getByTestId('email')).toHaveProperty('title', validationSpy.errorMessage)
-    expect(screen.getByTestId('password')).toHaveProperty('title', 'Campo obrigatório')
-  })
-
-  test('Should call Validation with correct email', () => {
-    const { validationSpy } = makeSut()
-    const emailInput = screen.getByTestId('email')
-    const email = faker.internet.email()
-    fireEvent.input(emailInput, { target: { value: email } })
-    expect(validationSpy.fieldName).toBe('email')
-    expect(validationSpy.fieldValue).toBe(email)
-  })
-
-  test('Should call Validation with correct password', () => {
-    const { validationSpy } = makeSut()
-    const passwordInput = screen.getByTestId('password')
-    const password = faker.internet.password()
-    fireEvent.input(passwordInput, { target: { value: password } })
-    expect(validationSpy.fieldName).toBe('password')
-    expect(validationSpy.fieldValue).toBe(password)
+    expect(screen.getByTestId('password')).toHaveProperty('title', validationSpy.errorMessage)
   })
 
   test('Should show email error if Validations fails', () => {
@@ -57,5 +39,12 @@ describe('Login Component', () => {
     const emailInput = screen.getByTestId('email')
     fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
     expect(emailInput.title).toBe(validationSpy.errorMessage)
+  })
+
+  test('Should show password error if Validations fails', () => {
+    const { validationSpy } = makeSut()
+    const passwordInput = screen.getByTestId('password')
+    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+    expect(passwordInput.title).toBe(validationSpy.errorMessage)
   })
 })
