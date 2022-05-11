@@ -6,18 +6,22 @@ import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
 import React, { useEffect } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 
 type Props = {
   validation: Validation
 }
 
 const Login: React.FC<Props> = ({ validation }) => {
-  const state = useRecoilValue(loginState)
+  const [state, setState] = useRecoilState(loginState)
 
   useEffect(() => {
-    validation.validate('email', state.email)
+    setState({
+      ...state,
+      emailError: validation.validate('email', state.email)
+    })
   }, [state.email])
+
   useEffect(() => {
     validation.validate('password', state.password)
   }, [state.password])
@@ -29,7 +33,7 @@ const Login: React.FC<Props> = ({ validation }) => {
           <InputWrap className={Styles.email} name='email' type='email' />
           <InputWrap className={Styles.password} name='password' type='password' />
           <a href='#' className={Styles.forgot}>Esqueceu sua senha?</a>
-          <button disabled={state.isFormValid} data-testid='submit' className={Styles.submit} >Fazer login</button>
+          <button disabled data-testid='submit' className={Styles.submit} >Fazer login</button>
           <p>Não é cadastrado ainda?<a href='#'> Crie sua conta</a></p>
           <FormStatus />
         </form>

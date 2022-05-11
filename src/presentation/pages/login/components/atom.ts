@@ -5,9 +5,8 @@ export const loginState = atom({
   default: {
     isLoading: false,
     mainError: '',
-    isFormValid: true,
     email: '',
-    emailError: 'Campo obrigatório',
+    emailError: '',
     password: '',
     passwordError: 'Campo obrigatório'
   }
