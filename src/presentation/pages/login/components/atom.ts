@@ -8,6 +8,7 @@ export const loginState = atom({
     isFormValid: true,
     email: '',
     emailError: 'Campo obrigatório',
+    password: '',
     passwordError: 'Campo obrigatório'
   }
 })

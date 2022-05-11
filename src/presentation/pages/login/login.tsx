@@ -18,6 +18,9 @@ const Login: React.FC<Props> = ({ validation }) => {
   useEffect(() => {
     validation.validate({ email: state.email })
   }, [state.email])
+  useEffect(() => {
+    validation.validate({ password: state.password })
+  }, [state.password])
   return (
     <IonPage>
       <div className={Styles.loginWrap}>
