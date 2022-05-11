@@ -1,8 +1,11 @@
-$white                : #FFFFFF;
-$black                : #000000;
-$primaryColor         : #415db9;
-$backgroundLight      : #f8fafb;
+$primaryColor : #415db9;
+
+$backgroundLight : #f8fafb;
+
 $borderRadiusPrimary  : 4px;
 $borderRadiusSecondary: 8px;
 $borderRadiusTertiary : 16px;
-$boxShadow            : 6px 6px 5px 0px rgba($black, .3);
+
+$boxShadow : 6px 6px 5px 0px rgba(black, .3);
+
+$disabled: #ccc;

@@ -10,7 +10,7 @@
   .form {
     display         : flex;
     flex-direction  : column;
-    background-color: $white;
+    background-color: white;
     width           : 450px;
     height          : fit-content;
     padding         : 40px;
@@ -26,13 +26,23 @@
       color          : $primaryColor;
     }
 
-    .button {
+    .submit {
       margin-bottom: 10px;
+
+      &:disabled {
+        background-color: $disabled;
+        color           : rgba(black, .4);
+
+        &:hover {
+          opacity: 1;
+          cursor : default;
+        }
+      }
     }
 
     p {
       font-size: 12px;
-      color    : rgba($black, .6);
+      color    : rgba(black, .6);
 
       a {
         text-decoration: none;
