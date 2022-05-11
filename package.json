@@ -107,7 +107,8 @@
       ],
       "@typescript-eslint/no-redeclare": "off",
       "jsx-a11y/anchor-is-valid": "off",
-      "testing-library/no-node-access": "off"
+      "testing-library/no-node-access": "off",
+      "react-hooks/exhaustive-deps": "off"
     }
   },
   "dependencies": {
