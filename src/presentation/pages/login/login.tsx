@@ -1,12 +1,14 @@
-import { InputWrap, LoginHeader, FormStatus } from './components'
+import { InputWrap, LoginHeader, FormStatus, loginState } from './components'
 import Styles from './login.module.scss'
 
 
 import { IonPage } from '@ionic/react'
 import React from 'react'
+import { useRecoilValue } from 'recoil'
 
 
 const Login: React.FC = () => {
+  const { isFormValid } = useRecoilValue(loginState)
   return (
     <IonPage>
       <div className={Styles.loginWrap}>
@@ -15,7 +17,7 @@ const Login: React.FC = () => {
           <InputWrap className={Styles.email} label='email' />
           <InputWrap className={Styles.password} label='password' />
           <a href='#' className={Styles.forgot}>Esqueceu sua senha?</a>
-          <button className={Styles.button} >Fazer login</button>
+          <button disabled data-testid='submit' className={Styles.button} >Fazer login</button>
           <p>Não é cadastrado ainda?<a href='#'> Crie sua conta</a></p>
           <FormStatus />
         </form>
