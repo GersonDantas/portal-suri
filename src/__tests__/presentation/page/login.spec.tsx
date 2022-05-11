@@ -1,6 +1,6 @@
 /* eslint-disable jest/valid-title */
+import { ValidationSpy } from 'src/__tests__/presentation/test'
 import { Login } from 'src/presentation/pages'
-import { Validation } from 'src/presentation/protocols'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
@@ -8,18 +8,6 @@ import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   validationSpy: ValidationSpy
-}
-
-class ValidationSpy implements Validation {
-  errorMessage!: string
-  fieldName!: string
-  fieldValue!: string
-
-  validate (fieldName: string, fieldValue: string): string {
-    this.fieldValue = fieldValue
-    this.fieldName = fieldName
-    return this.errorMessage
-  }
 }
 
 const makeSut = (): SutTypes => {
