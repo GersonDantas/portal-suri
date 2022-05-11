@@ -1,18 +1,19 @@
+import { loginState } from '../atom'
 import Styles from './input-wrap.module.scss'
 
 import React from 'react'
+import { useRecoilValue } from 'recoil'
 
-type Props = {
-  label: string
-  className: string
-}
+type Props = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
-const InputWrap: React.FC<Props> = ({ label, className }) => {
-  const capitalize = label[0].toUpperCase() + label.substring(1)
+const InputWrap: React.FC<Props> = ({ name, ...props }) => {
+  const state = useRecoilValue<any>(loginState)
+  const error = state[`${name}Error`]
+  const capitalize = name && name[0].toUpperCase() + name.substring(1)
   return (
-    <div data-status='invalid' data-testid={`${label}-status`} className={Styles.inputWrap}>
-      <label htmlFor={`${label}-input`} >{capitalize}</label>
-      <input data-testid={label} title='Campo obrigatório' type={label} id={`${label}-input`} className={className} />
+    <div data-status='invalid' data-testid={`${name}-status`} className={Styles.inputWrap}>
+      <label htmlFor={`${name}-input`} >{capitalize}</label>
+      <input {...props} data-testid={name} title={error} id={`${name}-input`} />
     </div>
   )
 }
