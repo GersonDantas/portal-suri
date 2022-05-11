@@ -5,14 +5,18 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
 
+const makeSut = (): void => {
+  render(
+    <RecoilRoot>
+      <Login />
+    </RecoilRoot>
+  )
+}
+
 describe('Login Component', () => {
-  test('Should ensure FormStatus no initial state', () => {
-    render(
-      <RecoilRoot>
-        <Login />
-      </RecoilRoot>
-    )
-    const errorWrap = screen.getByTestId('error-wrap')
-    expect(errorWrap.children).toHaveLength(0)
+  test('Should start with initial state', () => {
+    makeSut()
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
+    expect(screen.getByTestId('submit')).toBeDisabled()
   })
 })
