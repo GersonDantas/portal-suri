@@ -30,8 +30,8 @@
       margin-bottom: 10px;
 
       &:disabled {
-        background-color: $disabled;
-        color           : rgba(black, .4);
+        background-color: $disabledBackground;
+        color           : $disabledColor;
 
         &:hover {
           opacity: 1;

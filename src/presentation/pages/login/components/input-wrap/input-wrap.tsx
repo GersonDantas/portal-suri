@@ -1,5 +1,7 @@
 import Styles from './input-wrap.module.scss'
 
+import { InputBase } from 'src/presentation/components'
+
 import React from 'react'
 
 type Props = {
@@ -12,7 +14,7 @@ const InputWrap: React.FC<Props> = ({ label, className }) => {
   return (
     <div className={Styles.inputWrap}>
       <label htmlFor={`${label}-input`} >{capitalize}</label>
-      <input type={label} id={`${label}-input`} className={className} />
+      <InputBase type={label} id={`${label}-input`} className={className} />
     </div>
   )
 }
