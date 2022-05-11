@@ -8,6 +8,6 @@ export const loginState = atom({
     email: '',
     emailError: '',
     password: '',
-    passwordError: 'Campo obrigatório'
+    passwordError: ''
   }
 })

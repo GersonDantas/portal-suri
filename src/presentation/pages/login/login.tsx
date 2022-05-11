@@ -16,15 +16,13 @@ const Login: React.FC<Props> = ({ validation }) => {
   const [state, setState] = useRecoilState(loginState)
 
   useEffect(() => {
-    setState({
-      ...state,
-      emailError: validation.validate('email', state.email)
-    })
-  }, [state.email])
+    setState(old => ({
+      ...old,
+      emailError: validation.validate('email', state.email),
+      passwordError: validation.validate('password', state.password)
+    }))
+  }, [state.email, state.password])
 
-  useEffect(() => {
-    validation.validate('password', state.password)
-  }, [state.password])
   return (
     <IonPage>
       <div className={Styles.loginWrap}>
