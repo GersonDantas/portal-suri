@@ -17,7 +17,7 @@ const Login: React.FC = () => {
           <InputWrap className={Styles.email} label='email' />
           <InputWrap className={Styles.password} label='password' />
           <a href='#' className={Styles.forgot}>Esqueceu sua senha?</a>
-          <button disabled data-testid='submit' className={Styles.button} >Fazer login</button>
+          <button disabled={isFormValid} data-testid='submit' className={Styles.submit} >Fazer login</button>
           <p>Não é cadastrado ainda?<a href='#'> Crie sua conta</a></p>
           <FormStatus />
         </form>
