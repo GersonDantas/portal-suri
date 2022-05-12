@@ -48,6 +48,14 @@ describe('Login Component', () => {
     expect(passwordInput.title).toBe(validationSpy.errorMessage)
   })
 
+  test('Should show valid email state if Validations success', () => {
+    const { validationSpy } = makeSut()
+    validationSpy.errorMessage = ''
+    const emailInput = screen.getByTestId('email')
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+    expect(emailInput.title).toBe('ok')
+  })
+
   test('Should show valid password state if Validations success', () => {
     const { validationSpy } = makeSut()
     validationSpy.errorMessage = ''
