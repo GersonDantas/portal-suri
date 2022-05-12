@@ -1,5 +1,6 @@
-/* eslint-disable jest/valid-title */
+import { mockAuthenticationParams, mockSession } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
+import { Authentication } from 'src/domain/usecases'
 import { Login } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
@@ -9,23 +10,35 @@ import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   validationSpy: ValidationStub
+  authenticationSpy: AuthenticationSpy
 }
 
+class AuthenticationSpy implements Authentication {
+  session = mockSession()
+  params: Authentication.Params = mockAuthenticationParams()
+
+  async auth (params: Authentication.Params): Promise<Authentication.Session> {
+    this.params = params
+    return Promise.resolve(this.session)
+  }
+}
 type SutParams = {
   validationError: string
 }
 
-const makeSut = (params: SutParams = { validationError: '' }): SutTypes => {
+const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationStub()
-  validationSpy.errorMessage = params.validationError
+  validationSpy.errorMessage = params?.validationError
+  const authenticationSpy = new AuthenticationSpy()
   render(
     <RecoilRoot>
-      <Login validation={validationSpy} />
+      <Login validation={validationSpy} authentication={authenticationSpy} />
     </RecoilRoot>
   )
 
   return {
-    validationSpy
+    validationSpy,
+    authenticationSpy
   }
 }
 
@@ -87,5 +100,20 @@ describe('Login Component', () => {
     const submitButton = screen.getByTestId('submit')
     fireEvent.click(submitButton)
     expect(screen.getByTestId('spinner')).toBeTruthy()
+  })
+
+  test('Should call Authentication with correct values', () => {
+    const { authenticationSpy } = makeSut()
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+    const emailInput = screen.getByTestId('email')
+    fireEvent.input(emailInput, { target: { value: email } })
+    const passwordInput = screen.getByTestId('password')
+    fireEvent.input(passwordInput, { target: { value: password } })
+    const submitButton = screen.getByTestId('submit')
+    fireEvent.click(submitButton)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    expect(authenticationSpy.params).toEqual({ email, password })
   })
 })
