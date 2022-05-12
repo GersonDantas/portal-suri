@@ -31,7 +31,7 @@ const Login: React.FC<Props> = ({ validation }) => {
           <InputWrap className={Styles.email} name='email' type='email' />
           <InputWrap className={Styles.password} name='password' type='password' />
           <a href='#' className={Styles.forgot}>Esqueceu sua senha?</a>
-          <button disabled data-testid='submit' className={Styles.submit} >Fazer login</button>
+          <button disabled={!!state.emailError || !!state.passwordError} data-testid='submit' className={Styles.submit} >Fazer login</button>
           <p>Não é cadastrado ainda?<a href='#'> Crie sua conta</a></p>
           <FormStatus />
         </form>
