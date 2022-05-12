@@ -32,6 +32,18 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
+const populateField = (field: string, value: string = faker.internet.email()): void => {
+  const input = screen.getByTestId(field)
+  fireEvent.input(input, { target: { value } })
+}
+
+const simulateValidSubmit = (email = faker.internet.email(), password = faker.internet.password()): void => {
+  populateField('email', email)
+  populateField('password', password)
+  const submitButton = screen.getByTestId('submit')
+  fireEvent.click(submitButton)
+}
+
 describe('Login Component', () => {
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
@@ -83,12 +95,7 @@ describe('Login Component', () => {
 
   test('Should show spinner on submit click', () => {
     makeSut()
-    const emailInput = screen.getByTestId('email')
-    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
-    const passwordInput = screen.getByTestId('password')
-    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
-    const submitButton = screen.getByTestId('submit')
-    fireEvent.click(submitButton)
+    simulateValidSubmit()
     expect(screen.getByTestId('spinner')).toBeTruthy()
   })
 
@@ -96,14 +103,7 @@ describe('Login Component', () => {
     const { authenticationSpy } = makeSut()
     const email = faker.internet.email()
     const password = faker.internet.password()
-    const emailInput = screen.getByTestId('email')
-    fireEvent.input(emailInput, { target: { value: email } })
-    const passwordInput = screen.getByTestId('password')
-    fireEvent.input(passwordInput, { target: { value: password } })
-    const submitButton = screen.getByTestId('submit')
-    fireEvent.click(submitButton)
-    const form = screen.getByTestId('form')
-    fireEvent.submit(form)
+    simulateValidSubmit(email, password)
     expect(authenticationSpy.params).toEqual({ email, password })
   })
 })
