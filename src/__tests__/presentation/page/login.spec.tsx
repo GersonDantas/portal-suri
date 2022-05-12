@@ -63,4 +63,14 @@ describe('Login Component', () => {
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
     expect(passwordInput.title).toBe('ok')
   })
+
+  test('Should enable submit button if form is valid', () => {
+    const { validationSpy } = makeSut()
+    validationSpy.errorMessage = ''
+    const emailInput = screen.getByTestId('email')
+    fireEvent.input(emailInput, { target: { value: faker.internet.email() } })
+    const passwordInput = screen.getByTestId('password')
+    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+    expect(screen.getByTestId('submit')).not.toBeDisabled()
+  })
 })
