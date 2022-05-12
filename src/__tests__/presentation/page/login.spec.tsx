@@ -47,4 +47,12 @@ describe('Login Component', () => {
     fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
     expect(passwordInput.title).toBe(validationSpy.errorMessage)
   })
+
+  test('Should show valid password state if Validations success', () => {
+    const { validationSpy } = makeSut()
+    validationSpy.errorMessage = ''
+    const passwordInput = screen.getByTestId('password')
+    fireEvent.input(passwordInput, { target: { value: faker.internet.password() } })
+    expect(passwordInput.title).toBe('ok')
+  })
 })
