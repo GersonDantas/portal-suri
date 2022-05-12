@@ -1,6 +1,6 @@
 
 import { HttpPostClientSpy } from 'src/__tests__/data/test'
-import { mockAuthenticationParams, mockPlatformUser, mockSettings } from 'src/__tests__/domain/mocks'
+import { mockAuthenticationParams, mockPlatformUser, mockSession, mockSettings } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteAuthentication } from 'src/data/usecases'
 import { InvalidCredentialError, UnexpectedError } from 'src/domain/errors/http'
@@ -71,14 +71,7 @@ describe('RemoteAuthentication', () => {
 
   it('Should RemoteAuthentication return ok if HttpPostClient return 200', async () => {
     const { httpPostClientSpy, sut } = makeSut()
-    const httpResult = {
-      platformUser: mockPlatformUser(),
-      name: faker.random.words(),
-      authenticationType: faker.random.words(),
-      isAuthenticated: faker.datatype.boolean(),
-      settings: mockSettings(),
-      tokenSession: faker.datatype.uuid()
-    }
+    const httpResult = mockSession()
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.ok,
       body: httpResult
