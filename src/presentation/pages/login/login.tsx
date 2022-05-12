@@ -15,6 +15,12 @@ type Props = {
 const Login: React.FC<Props> = ({ validation }) => {
   const [state, setState] = useRecoilState(loginState)
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+
+    setState(old => ({ ...old, isLoading: true }))
+  }
+
   useEffect(() => {
     setState(old => ({
       ...old,
@@ -26,7 +32,7 @@ const Login: React.FC<Props> = ({ validation }) => {
   return (
     <IonPage>
       <div className={Styles.loginWrap}>
-        <form className={Styles.form}>
+        <form className={Styles.form} onSubmit={handleSubmit}>
           <LoginHeader />
           <InputWrap className={Styles.email} name='email' type='email' />
           <InputWrap className={Styles.password} name='password' type='password' />
