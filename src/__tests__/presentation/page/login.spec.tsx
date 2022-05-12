@@ -1,5 +1,5 @@
 /* eslint-disable jest/valid-title */
-import { ValidationSpy } from 'src/__tests__/presentation/test'
+import { ValidationStub } from 'src/__tests__/presentation/test'
 import { Login } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
@@ -8,7 +8,7 @@ import React from 'react'
 import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
-  validationSpy: ValidationSpy
+  validationSpy: ValidationStub
 }
 
 type SutParams = {
@@ -16,7 +16,7 @@ type SutParams = {
 }
 
 const makeSut = (params: SutParams = { validationError: '' }): SutTypes => {
-  const validationSpy = new ValidationSpy()
+  const validationSpy = new ValidationStub()
   validationSpy.errorMessage = params.validationError
   render(
     <RecoilRoot>
