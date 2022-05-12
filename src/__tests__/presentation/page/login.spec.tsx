@@ -1,6 +1,5 @@
-import { mockAuthenticationParams, mockSession } from 'src/__tests__/domain/mocks'
+import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
-import { Authentication } from 'src/domain/usecases'
 import { Login } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
@@ -13,15 +12,6 @@ type SutTypes = {
   authenticationSpy: AuthenticationSpy
 }
 
-class AuthenticationSpy implements Authentication {
-  session = mockSession()
-  params: Authentication.Params = mockAuthenticationParams()
-
-  async auth (params: Authentication.Params): Promise<Authentication.Session> {
-    this.params = params
-    return Promise.resolve(this.session)
-  }
-}
 type SutParams = {
   validationError: string
 }
