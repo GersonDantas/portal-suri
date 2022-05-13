@@ -11,7 +11,7 @@ const InputWrap: React.FC<Props> = ({ state, setState, ...props }) => {
   const error = state[`${props.name}Error`]
   const capitalize = props.name && props.name[0].toUpperCase() + props.name.substring(1)
   return (
-    <div className={Styles.inputWrap}>
+    <div data-testid={`${props.name}-wrap`} className={Styles.inputWrap}>
       <label htmlFor={`${props.name}-input`} >{capitalize}</label>
       <input
         {...props}
