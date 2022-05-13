@@ -1,12 +1,14 @@
 import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { InvalidCredentialsError } from 'src/domain/errors/http'
+import { localstorageTokenFactory } from 'src/main/factories/cache'
 import { Login } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
+import 'jest-localstorage-mock'
 
 type SutTypes = {
   validationSpy: ValidationStub
@@ -56,6 +58,9 @@ const simulateStatusForField = (fieldName: string, validationError?: string): vo
 }
 
 describe('Login Component', () => {
+  beforeEach(() => {
+    localStorage.clear()
+  })
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
@@ -132,5 +137,16 @@ describe('Login Component', () => {
     await simulateValidSubmit()
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+  })
+
+  test('Should ensure that Authentication will save the return in localstorage', async () => {
+    const { authenticationSpy } = makeSut()
+    await simulateValidSubmit()
+    const form = screen.getByTestId('form')
+    await waitFor(() => form)
+    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', localstorageTokenFactory(
+      authenticationSpy.session.tokenSession,
+      authenticationSpy.session.platformUser.id
+    ))
   })
 })
