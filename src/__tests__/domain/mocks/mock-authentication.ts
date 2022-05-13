@@ -13,12 +13,12 @@ export const mockAuthenticationParams = (): Authentication.Params => {
 
 export class AuthenticationSpy implements Authentication {
   session = mockSession()
-  params: Authentication.Params = mockAuthenticationParams()
+  params: Authentication.Params | undefined
   callsCount = 0
 
   async auth (params: Authentication.Params): Promise<Authentication.Session> {
-    this.callsCount++
     this.params = params
+    this.callsCount++
     return Promise.resolve(this.session)
   }
 }

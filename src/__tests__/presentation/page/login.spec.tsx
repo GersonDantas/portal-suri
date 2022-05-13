@@ -1,9 +1,10 @@
 import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
+import { InvalidCredentialsError } from 'src/domain/errors/http'
 import { Login } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
 
@@ -32,22 +33,25 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
-const populateField = (fieldName: string, value: string = faker.internet.email()): HTMLElement => {
+const populateField = (fieldName: string, value = faker.internet.email()): void => {
   const input = screen.getByTestId(fieldName)
   fireEvent.input(input, { target: { value } })
-
-  return input
 }
 
-const simulateValidSubmit = (email = faker.internet.email(), password = faker.internet.password()): void => {
+const simulateValidSubmit = async (
+  email = faker.internet.email(),
+  password = faker.internet.password()
+): Promise<void> => {
   populateField('email', email)
   populateField('password', password)
-  const submitButton = screen.getByTestId('submit')
-  fireEvent.click(submitButton)
+  const form = screen.getByTestId('form')
+  fireEvent.submit(form)
+  await waitFor(() => form)
 }
 
 const simulateStatusForField = (fieldName: string, validationError?: string): void => {
-  const input = populateField(fieldName)
+  populateField(fieldName)
+  const input = screen.getByTestId(fieldName)
   expect(input.title).toBe(validationError || 'ok')
 }
 
@@ -90,24 +94,24 @@ describe('Login Component', () => {
     expect(screen.getByTestId('submit')).not.toBeDisabled()
   })
 
-  test('Should show spinner on submit click', () => {
+  test('Should show spinner on submit click', async () => {
     makeSut()
-    simulateValidSubmit()
+    await simulateValidSubmit()
     expect(screen.getByTestId('spinner')).toBeTruthy()
   })
 
-  test('Should call Authentication with correct values', () => {
+  test('Should call Authentication with correct values', async () => {
     const { authenticationSpy } = makeSut()
     const email = faker.internet.email()
     const password = faker.internet.password()
-    simulateValidSubmit(email, password)
+    await simulateValidSubmit(email, password)
     expect(authenticationSpy.params).toEqual({ email, password })
   })
 
-  test('Should call Authentication only once', () => {
+  test('Should call Authentication only once', async () => {
     const { authenticationSpy } = makeSut()
-    simulateValidSubmit()
-    simulateValidSubmit()
+    await simulateValidSubmit()
+    await simulateValidSubmit()
     expect(authenticationSpy.callsCount).toBe(1)
   })
 
@@ -117,5 +121,16 @@ describe('Login Component', () => {
     populateField('email')
     fireEvent.submit(screen.getByTestId('form'))
     expect(authenticationSpy.callsCount).toBe(0)
+  })
+
+  test('Should present error if authentication fails', async () => {
+    const { authenticationSpy } = makeSut()
+    const error = new InvalidCredentialsError()
+    jest
+      .spyOn(authenticationSpy, 'auth')
+      .mockReturnValueOnce(Promise.reject(error))
+    await simulateValidSubmit()
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 })
