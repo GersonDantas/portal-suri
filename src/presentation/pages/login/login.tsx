@@ -1,8 +1,8 @@
 import { InputWrap, LoginHeader, FormStatus, loginState } from './components'
 import Styles from './login.module.scss'
 
-
 import { Authentication } from 'src/domain/usecases'
+import { localstorageTokenFactory } from 'src/main/factories/cache'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
@@ -25,10 +25,14 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
         return
       }
       setState(old => ({ ...old, isLoading: true }))
-      await authentication.auth({
+      const session = await authentication.auth({
         email: state.email,
         password: state.password
       })
+      localStorage.setItem('accessToken', localstorageTokenFactory(
+        session.tokenSession,
+        session.platformUser.id
+      ))
     } catch (error: any) {
       setState(old => ({
         ...old,
