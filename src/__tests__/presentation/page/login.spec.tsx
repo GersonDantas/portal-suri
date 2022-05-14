@@ -22,7 +22,7 @@ type SutParams = {
   validationError: string
 }
 
-const history = createMemoryHistory()
+const history = createMemoryHistory({ initialEntries: ['/login'] })
 
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationStub()
@@ -146,7 +146,7 @@ describe('Login Component', () => {
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 
-  test('Should ensure that Authentication will save the return in localstorage', async () => {
+  test('Should ensure that Authentication will save the return in localstorage on success', async () => {
     const { authenticationSpy } = makeSut()
     await simulateValidSubmit()
     const form = screen.getByTestId('form')
@@ -155,6 +155,8 @@ describe('Login Component', () => {
       authenticationSpy.session.tokenSession,
       authenticationSpy.session.platformUser.id
     ))
+    expect(history.index).toBe(0)
+    expect(history.location.pathname).toBe('/')
   })
 
   test('Should go to signUp page', () => {
