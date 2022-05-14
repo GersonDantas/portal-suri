@@ -1,1 +1,1 @@
-export * from './localstorage-token-factory'
+export * from './create-token-suri'

@@ -2,7 +2,7 @@ import { InputWrap, LoginHeader, FormStatus, loginState } from './components'
 import Styles from './login.module.scss'
 
 import { Authentication } from 'src/domain/usecases'
-import { localstorageTokenFactory } from 'src/main/factories/cache'
+import { createTokenSuri } from 'src/main/factories/cache'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
@@ -29,7 +29,7 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
         email: state.email,
         password: state.password
       })
-      localStorage.setItem('accessToken', localstorageTokenFactory(
+      localStorage.setItem('accessToken', createTokenSuri(
         session.tokenSession,
         session.platformUser.id
       ))

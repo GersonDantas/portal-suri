@@ -1,7 +1,7 @@
 import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { InvalidCredentialsError } from 'src/domain/errors/http'
-import { localstorageTokenFactory } from 'src/main/factories/cache'
+import { createTokenSuri } from 'src/main/factories/cache'
 import { Login } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
@@ -144,7 +144,7 @@ describe('Login Component', () => {
     await simulateValidSubmit()
     const form = screen.getByTestId('form')
     await waitFor(() => form)
-    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', localstorageTokenFactory(
+    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', createTokenSuri(
       authenticationSpy.session.tokenSession,
       authenticationSpy.session.platformUser.id
     ))
