@@ -7,6 +7,7 @@ import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 
 type Props = {
@@ -59,7 +60,7 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
           <InputWrap className={Styles.password} name='password' type='password' />
           <a href='#' className={Styles.forgot}>Esqueceu sua senha?</a>
           <button disabled={!!state.emailError || !!state.passwordError} data-testid='submit' className={Styles.submit} >Fazer login</button>
-          <p>Não é cadastrado ainda?<a href='#'> Crie sua conta</a></p>
+          <p>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
           <FormStatus />
         </form>
       </div>
