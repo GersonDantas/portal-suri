@@ -7,7 +7,7 @@ import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 
 type Props = {
@@ -16,6 +16,7 @@ type Props = {
 }
 
 const Login: React.FC<Props> = ({ validation, authentication }) => {
+  const history = useHistory()
   const [state, setState] = useRecoilState(loginState)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -34,6 +35,7 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
         session.tokenSession,
         session.platformUser.id
       ))
+      history.replace('/')
     } catch (error: any) {
       setState(old => ({
         ...old,
