@@ -4,11 +4,14 @@ import { InvalidCredentialsError } from 'src/domain/errors/http'
 import { createTokenSuri } from 'src/main/factories/cache'
 import { Login } from 'src/presentation/pages'
 
+
 import faker from '@faker-js/faker'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
 import React from 'react'
-import { RecoilRoot } from 'recoil'
 import 'jest-localstorage-mock'
+import { Router } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   validationSpy: ValidationStub
@@ -19,13 +22,17 @@ type SutParams = {
   validationError: string
 }
 
+const history = createMemoryHistory()
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationSpy = new ValidationStub()
   validationSpy.errorMessage = params?.validationError
   const authenticationSpy = new AuthenticationSpy()
   render(
     <RecoilRoot>
-      <Login validation={validationSpy} authentication={authenticationSpy} />
+      <Router history={history} >
+        <Login validation={validationSpy} authentication={authenticationSpy} />
+      </Router>
     </RecoilRoot>
   )
 
@@ -148,5 +155,13 @@ describe('Login Component', () => {
       authenticationSpy.session.tokenSession,
       authenticationSpy.session.platformUser.id
     ))
+  })
+
+  test('Should go to signUp page', () => {
+    makeSut()
+    const signup = screen.getByTestId('signup')
+    fireEvent.click(signup)
+    expect(history.index).toBe(1)
+    expect(history.location.pathname).toBe('/signup')
   })
 })
