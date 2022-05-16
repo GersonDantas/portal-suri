@@ -1,5 +1,4 @@
 import Styles from './form-status.module.scss'
-
 import { Spinner } from 'src/presentation/components'
 
 import React from 'react'

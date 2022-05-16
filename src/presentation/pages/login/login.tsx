@@ -1,6 +1,5 @@
 import { InputWrap, LoginHeader, FormStatus, loginState } from './components'
 import Styles from './login.module.scss'
-
 import { Authentication } from 'src/domain/usecases'
 import { createTokenSuri } from 'src/main/factories/cache'
 import { Validation } from 'src/presentation/protocols'

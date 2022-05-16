@@ -1,5 +1,4 @@
 import { loginState } from './atom'
-
 import { FormStatusBase } from 'src/presentation/components'
 
 import React from 'react'

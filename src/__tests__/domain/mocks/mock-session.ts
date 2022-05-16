@@ -1,5 +1,4 @@
 import { mockPlatformUser } from './mock-platform-user'
-
 import { SessionModel } from 'src/domain/models'
 import { Authentication } from 'src/domain/usecases'
 

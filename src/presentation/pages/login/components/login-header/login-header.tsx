@@ -1,7 +1,5 @@
 import Styles from './login-header.module.scss'
 
-import { Logo } from 'src/presentation/components'
-
 import React from 'react'
 
 const LoginHeader: React.FC = () => {

@@ -95,9 +95,9 @@
             [
               "parent",
               "sibling",
+              "/^src/",
               "index"
             ],
-            "/^src/",
             "module"
           ],
           "alphabetize": {

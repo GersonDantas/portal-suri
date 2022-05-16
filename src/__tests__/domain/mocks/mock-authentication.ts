@@ -1,5 +1,4 @@
 import { mockSession } from './mock-session'
-
 import { Authentication } from 'src/domain/usecases'
 
 import faker from '@faker-js/faker'
