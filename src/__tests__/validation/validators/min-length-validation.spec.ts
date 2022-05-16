@@ -1,18 +1,18 @@
 import { InvalidFieldError } from 'src/validation/errors'
-import { FieldValidation } from 'src/validation/protocols'
+import { MinLengthValidation } from 'src/validation/validators'
 
-class MinLengthValidation implements FieldValidation {
-  constructor (readonly field: string, private minLength: number) { }
-
-  validate (value: string): Error {
-    return new InvalidFieldError(this.field)
-  }
-}
+import faker from '@faker-js/faker'
 
 describe('MinLengthValidation', () => {
   test('Should return error if value is invalid', () => {
     const sut = new MinLengthValidation('password', 6)
-    const error = sut.validate('123')
+    const error = sut.validate(faker.random.alphaNumeric(4))
     expect(error).toEqual(new InvalidFieldError('password'))
+  })
+
+  test('Should return falsy if value is valid', () => {
+    const sut = new MinLengthValidation('password', 5)
+    const error = sut.validate(faker.random.alphaNumeric(6))
+    expect(error).toBeFalsy()
   })
 })
