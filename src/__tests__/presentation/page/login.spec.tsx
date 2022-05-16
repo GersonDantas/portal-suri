@@ -70,7 +70,9 @@ describe('Login Component', () => {
   })
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
+
     makeSut({ validationError })
+
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit')).toBeDisabled()
     expect(screen.getByTestId('email')).toHaveProperty('title', validationError)
@@ -79,36 +81,46 @@ describe('Login Component', () => {
 
   test('Should show email error if Validations fails', () => {
     const validationError = faker.random.words()
+
     makeSut({ validationError })
+
     simulateStatusForField('email', validationError)
   })
 
   test('Should show password error if Validations fails', () => {
     const validationError = faker.random.words()
+
     makeSut({ validationError })
+
     simulateStatusForField('password', validationError)
   })
 
   test('Should show valid email state if Validations success', () => {
     makeSut()
+
     simulateStatusForField('email')
   })
 
   test('Should show valid password state if Validations success', () => {
     makeSut()
+
     simulateStatusForField('password')
   })
 
   test('Should enable submit button if form is valid', () => {
     makeSut()
+
     populateField('email')
     populateField('password')
+
     expect(screen.getByTestId('submit')).not.toBeDisabled()
   })
 
   test('Should show spinner on submit click', async () => {
     makeSut()
+
     await simulateValidSubmit()
+
     expect(screen.getByTestId('spinner')).toBeTruthy()
   })
 
@@ -116,14 +128,18 @@ describe('Login Component', () => {
     const { authenticationSpy } = makeSut()
     const email = faker.internet.email()
     const password = faker.internet.password()
+
     await simulateValidSubmit(email, password)
+
     expect(authenticationSpy.params).toEqual({ email, password })
   })
 
   test('Should call Authentication only once', async () => {
     const { authenticationSpy } = makeSut()
+
     await simulateValidSubmit()
     await simulateValidSubmit()
+
     expect(authenticationSpy.callsCount).toBe(1)
   })
 
@@ -131,7 +147,9 @@ describe('Login Component', () => {
     const validationError = faker.random.words()
     const { authenticationSpy } = makeSut({ validationError })
     populateField('email')
+
     fireEvent.submit(screen.getByTestId('form'))
+
     expect(authenticationSpy.callsCount).toBe(0)
   })
 
@@ -141,16 +159,20 @@ describe('Login Component', () => {
     jest
       .spyOn(authenticationSpy, 'auth')
       .mockReturnValueOnce(Promise.reject(error))
+
     await simulateValidSubmit()
+
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 
   test('Should ensure that Authentication will save the return in localstorage on success', async () => {
     const { authenticationSpy } = makeSut()
+
     await simulateValidSubmit()
     const form = screen.getByTestId('form')
     await waitFor(() => form)
+
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', createTokenSuri(
       authenticationSpy.session.tokenSession,
       authenticationSpy.session.platformUser.id
@@ -161,8 +183,10 @@ describe('Login Component', () => {
 
   test('Should go to signUp page', () => {
     makeSut()
+
     const signup = screen.getByTestId('signup')
     fireEvent.click(signup)
+
     expect(history.index).toBe(1)
     expect(history.location.pathname).toBe('/signup')
   })

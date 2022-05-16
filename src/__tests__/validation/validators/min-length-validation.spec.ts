@@ -8,13 +8,17 @@ const makeSut = (minLength: number): MinLengthValidation => new MinLengthValidat
 describe('MinLengthValidation', () => {
   test('Should return error if value is invalid', () => {
     const sut = makeSut(6)
+
     const error = sut.validate(faker.random.alphaNumeric(4))
+
     expect(error).toEqual(new InvalidPasswordError())
   })
 
   test('Should return falsy if value is valid', () => {
     const sut = makeSut(5)
+
     const error = sut.validate(faker.random.alphaNumeric(6))
+
     expect(error).toBeFalsy()
   })
 })

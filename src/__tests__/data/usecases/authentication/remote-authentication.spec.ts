@@ -28,7 +28,9 @@ describe('RemoteAuthentication', () => {
     const url = faker.internet.url()
     const { httpPostClientSpy, sut } = makeSut(url)
     const authenticationParams = mockAuthenticationParams()
+
     await sut.auth(authenticationParams)
+
     expect(httpPostClientSpy.url).toBe(url)
     expect(httpPostClientSpy.body).toEqual(authenticationParams)
   })
@@ -38,7 +40,9 @@ describe('RemoteAuthentication', () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.unauthorized
     }
+
     const promise = sut.auth(mockAuthenticationParams())
+
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
@@ -47,7 +51,9 @@ describe('RemoteAuthentication', () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
     }
+
     const promise = sut.auth(mockAuthenticationParams())
+
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -56,7 +62,9 @@ describe('RemoteAuthentication', () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.serverError
     }
+
     const promise = sut.auth(mockAuthenticationParams())
+
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -65,7 +73,9 @@ describe('RemoteAuthentication', () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.notFound
     }
+
     const promise = sut.auth(mockAuthenticationParams())
+
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -76,7 +86,9 @@ describe('RemoteAuthentication', () => {
       statusCode: HttpStatusCode.ok,
       body: httpResult
     }
+
     const session = await sut.auth(mockAuthenticationParams())
+
     expect(session).toEqual(httpResult)
   })
 })
