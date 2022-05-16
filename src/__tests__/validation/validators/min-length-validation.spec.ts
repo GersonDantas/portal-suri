@@ -1,4 +1,4 @@
-import { InvalidFieldError } from 'src/validation/errors'
+import { InvalidPasswordError } from 'src/validation/errors'
 import { MinLengthValidation } from 'src/validation/validators'
 
 import faker from '@faker-js/faker'
@@ -9,7 +9,7 @@ describe('MinLengthValidation', () => {
   test('Should return error if value is invalid', () => {
     const sut = makeSut(6)
     const error = sut.validate(faker.random.alphaNumeric(4))
-    expect(error).toEqual(new InvalidFieldError('password'))
+    expect(error).toEqual(new InvalidPasswordError())
   })
 
   test('Should return falsy if value is valid', () => {
