@@ -14,7 +14,7 @@ import { Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
-  validationSpy: ValidationStub
+  validationStub: ValidationStub
   authenticationSpy: AuthenticationSpy
 }
 
@@ -25,19 +25,19 @@ type SutParams = {
 const history = createMemoryHistory({ initialEntries: ['/login'] })
 
 const makeSut = (params?: SutParams): SutTypes => {
-  const validationSpy = new ValidationStub()
-  validationSpy.errorMessage = params?.validationError
+  const validationStub = new ValidationStub()
+  validationStub.errorMessage = params?.validationError
   const authenticationSpy = new AuthenticationSpy()
   render(
     <RecoilRoot>
       <Router history={history} >
-        <Login validation={validationSpy} authentication={authenticationSpy} />
+        <Login validation={validationStub} authentication={authenticationSpy} />
       </Router>
     </RecoilRoot>
   )
 
   return {
-    validationSpy,
+    validationStub,
     authenticationSpy
   }
 }
