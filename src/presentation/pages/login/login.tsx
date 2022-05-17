@@ -2,6 +2,7 @@ import { InputWrap, LoginHeader, FormStatus, loginState } from './components'
 import Styles from './login.module.scss'
 import { Authentication } from 'src/domain/usecases'
 import { createTokenSuri } from 'src/main/factories/cache'
+import Button from 'src/presentation/components/button/button'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
@@ -60,7 +61,7 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
           <InputWrap className={Styles.email} name='email' type='email' />
           <InputWrap className={Styles.password} name='password' type='password' />
           <a href='#' className={Styles.forgot}>Esqueceu sua senha?</a>
-          <button disabled={!!state.emailError || !!state.passwordError} data-testid='submit' className={Styles.submit} >Fazer login</button>
+          <Button disabled={!!state.emailError || !!state.passwordError} data-testid='submit' className={Styles.submit} >Fazer login</Button>
           <p>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
           <FormStatus />
         </form>
