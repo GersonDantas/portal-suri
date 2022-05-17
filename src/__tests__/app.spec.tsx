@@ -1,5 +1,5 @@
 
-import App from 'src/main/App'
+import App from 'src/main/routes/router'
 
 import { render } from '@testing-library/react'
 import React from 'react'

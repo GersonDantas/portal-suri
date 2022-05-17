@@ -11,7 +11,7 @@ const makeLogin: React.FC = () => {
   const httpClient = new AxiosHttpClient()
   const remoteAuthentication = new RemoteAuthentication(url, httpClient)
   const validation = ValidationComposite.build([
-    ...ValidationBuilder.field('email').required().build(),
+    ...ValidationBuilder.field('email').required().email().build(),
     ...ValidationBuilder.field('password').required().min(6).build()
   ])
   return (
