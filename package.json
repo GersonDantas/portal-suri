@@ -127,10 +127,10 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "./src/**/*.{ts,tsx}",
-      "!./src/main/**/*",
-      "!./src/**/index.{ts,js,tsx}",
-      "!./**/*.d.ts"
+      "<rootDir>/src/**/*.{ts,tsx}",
+      "!<rootDir>/src/main/**/*",
+      "!<rootDir>/src/**/index.{ts,js,tsx}",
+      "!<rootDir>/**/*.d.ts"
     ],
     "transform": {
       ".+\\.(ts|tsx)$": "ts-jest"
