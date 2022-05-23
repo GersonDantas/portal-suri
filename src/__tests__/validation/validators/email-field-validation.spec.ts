@@ -8,16 +8,23 @@ const makeSut = (): EmailFieldValidation => new EmailFieldValidation(faker.datab
 describe('EmailFieldValidation', () => {
   test('Should returns error if email is invalid', () => {
     const sut = makeSut()
+    const name = faker.internet.userName().replace(/[!#$%&'*+/=?^_`{|}~-]/gi, '')
+    const email = `${name}@${faker.lorem.words(15).replace(/\s./g, '')}.${name}`
+    const errorEmail = sut.validate(name)
 
-    const error = sut.validate(faker.random.word())
+    const errorMinAfter = sut.validate(
+      `${name}@${email}.${name}`
+    )
 
-    expect(error).toEqual(new InvalidEmailError())
+    expect(errorEmail).toEqual(new InvalidEmailError())
+    expect(errorMinAfter).toEqual(new InvalidEmailError())
   })
 
   test('Should returns falsy if email is valid', () => {
     const sut = makeSut()
+    const email = faker.internet.email().replace(/[!#$%&'*+/=?^_`{|}~-]/gi, '')
 
-    const error = sut.validate(faker.internet.email())
+    const error = sut.validate(email)
 
     expect(error).toBeFalsy()
   })
