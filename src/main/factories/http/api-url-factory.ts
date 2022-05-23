@@ -1,5 +1,5 @@
 type ApiUrl = string
 
 export const makeApiUrl = (path: string): ApiUrl => {
-  return `https://portal-staging.chatbotmaker.io${path}`
+  return `${process.env.REACT_APP_API_URL}${path}`
 }
