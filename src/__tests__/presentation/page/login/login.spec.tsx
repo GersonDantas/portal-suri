@@ -190,14 +190,4 @@ describe('Login Component', () => {
     expect(history.index).toBe(1)
     expect(history.location.pathname).toBe('/signup')
   })
-
-  test('Should ensure that it will show the ForgotPassword component', async () => {
-    makeSut()
-
-    const forgotPassword = screen.getByTestId('forgot-button')
-    fireEvent.click(forgotPassword)
-    await screen.findByTestId('forgot-wrap')
-
-    expect(screen.getByTestId('forgot-wrap')).toBeInTheDocument()
-  })
 })
