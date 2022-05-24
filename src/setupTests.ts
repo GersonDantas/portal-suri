@@ -4,6 +4,11 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom'
 import '@testing-library/jest-dom/extend-expect'
+import { setupIonicReact } from '@ionic/react'
+import { mockIonicReact } from '@ionic/react-test-utils'
+
+setupIonicReact()
+mockIonicReact()
 
 // Mock matchmedia
 Object.defineProperty(window, 'matchMedia', {
@@ -12,8 +17,6 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // Deprecated
-    removeListener: jest.fn(), // Deprecated
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
