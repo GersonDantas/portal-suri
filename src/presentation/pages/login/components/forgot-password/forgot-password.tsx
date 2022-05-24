@@ -10,6 +10,10 @@ import { useRecoilState } from 'recoil'
 const ForgotPassword: React.FC = () => {
   const [state, setState] = useRecoilState(modalState)
 
+  const submitOrCancel = (): void => {
+    if (!state.inputModal) setState(old => ({ ...old, isOpen: false }))
+  }
+
   return (
     <IonModal
       className={Styles.modalWrap}
@@ -36,7 +40,11 @@ const ForgotPassword: React.FC = () => {
           >
             cancelar
           </Button>
-          <Button className={Styles.send}>
+          <Button
+            data-testid='forgot-submit'
+            className={Styles.send}
+            onClick={submitOrCancel}
+          >
             enviar
           </Button>
         </div>
