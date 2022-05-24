@@ -20,12 +20,16 @@ const makeSut = (): void => {
   )
 }
 
+const clickForgotButton = async (): Promise<void> => {
+  fireEvent.click(screen.getByTestId('forgot-button'))
+  await waitForIonicReact()
+}
+
 describe('ForgotPassword', () => {
   test('Should ensure that it will show the ForgotPassword component', async () => {
     makeSut()
 
-    fireEvent.click(screen.getByTestId('forgot-button'))
-    await waitForIonicReact()
+    await clickForgotButton()
 
     expect(screen.getByTestId('forgot-wrap')).toBeInTheDocument()
   })
@@ -33,10 +37,18 @@ describe('ForgotPassword', () => {
   test('Should ensure that it hide the ForgotPassword component to a click cancel button', async () => {
     makeSut()
 
-    fireEvent.click(screen.getByTestId('forgot-button'))
-    await waitForIonicReact()
+    await clickForgotButton()
     fireEvent.click(screen.getByTestId('forgot-cancel'))
     await waitForIonicReact()
+
+    expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy()
+  })
+
+  test('Should ensure close modal if empty input', async () => {
+    makeSut()
+
+    await clickForgotButton()
+    fireEvent.click(screen.getByTestId('forgot-submit'))
 
     expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy()
   })
