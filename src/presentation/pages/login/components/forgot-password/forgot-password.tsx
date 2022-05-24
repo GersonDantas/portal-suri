@@ -30,6 +30,7 @@ const ForgotPassword: React.FC = () => {
         />
         <div className={Styles.buttonsWrap}>
           <Button
+            data-testid='forgot-cancel'
             onClick={() => setState(old => ({ ...old, isOpen: false }))}
             className={Styles.cancel}
           >
