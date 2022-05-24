@@ -1,14 +1,14 @@
-import { InputWrap, LoginHeader, FormStatus, loginState } from './components'
+import { InputWrap, LoginHeader, FormStatus, loginState, modalState, ForgotPassword } from './components'
 import Styles from './login.module.scss'
 import { Authentication } from 'src/domain/usecases'
 import { createTokenSuri } from 'src/main/factories/cache'
 import Button from 'src/presentation/components/button/button'
 import { Validation } from 'src/presentation/protocols'
 
-import { IonPage } from '@ionic/react'
+import { IonPage, useIonViewDidLeave } from '@ionic/react'
 import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { useRecoilState, useResetRecoilState, } from 'recoil'
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil'
 
 type Props = {
   validation: Validation
@@ -18,9 +18,14 @@ type Props = {
 const Login: React.FC<Props> = ({ validation, authentication }) => {
   const history = useHistory()
   const resetLoginState = useResetRecoilState(loginState)
+  const resetModalState = useResetRecoilState(modalState)
   const [state, setState] = useRecoilState(loginState)
+  const setModalState = useSetRecoilState(modalState)
 
-  useEffect(() => resetLoginState(), [])
+  useIonViewDidLeave(() => {
+    resetLoginState()
+    resetModalState()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -63,12 +68,16 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
           <LoginHeader />
           <InputWrap className={Styles.email} name='email' type='email' />
           <InputWrap className={Styles.password} name='password' type='password' />
-          <a href='#' className={Styles.forgot}>Esqueceu sua senha?</a>
+          <a
+            className={Styles.forgot}
+            onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
+          >Esqueceu sua senha?</a>
           <Button disabled={!!state.emailError || !!state.passwordError} data-testid='submit' className={Styles.submit} >Fazer login</Button>
           <p>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
           <FormStatus />
         </form>
       </div>
+      <ForgotPassword />
     </IonPage>
   )
 }

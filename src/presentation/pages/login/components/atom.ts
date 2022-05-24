@@ -11,3 +11,11 @@ export const loginState = atom({
     mainError: ''
   }
 })
+
+export const modalState = atom({
+  key: 'modalIsOpen',
+  default: {
+    isOpen: false,
+    inputModal: ''
+  }
+})
