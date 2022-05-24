@@ -64,11 +64,12 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
   return (
     <IonPage>
       <div className={Styles.loginWrap}>
-        <form data-testid="form" className={Styles.form} onSubmit={handleSubmit}>
+        <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
           <LoginHeader />
           <InputWrap className={Styles.email} name='email' type='email' />
           <InputWrap className={Styles.password} name='password' type='password' />
           <a
+            data-testid='forgot-button'
             className={Styles.forgot}
             onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
           >Esqueceu sua senha?</a>

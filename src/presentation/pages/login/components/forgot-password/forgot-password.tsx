@@ -16,7 +16,8 @@ const ForgotPassword: React.FC = () => {
       isOpen={state.isOpen}
       onDidDismiss={() => setState(old => ({ ...old, isOpen: false }))}
     >
-      <div className={Styles.forgotPasswordWrap}>
+      <div
+        data-testid='forgot-wrap' className={Styles.forgotPasswordWrap}>
         <h3 className={Styles.title}>Esqueceu a senha?</h3>
         <label className={Styles.label} htmlFor='input-modal'>Qual o e-mail do cadastro?</label>
         <input
