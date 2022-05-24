@@ -8,7 +8,7 @@ import { Validation } from 'src/presentation/protocols'
 import { IonPage } from '@ionic/react'
 import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useResetRecoilState, } from 'recoil'
 
 type Props = {
   validation: Validation
@@ -17,7 +17,10 @@ type Props = {
 
 const Login: React.FC<Props> = ({ validation, authentication }) => {
   const history = useHistory()
+  const resetLoginState = useResetRecoilState(loginState)
   const [state, setState] = useRecoilState(loginState)
+
+  useEffect(() => resetLoginState(), [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
