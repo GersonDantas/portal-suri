@@ -1,11 +1,15 @@
-export interface HttpPostClient<Resp = any, req = any> {
-  post: (req: HttpPostClient.Request<req>) => Promise<HttpPostClient.Response<Resp>>
+export interface HttpClient<Resp = any, req = any> {
+  request: (data: HttpClient.Request<req>) => Promise<HttpClient.Response<Resp>>
 }
 
-export namespace HttpPostClient {
+export type HttpMethod = 'post' | 'get' | 'put' | 'delete'
+
+export namespace HttpClient {
   export type Request<req = any> = {
     url: string
     body?: req
+    method: HttpMethod
+    headers?: any
   }
 
   export type Response<Resp = any> = {
@@ -15,9 +19,11 @@ export namespace HttpPostClient {
 }
 
 export enum HttpStatusCode {
-  unauthorized = 401,
+  ok = 200,
+  noContent = 204,
   badRequest = 400,
+  unauthorized = 401,
+  forbidden = 403,
   notFound = 404,
-  serverError = 500,
-  ok = 200
+  serverError = 500
 }

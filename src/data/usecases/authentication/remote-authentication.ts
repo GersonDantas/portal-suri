@@ -1,4 +1,4 @@
-import { HttpPostClient, HttpStatusCode } from 'src/data/protocols/http'
+import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
 import { InvalidCredentialsError } from 'src/domain/errors/http'
 import { UnexpectedError } from 'src/domain/errors/http/unexpected-error'
 import { Authentication } from 'src/domain/usecases'
@@ -6,13 +6,14 @@ import { Authentication } from 'src/domain/usecases'
 export class RemoteAuthentication implements Authentication {
   constructor (
     private readonly url: string,
-    private readonly httpClient: HttpPostClient<RemoteAuthentication.Session>
+    private readonly httpClient: HttpClient<RemoteAuthentication.Session>
   ) { }
 
   async auth (params: Authentication.Params): Promise<Authentication.Session> {
-    const httpResponse = await this.httpClient.post({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
-      body: params
+      body: params,
+      method: 'post'
     })
 
     switch (httpResponse.statusCode) {
