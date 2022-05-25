@@ -1,7 +1,8 @@
-import { InputWrap, LoginHeader, FormStatus, loginState, modalState, ForgotPassword } from './components'
+import { InputWrap, LoginHeader, FormStatus, loginState, modalState } from './components'
 import Styles from './login.module.scss'
 import { Authentication } from 'src/domain/usecases'
 import { createTokenSuri } from 'src/main/factories/cache'
+import { MakeForgotPassword } from 'src/main/factories/pages'
 import Button from 'src/presentation/components/button/button'
 import { Validation } from 'src/presentation/protocols'
 
@@ -78,7 +79,7 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
           <FormStatus />
         </form>
       </div>
-      <ForgotPassword />
+      <MakeForgotPassword />
     </IonPage>
   )
 }

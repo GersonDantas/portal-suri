@@ -4,15 +4,29 @@ import Styles from './forgot-password.module.scss'
 import { Button } from 'src/presentation/components'
 
 import { IonModal } from '@ionic/react'
-import React from 'react'
+
+import { Validation } from 'src/presentation/protocols'
+
+import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
-const ForgotPassword: React.FC = () => {
+type Props = {
+  validation: Validation
+}
+
+const ForgotPassword: React.FC<Props> = ({ validation }) => {
   const [state, setState] = useRecoilState(modalState)
 
   const submitOrCancel = (): void => {
-    if (!state.inputModal) setState(old => ({ ...old, isOpen: false }))
+    if (!state.forgot) setState(old => ({ ...old, isOpen: false }))
   }
+
+  useEffect(() => {
+    setState(old => ({
+      ...old,
+      forgotError: validation.validate('forgot', state.forgot)
+    }))
+  }, [state.forgot])
 
   return (
     <IonModal
@@ -27,9 +41,10 @@ const ForgotPassword: React.FC = () => {
         <input
           className={Styles.input}
           type='email'
-          name='inputModal'
+          name='forgot'
+          data-testid='input-forgot'
+          title={state.forgotError || 'ok'}
           id='input-modal'
-          value={state.inputModal}
           onChange={e => setState(old => ({ ...old, [e.target.name]: e.target.value }))}
         />
         <div className={Styles.buttonsWrap}>
