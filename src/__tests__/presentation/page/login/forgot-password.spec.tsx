@@ -2,8 +2,9 @@ import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { Login } from 'src/presentation/pages'
 
+import faker from '@faker-js/faker'
 import { waitForIonicReact } from '@ionic/react-test-utils'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
@@ -51,5 +52,15 @@ describe('ForgotPassword', () => {
     fireEvent.click(screen.getByTestId('forgot-submit'))
 
     expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy()
+  })
+
+  test('Should show email error if validations fails', async () => {
+    makeSut()
+
+    await clickForgotButton()
+    const input = screen.getByTestId('input-forgot')
+    fireEvent.input(input, { target: { value: faker.lorem.word() } })
+
+    expect(input.title).toBe('Por favor, forneça um endereço de email válido.')
   })
 })
