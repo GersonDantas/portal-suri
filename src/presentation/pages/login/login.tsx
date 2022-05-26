@@ -2,7 +2,6 @@ import { InputWrap, LoginHeader, FormStatus, loginState, modalState } from './co
 import Styles from './login.module.scss'
 import { Authentication } from 'src/domain/usecases'
 import { createTokenSuri } from 'src/main/factories/cache'
-import { MakeForgotPassword } from 'src/main/factories/pages'
 import Button from 'src/presentation/components/button/button'
 import { Validation } from 'src/presentation/protocols'
 
@@ -16,7 +15,7 @@ interface Props {
   authentication: Authentication
 }
 
-const Login: React.FC<Props> = ({ validation, authentication }) => {
+const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
   const history = useHistory()
   const resetLoginState = useResetRecoilState(loginState)
   const resetModalState = useResetRecoilState(modalState)
@@ -78,7 +77,7 @@ const Login: React.FC<Props> = ({ validation, authentication }) => {
           <FormStatus />
         </form>
       </div>
-      <MakeForgotPassword />
+      {props.children}
     </IonPage>
   )
 }
