@@ -10,7 +10,8 @@ export class RemoteForgotPassword implements ForgotYourPassword {
   async forgot (email: string): Promise<boolean> {
     return await Promise.resolve(this.HttpClient.request({
       url: this.url,
-      method: 'put'
+      method: 'post',
+      body: email
     }) !== undefined)
   }
 }
