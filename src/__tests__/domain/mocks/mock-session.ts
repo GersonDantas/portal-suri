@@ -4,7 +4,6 @@ import { Authentication } from 'src/domain/usecases'
 
 import faker from '@faker-js/faker'
 
-
 export const mockSession = (): Authentication.Session => ({
   platformUser: mockPlatformUser(),
   name: faker.random.words(),
@@ -13,7 +12,6 @@ export const mockSession = (): Authentication.Session => ({
   settings: mockSettings(),
   tokenSession: faker.datatype.uuid()
 })
-
 
 export const mockSettings = (): SessionModel.Settings => {
   return {

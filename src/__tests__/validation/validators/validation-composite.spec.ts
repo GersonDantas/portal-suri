@@ -3,7 +3,7 @@ import { ValidationComposite } from 'src/validation/validators'
 
 import faker from '@faker-js/faker'
 
-type SutTypes = {
+interface SutTypes {
   sut: ValidationComposite
   fieldValidatorsSpy: FieldValidationSpy[]
 }

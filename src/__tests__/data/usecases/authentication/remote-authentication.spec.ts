@@ -7,8 +7,7 @@ import { InvalidCredentialsError, UnexpectedError } from 'src/domain/errors/http
 
 import faker from '@faker-js/faker'
 
-
-type SutTypes = {
+interface SutTypes {
   httpClientSpy: HttpClientSpy
   sut: RemoteAuthentication
 }

@@ -11,7 +11,7 @@ import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil'
 
-type Props = {
+interface Props {
   validation: Validation
   authentication: Authentication
 }

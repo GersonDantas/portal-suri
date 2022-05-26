@@ -6,6 +6,7 @@ import faker from '@faker-js/faker'
 import { waitForIonicReact } from '@ionic/react-test-utils'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import React from 'react'
 import { Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 

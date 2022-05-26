@@ -5,8 +5,7 @@ import { AxiosHttpClient } from 'src/services/http'
 
 import axios from 'axios'
 
-
-type SutTypes = {
+interface SutTypes {
   sut: AxiosHttpClient
   mockedAxios: jest.Mocked<typeof axios>
 }

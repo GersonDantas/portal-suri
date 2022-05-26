@@ -1,4 +1,4 @@
-export type PlatformUserModel = {
+export interface PlatformUserModel {
   id: string
   name: string
   email: string
@@ -11,7 +11,7 @@ export type PlatformUserModel = {
 }
 
 export namespace PlatformUserModel {
-  export type chatbotItem = {
+  export interface chatbotItem {
     id: string
     name: string
     imageUrl: string

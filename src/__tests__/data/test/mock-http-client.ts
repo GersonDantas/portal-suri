@@ -19,6 +19,6 @@ export class HttpClientSpy<Resp = any> implements HttpClient<Resp> {
     this.url = params.url
     this.body = params.body
     this.method = params.method
-    return Promise.resolve(this.response)
+    return await Promise.resolve(this.response)
   }
 }

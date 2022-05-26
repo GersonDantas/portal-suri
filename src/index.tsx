@@ -5,8 +5,6 @@ import { IonApp } from '@ionic/react'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-
-
 ReactDOM.render(
   <React.StrictMode>
     <IonApp>

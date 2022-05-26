@@ -10,7 +10,7 @@ import { Validation } from 'src/presentation/protocols'
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
-type Props = {
+interface Props {
   validation: Validation
 }
 
@@ -35,7 +35,8 @@ const ForgotPassword: React.FC<Props> = ({ validation }) => {
       onDidDismiss={() => setState(old => ({ ...old, isOpen: false }))}
     >
       <div
-        data-testid='forgot-wrap' className={Styles.forgotPasswordWrap}>
+        data-testid='forgot-wrap' className={Styles.forgotPasswordWrap}
+      >
         <h3 className={Styles.title}>Esqueceu a senha?</h3>
         <label className={Styles.label} htmlFor='input-modal'>Qual o e-mail do cadastro?</label>
         <input

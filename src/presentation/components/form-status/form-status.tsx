@@ -3,7 +3,7 @@ import { Spinner } from 'src/presentation/components'
 
 import React from 'react'
 
-type Props = {
+interface Props {
   state: any
 }
 

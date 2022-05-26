@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/prefer-includes */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -21,7 +18,7 @@ const isLocalhost = Boolean(
   (/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/.exec(window.location.hostname))
 )
 
-type Config = {
+interface Config {
   onSuccess?: (registration: ServiceWorkerRegistration) => void
   onUpdate?: (registration: ServiceWorkerRegistration) => void
 }
@@ -71,7 +68,7 @@ function registerValidSW (swUrl: string, config?: Config) {
         }
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
-            if (navigator.serviceWorker.controller) {
+            if (navigator.serviceWorker.controller != null) {
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
               // content until all client tabs are closed.
@@ -81,7 +78,7 @@ function registerValidSW (swUrl: string, config?: Config) {
               )
 
               // Execute callback
-              if (config?.onUpdate) {
+              if ((config?.onUpdate) != null) {
                 config.onUpdate(registration)
               }
             } else {
@@ -91,7 +88,7 @@ function registerValidSW (swUrl: string, config?: Config) {
               console.log('Content is cached for offline use.')
 
               // Execute callback
-              if (config?.onSuccess) {
+              if ((config?.onSuccess) != null) {
                 config.onSuccess(registration)
               }
             }

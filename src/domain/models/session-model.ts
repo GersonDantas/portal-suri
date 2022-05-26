@@ -1,6 +1,6 @@
 import { PlatformUserModel } from 'src/domain/models'
 
-export type SessionModel = {
+export interface SessionModel {
   platformUser: PlatformUserModel
   name: string
   authenticationType: string
@@ -10,7 +10,7 @@ export type SessionModel = {
 }
 
 export namespace SessionModel {
-  export type Settings = {
+  export interface Settings {
     environment: 'PROD' | 'STG' | 'DEV'
     chatAppId: string
     webChatUrl: string

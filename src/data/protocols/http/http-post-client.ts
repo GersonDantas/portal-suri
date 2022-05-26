@@ -5,14 +5,14 @@ export interface HttpClient<Resp = any, req = any> {
 export type HttpMethod = 'post' | 'get' | 'put' | 'delete'
 
 export namespace HttpClient {
-  export type Request<req = any> = {
+  export interface Request<req = any> {
     url: string
     body?: req
     method: HttpMethod
     headers?: any
   }
 
-  export type Response<Resp = any> = {
+  export interface Response<Resp = any> {
     statusCode: HttpStatusCode
     body?: Resp
   }

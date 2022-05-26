@@ -4,7 +4,6 @@ import { InvalidCredentialsError } from 'src/domain/errors/http'
 import { createTokenSuri } from 'src/main/factories/cache'
 import { Login } from 'src/presentation/pages'
 
-
 import faker from '@faker-js/faker'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -13,12 +12,12 @@ import 'jest-localstorage-mock'
 import { Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 
-type SutTypes = {
+interface SutTypes {
   validationStub: ValidationStub
   authenticationSpy: AuthenticationSpy
 }
 
-type SutParams = {
+interface SutParams {
   validationError: string
 }
 
@@ -31,7 +30,10 @@ const makeSut = (params?: SutParams): SutTypes => {
   render(
     <RecoilRoot>
       <Router history={history} >
-        <Login validation={validationStub} authentication={authenticationSpy} />
+        <Login
+          validation={validationStub}
+          authentication={authenticationSpy}
+        />
       </Router>
     </RecoilRoot>
   )
@@ -61,7 +63,7 @@ const simulateValidSubmit = async (
 const simulateStatusForField = (fieldName: string, validationError?: string): void => {
   populateField(fieldName)
   const input = screen.getByTestId(fieldName)
-  expect(input.title).toBe(validationError || 'ok')
+  expect(input.title).toBe(validationError ?? 'ok')
 }
 
 describe('Login Component', () => {
