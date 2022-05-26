@@ -7,7 +7,7 @@ import { Login } from 'src/presentation/pages'
 import faker from '@faker-js/faker'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import 'jest-localstorage-mock'
 import { Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
@@ -18,7 +18,8 @@ interface SutTypes {
 }
 
 interface SutParams {
-  validationError: string
+  validationError?: string
+  childrenMock?: ReactElement
 }
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })
@@ -30,10 +31,9 @@ const makeSut = (params?: SutParams): SutTypes => {
   render(
     <RecoilRoot>
       <Router history={history} >
-        <Login
-          validation={validationStub}
-          authentication={authenticationSpy}
-        />
+        <Login validation={validationStub} authentication={authenticationSpy} >
+          {params?.childrenMock}
+        </Login>
       </Router>
     </RecoilRoot>
   )
@@ -191,5 +191,13 @@ describe('Login Component', () => {
 
     expect(history.index).toBe(1)
     expect(history.location.pathname).toBe('/signup')
+  })
+
+  test('Should ensure render Login with correct children', () => {
+    const anyText = faker.datatype.uuid()
+    const childrenMock = <p>{anyText}</p>
+    makeSut({ childrenMock })
+
+    expect(screen.queryByText(new RegExp(anyText, 'i'))).toBeInTheDocument()
   })
 })
