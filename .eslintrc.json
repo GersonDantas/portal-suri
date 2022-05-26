@@ -1,0 +1,57 @@
+{
+  "plugins": [
+    "react",
+    "eslint-plugin-import-helpers"
+  ],
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "standard-with-typescript",
+    "plugin:react/recommended"
+  ],
+  "ignorePatterns": [
+    "**/*.scss"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "react/jsx-indent": [
+      1,
+      2
+    ],
+    "react/jsx-indent-props": [
+      1,
+      2
+    ],
+    "react/jsx-closing-bracket-location": [
+      1,
+      "line-aligned"
+    ],
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          [
+            "parent",
+            "sibling",
+            "/^src/",
+            "index"
+          ],
+          "module"
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ],
+    "@typescript-eslint/no-redeclare": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "testing-library/no-node-access": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "space-before-function-paren": [
+      "error",
+      "always"
+    ]
+  }
+}

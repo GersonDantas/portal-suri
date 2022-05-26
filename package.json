@@ -72,44 +72,6 @@
     "workbox-strategies": "5.1.4",
     "workbox-streams": "5.1.4"
   },
-  "eslintConfig": {
-    "plugins": [
-      "eslint-plugin-import-helpers"
-    ],
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "ignorePatterns": [
-      "**/*.scss"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "rules": {
-      "import-helpers/order-imports": [
-        "warn",
-        {
-          "newlinesBetween": "always",
-          "groups": [
-            [
-              "parent",
-              "sibling",
-              "/^src/",
-              "index"
-            ],
-            "module"
-          ],
-          "alphabetize": {
-            "order": "asc",
-            "ignoreCase": true
-          }
-        }
-      ],
-      "@typescript-eslint/no-redeclare": "off",
-      "jsx-a11y/anchor-is-valid": "off",
-      "testing-library/no-node-access": "off",
-      "react-hooks/exhaustive-deps": "off"
-    }
-  },
   "dependencies": {
     "-": "^0.0.1",
     "@capacitor/cli": "3.5.0",
