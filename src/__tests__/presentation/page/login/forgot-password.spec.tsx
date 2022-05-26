@@ -1,6 +1,7 @@
 import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { Login } from 'src/presentation/pages'
+import { ForgotPassword } from 'src/presentation/pages/login/components'
 
 import faker from '@faker-js/faker'
 import { waitForIonicReact } from '@ionic/react-test-utils'
@@ -12,11 +13,19 @@ import { RecoilRoot } from 'recoil'
 
 const history = createMemoryHistory({ initialEntries: ['/login'] })
 
-const makeSut = (): void => {
+type SutParams = {
+  validationError: string
+}
+
+const makeSut = (params?: SutParams): void => {
+  const validationStub = new ValidationStub()
+  validationStub.errorMessage = params?.validationError
   render(
     <RecoilRoot>
       <Router history={history} >
-        <Login validation={new ValidationStub()} authentication={new AuthenticationSpy()} />
+        <Login validation={new ValidationStub()} authentication={new AuthenticationSpy()} >
+          <ForgotPassword validation={validationStub} />
+        </Login>
       </Router>
     </RecoilRoot>
   )
@@ -36,7 +45,7 @@ describe('ForgotPassword', () => {
     expect(screen.getByTestId('forgot-wrap')).toBeInTheDocument()
   })
 
-  test('Should ensure that it hide the ForgotPassword component to a click cancel button', async () => {
+  test('Should ensure close modal if click cancel button', async () => {
     makeSut()
 
     await clickForgotButton()
@@ -56,12 +65,13 @@ describe('ForgotPassword', () => {
   })
 
   test('Should show email error if validations fails', async () => {
-    makeSut()
+    const validationError = faker.lorem.words()
+    makeSut({ validationError })
 
     await clickForgotButton()
     const input = screen.getByTestId('input-forgot')
     fireEvent.input(input, { target: { value: faker.lorem.word() } })
 
-    expect(input.title).toBe('Por favor, forneça um endereço de email válido.')
+    expect(input.title).toBe(validationError)
   })
 })
