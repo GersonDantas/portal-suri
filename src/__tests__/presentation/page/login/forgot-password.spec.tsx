@@ -26,9 +26,11 @@ type SutTypes = {
 
 class ForgotYourPasswordSpy implements ForgotYourPassword {
   email: string
+  callsCount = 0
 
   async sendEmail (email: string): Promise<ForgotPasswordResponse> {
     this.email = email
+    this.callsCount++
     return mockForgotPasswordResponse()
   }
 }
@@ -107,5 +109,19 @@ describe('ForgotPassword', () => {
     await waitForIonicReact()
 
     expect(forgotYourPassword.email).toBe(email)
+  })
+
+  test('Should call ForgotYourPassword only once', async () => {
+    const { forgotYourPassword } = makeSut()
+
+    await clickForgotButton()
+    const email = faker.internet.email()
+    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: email } })
+    await waitForIonicReact()
+    fireEvent.submit(screen.getByTestId('form-forgot'))
+    await waitForIonicReact()
+    fireEvent.submit(screen.getByTestId('form-forgot'))
+
+    expect(forgotYourPassword.callsCount).toBe(1)
   })
 })
