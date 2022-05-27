@@ -1,6 +1,6 @@
 import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
-import { InvalidCredentialsError } from 'src/domain/errors/http'
+import { InvalidCredentialsError } from 'src/domain/errors'
 import { createTokenSuri } from 'src/main/factories/cache'
 import { Login } from 'src/presentation/pages'
 
