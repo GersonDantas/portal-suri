@@ -35,7 +35,7 @@ describe('RemoteForgotPassword', () => {
     const { httpClientSpy, sut } = makeSut({ url, body })
     const email = faker.internet.email()
 
-    await sut.forgot(email)
+    await sut.sendEmail(email)
 
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.body).toBe(email)
@@ -49,7 +49,7 @@ describe('RemoteForgotPassword', () => {
     }
     const { sut } = makeSut({ body })
 
-    const promise = sut.forgot(faker.internet.email())
+    const promise = sut.sendEmail(faker.internet.email())
 
     await expect(promise).rejects.toThrow(new IsFacebookError())
   })
@@ -61,7 +61,7 @@ describe('RemoteForgotPassword', () => {
     }
     const { sut } = makeSut({ body })
 
-    const promise = sut.forgot(faker.internet.email())
+    const promise = sut.sendEmail(faker.internet.email())
 
     await expect(promise).rejects.toThrow(new UserNotFoundError())
   })
@@ -73,7 +73,7 @@ describe('RemoteForgotPassword', () => {
     }
     const { sut } = makeSut({ body })
 
-    const forgotPasswordResponse = await sut.forgot(faker.internet.email())
+    const forgotPasswordResponse = await sut.sendEmail(faker.internet.email())
 
     expect(forgotPasswordResponse.success).toBe(body.success)
     expect(forgotPasswordResponse.type).toBe(body.type)
