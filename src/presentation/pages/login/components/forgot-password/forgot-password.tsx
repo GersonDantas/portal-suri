@@ -46,7 +46,7 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
       <form
         onSubmit={submitOrCancel}
         data-testid='form-forgot'
-        className={Styles.forgotPasswordWrap}
+        className={Styles.formForgot}
       >
         <h3 className={Styles.title}>Esqueceu a senha?</h3>
         <label className={Styles.label} htmlFor='input-modal'>Qual o e-mail do cadastro?</label>
