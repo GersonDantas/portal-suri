@@ -1,7 +1,7 @@
 import { HttpClientSpy } from 'src/__tests__/data/test'
 import { ForgotPasswordResponseType } from 'src/data/models'
 import { RemoteForgotPassword } from 'src/data/usecases'
-import { IsFacebookError } from 'src/domain/errors/is-facebook-error'
+import { IsFacebookError, UserNotFoundError } from 'src/domain/errors'
 
 import faker from '@faker-js/faker'
 
@@ -42,7 +42,7 @@ describe('RemoteForgotPassword', () => {
     expect(httpClientSpy.method).toBe('post')
   })
 
-  test('Should ensure RemoteForgotPassword returns IsFacebookUserError if facebook user', async () => {
+  test('Should ensure RemoteForgotPassword returns IsFacebookUserError if facebook user error', async () => {
     const body = {
       success: false,
       type: ForgotPasswordResponseType.IsFacebookUser
@@ -52,5 +52,17 @@ describe('RemoteForgotPassword', () => {
     const promise = sut.forgot(faker.internet.email())
 
     await expect(promise).rejects.toThrow(new IsFacebookError())
+  })
+
+  test('Should ensure RemoteForgotPassword returns UserNotFoundError if user not found error', async () => {
+    const body = {
+      success: false,
+      type: ForgotPasswordResponseType.UserNotFound
+    }
+    const { sut } = makeSut({ body })
+
+    const promise = sut.forgot(faker.internet.email())
+
+    await expect(promise).rejects.toThrow(new UserNotFoundError())
   })
 })
