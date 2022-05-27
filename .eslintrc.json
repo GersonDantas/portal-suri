@@ -65,6 +65,7 @@
     "react/jsx-uses-react": "error",
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
     "react/prop-types": "off",
     "@typescript-eslint/no-misused-promises": "off",
