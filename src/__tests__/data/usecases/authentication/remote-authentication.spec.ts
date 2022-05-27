@@ -3,7 +3,7 @@ import { HttpClientSpy } from 'src/__tests__/data/test'
 import { mockAuthenticationParams, mockSession } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteAuthentication } from 'src/data/usecases'
-import { InvalidCredentialsError, UnexpectedError } from 'src/domain/errors/http'
+import { InvalidCredentialsError, UnexpectedError } from 'src/domain/errors'
 
 import faker from '@faker-js/faker'
 
