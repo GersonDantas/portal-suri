@@ -115,13 +115,25 @@ describe('ForgotPassword', () => {
     const { forgotYourPassword } = makeSut()
 
     await clickForgotButton()
-    const email = faker.internet.email()
-    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: email } })
+    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
     await waitForIonicReact()
     fireEvent.submit(screen.getByTestId('form-forgot'))
     await waitForIonicReact()
     fireEvent.submit(screen.getByTestId('form-forgot'))
 
     expect(forgotYourPassword.callsCount).toBe(1)
+  })
+
+  test('Should not call ForgotYourPassword if form is invalid', async () => {
+    const validationError = faker.lorem.words()
+    const { forgotYourPassword } = makeSut({ validationError })
+
+    await clickForgotButton()
+    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.lorem.words() } })
+    await waitForIonicReact()
+    fireEvent.submit(screen.getByTestId('form-forgot'))
+    await waitForIonicReact()
+
+    expect(forgotYourPassword.callsCount).toBe(0)
   })
 })
