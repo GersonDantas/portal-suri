@@ -1,7 +1,7 @@
 import { ForgotPasswordResponse } from 'src/data/models'
 
 export interface ForgotYourPassword {
-  forgot: (email: string) => Promise<ForgotYourPassword.Response>
+  sendEmail: (email: string) => Promise<ForgotYourPassword.Response>
 }
 
 export namespace ForgotYourPassword {

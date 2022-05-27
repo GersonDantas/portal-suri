@@ -10,23 +10,32 @@ import { Validation } from 'src/presentation/protocols'
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
+import { ForgotYourPassword } from 'src/domain/usecases'
+
 interface Props {
   validation: Validation
+  forgotYourPassword: ForgotYourPassword
 }
 
-const ForgotPassword: React.FC<Props> = ({ validation }) => {
+const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => {
   const [state, setState] = useRecoilState(modalState)
 
-  const submitOrCancel = (): void => {
-    if (!state.forgot) setState(old => ({ ...old, isOpen: false }))
+  const submitOrCancel = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+
+    if (!state.forgotEmail) {
+      setState(old => ({ ...old, isOpen: false }))
+    }
+
+    forgotYourPassword.sendEmail(state.forgotEmail)
   }
 
   useEffect(() => {
     setState(old => ({
       ...old,
-      forgotError: validation.validate('forgot', state.forgot)
+      forgotError: validation.validate('forgot', state.forgotEmail)
     }))
-  }, [state.forgot])
+  }, [state.forgotEmail])
 
   return (
     <IonModal
@@ -34,15 +43,17 @@ const ForgotPassword: React.FC<Props> = ({ validation }) => {
       isOpen={state.isOpen}
       onDidDismiss={() => setState(old => ({ ...old, isOpen: false }))}
     >
-      <div
-        data-testid='forgot-wrap' className={Styles.forgotPasswordWrap}
+      <form
+        onSubmit={submitOrCancel}
+        data-testid='form-forgot'
+        className={Styles.forgotPasswordWrap}
       >
         <h3 className={Styles.title}>Esqueceu a senha?</h3>
         <label className={Styles.label} htmlFor='input-modal'>Qual o e-mail do cadastro?</label>
         <input
           className={Styles.input}
           type='email'
-          name='forgot'
+          name='forgotEmail'
           data-testid='input-forgot'
           title={state.forgotError || 'ok'}
           id='input-modal'
@@ -57,14 +68,14 @@ const ForgotPassword: React.FC<Props> = ({ validation }) => {
             cancelar
           </Button>
           <Button
+            type='submit'
             data-testid='forgot-submit'
             className={Styles.send}
-            onClick={submitOrCancel}
           >
             enviar
           </Button>
         </div>
-      </div>
+      </form>
     </IonModal>
   )
 }

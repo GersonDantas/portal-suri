@@ -10,7 +10,7 @@ export class RemoteForgotPassword implements ForgotYourPassword {
     private readonly HttpClient: HttpClient<RemoteForgotPassword.Model>
   ) { }
 
-  async forgot (email: string): Promise<RemoteForgotPassword.Model> {
+  async sendEmail (email: string): Promise<RemoteForgotPassword.Model> {
     const httpResponse = await this.HttpClient.request({
       url: this.url,
       method: 'post',

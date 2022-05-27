@@ -16,7 +16,7 @@ export const modalState = atom({
   key: 'modalIsOpen',
   default: {
     isOpen: false,
-    forgot: '',
+    forgotEmail: '',
     forgotError: ''
   }
 })
