@@ -65,4 +65,17 @@ describe('RemoteForgotPassword', () => {
 
     await expect(promise).rejects.toThrow(new UserNotFoundError())
   })
+
+  test('Should ensure RemoteForgotPassword returns success if reset link sent', async () => {
+    const body = {
+      success: true,
+      type: ForgotPasswordResponseType.ResetLinkSent
+    }
+    const { sut } = makeSut({ body })
+
+    const forgotPasswordResponse = await sut.forgot(faker.internet.email())
+
+    expect(forgotPasswordResponse.success).toBe(body.success)
+    expect(forgotPasswordResponse.type).toBe(body.type)
+  })
 })
