@@ -25,7 +25,11 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
 
     if (!state.forgotEmail) {
       setState(old => ({ ...old, isOpen: false }))
+    } else if (state.isLoading) {
+      return
     }
+
+    setState(old => ({ ...old, isLoading: true }))
 
     forgotYourPassword.sendEmail(state.forgotEmail)
   }

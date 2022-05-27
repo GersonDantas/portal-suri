@@ -17,6 +17,7 @@ export const modalState = atom({
   default: {
     isOpen: false,
     forgotEmail: '',
-    forgotError: ''
+    forgotError: '',
+    isLoading: false
   }
 })
