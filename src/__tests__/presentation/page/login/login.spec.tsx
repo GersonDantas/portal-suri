@@ -72,9 +72,12 @@ describe('Login Component', () => {
   })
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
+    const anyText = faker.datatype.uuid()
+    const childrenMock = <p>{anyText}</p>
 
-    makeSut({ validationError })
+    makeSut({ validationError, childrenMock })
 
+    expect(screen.queryByText(new RegExp(anyText, 'i'))).toBeInTheDocument()
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit')).toBeDisabled()
     expect(screen.getByTestId('email')).toHaveProperty('title', validationError)
@@ -191,13 +194,5 @@ describe('Login Component', () => {
 
     expect(history.index).toBe(1)
     expect(history.location.pathname).toBe('/signup')
-  })
-
-  test('Should ensure render Login with correct children', () => {
-    const anyText = faker.datatype.uuid()
-    const childrenMock = <p>{anyText}</p>
-    makeSut({ childrenMock })
-
-    expect(screen.queryByText(new RegExp(anyText, 'i'))).toBeInTheDocument()
   })
 })

@@ -2,15 +2,12 @@ import { modalState } from '..'
 
 import Styles from './forgot-password.module.scss'
 import { Button } from 'src/presentation/components'
+import { Validation } from 'src/presentation/protocols'
+import { ForgotYourPassword } from 'src/domain/usecases'
 
 import { IonModal } from '@ionic/react'
-
-import { Validation } from 'src/presentation/protocols'
-
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
-
-import { ForgotYourPassword } from 'src/domain/usecases'
 
 interface Props {
   validation: Validation
