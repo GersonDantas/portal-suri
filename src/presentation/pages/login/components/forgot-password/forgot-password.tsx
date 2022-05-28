@@ -17,6 +17,12 @@ interface Props {
 const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => {
   const [state, setState] = useRecoilState(modalState)
 
+  const modalCancelClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault()
+
+    setState(old => ({ ...old, isOpen: false }))
+  }
+
   const submitOrCancel = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
 
@@ -63,7 +69,7 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
         <div className={Styles.buttonsWrap}>
           <Button
             data-testid='forgot-cancel'
-            onClick={() => setState(old => ({ ...old, isOpen: false }))}
+            onClick={modalCancelClick}
             className={Styles.cancel}
           >
             cancelar

@@ -1,4 +1,4 @@
-import MakeForgotPassword from './forgot-password-factory'
+import MakeForgotPassword from './components/forgot-password-factory'
 import { makeLoginValidation } from './login-validation-factory'
 import { makeRemoteAuthentication } from 'src/main/factories/usecases'
 import { Login } from 'src/presentation/pages'
