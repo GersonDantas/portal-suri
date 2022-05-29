@@ -1,3 +1,5 @@
+@import '../../styles/variables.module.scss';
+
 .errorWrap {
   display       : flex;
   flex-direction: column;
@@ -8,6 +10,43 @@
   }
 
   .error {
-    margin-top: 30px;
+    position        : absolute;
+    right           : 5%;
+    top             : 5%;
+    background-color: $valid;
+    display         : flex;
+    flex-direction  : row;
+    padding-left    : 16px;
+    border-radius   : $borderRadiusPrimary;
+    line-height     : 50px;
+
+    .iconCheckWrap {
+
+      .iconCheck {
+        color       : white;
+        margin-right: 10px;
+      }
+    }
+
+    .errorTextWrap {
+      position: relative;
+
+      .errorText {
+        color        : white;
+        font-family  : 'Inter';
+        font-weight  : bold;
+        font-size    : 14px;
+        padding-right: 22px;
+      }
+
+      .iconClosed {
+        cursor   : pointer;
+        color    : white;
+        font-size: 8px;
+        right    : 8px;
+        top      : 8px;
+        position : absolute;
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'src/presentation/styles/global.scss'
+import 'src/presentation/styles/font-awesome.module.scss'
 import { MakeLogin } from 'src/main/factories/pages'
 
 import '@ionic/react/css/core.css'

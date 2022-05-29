@@ -8,7 +8,7 @@ export const loginState = atom({
     emailError: '',
     password: '',
     passwordError: '',
-    mainError: ''
+    information: ''
   }
 })
 

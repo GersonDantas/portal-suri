@@ -3,5 +3,11 @@ node_modules
 coverage
 public
 build
+
+*.eot
+*.cbm
+*.svg
+*.ttf
+*.woff
 *.scss
 *.json
