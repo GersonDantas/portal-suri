@@ -53,7 +53,7 @@ describe('RemoteAuthentication', () => {
 
     const promise = sut.auth(mockAuthenticationParams())
 
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
   it('Should throw UnexpectedError if HttpClient return 500', async () => {
