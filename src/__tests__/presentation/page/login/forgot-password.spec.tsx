@@ -2,7 +2,7 @@ import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { mockForgotPasswordResponse } from 'src/__tests__/domain/mocks/mock-forgot-password'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { ForgotPasswordResponse } from 'src/data/models'
-import { IsFacebookError } from 'src/domain/errors'
+import { IsFacebookError, UserNotFoundError } from 'src/domain/errors'
 import { ForgotYourPassword } from 'src/domain/usecases'
 import { Login } from 'src/presentation/pages'
 import { ForgotPassword } from 'src/presentation/pages/login/components'
@@ -138,9 +138,9 @@ describe('ForgotPassword', () => {
     expect(forgotYourPasswordSpy.callsCount).toBe(0)
   })
 
-  test('Should ensure show FormStatus with IsFacebookError if user facebook', async () => {
+  test('Should ensure show FormStatus with IsFacebookError or UserNotFoundError if returns Error', async () => {
     const { forgotYourPasswordSpy } = makeSut()
-    const error = new IsFacebookError()
+    const error = faker.random.arrayElement([new IsFacebookError(), new UserNotFoundError()])
 
     await clickForgotButton()
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
