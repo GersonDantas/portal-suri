@@ -167,7 +167,7 @@ describe('Login Component', () => {
 
     await simulateValidSubmit()
 
-    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('main-info')).toHaveTextContent(error.message)
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 

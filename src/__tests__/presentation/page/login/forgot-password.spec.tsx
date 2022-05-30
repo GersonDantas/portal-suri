@@ -2,13 +2,14 @@ import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { mockForgotPasswordResponse } from 'src/__tests__/domain/mocks/mock-forgot-password'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { ForgotPasswordResponse } from 'src/data/models'
+import { IsFacebookError } from 'src/domain/errors'
 import { ForgotYourPassword } from 'src/domain/usecases'
 import { Login } from 'src/presentation/pages'
 import { ForgotPassword } from 'src/presentation/pages/login/components'
 
 import faker from '@faker-js/faker'
 import { waitForIonicReact } from '@ionic/react-test-utils'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -21,7 +22,7 @@ type SutParams = {
 }
 
 type SutTypes = {
-  forgotYourPassword: ForgotYourPasswordSpy
+  forgotYourPasswordSpy: ForgotYourPasswordSpy
 }
 
 class ForgotYourPasswordSpy implements ForgotYourPassword {
@@ -37,20 +38,20 @@ class ForgotYourPasswordSpy implements ForgotYourPassword {
 
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
-  const forgotYourPassword = new ForgotYourPasswordSpy()
+  const forgotYourPasswordSpy = new ForgotYourPasswordSpy()
   validationStub.errorMessage = params?.validationError
   render(
     <RecoilRoot>
       <Router history={history} >
         <Login validation={new ValidationStub()} authentication={new AuthenticationSpy()} >
-          <ForgotPassword validation={validationStub} forgotYourPassword={forgotYourPassword} />
+          <ForgotPassword validation={validationStub} forgotYourPassword={forgotYourPasswordSpy} />
         </Login>
       </Router>
     </RecoilRoot>
   )
 
   return {
-    forgotYourPassword
+    forgotYourPasswordSpy
   }
 }
 
@@ -78,7 +79,7 @@ describe('ForgotPassword', () => {
     expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy()
   })
 
-  test('Should ensure close modal if empty input', async () => {
+  test('Should ensure close modal if empty input and submit button click ', async () => {
     makeSut()
 
     await clickForgotButton()
@@ -87,7 +88,7 @@ describe('ForgotPassword', () => {
     expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy()
   })
 
-  test('Should show email error if validations fails', async () => {
+  test('Should show email error in title if validations fails', async () => {
     const validationError = faker.lorem.words()
     makeSut({ validationError })
 
@@ -99,7 +100,7 @@ describe('ForgotPassword', () => {
   })
 
   test('Should call ForgotYourPassword with correct value', async () => {
-    const { forgotYourPassword } = makeSut()
+    const { forgotYourPasswordSpy } = makeSut()
 
     await clickForgotButton()
     const email = faker.internet.email()
@@ -108,11 +109,11 @@ describe('ForgotPassword', () => {
     fireEvent.submit(screen.getByTestId('form-forgot'))
     await waitForIonicReact()
 
-    expect(forgotYourPassword.email).toBe(email)
+    expect(forgotYourPasswordSpy.email).toBe(email)
   })
 
   test('Should call ForgotYourPassword only once', async () => {
-    const { forgotYourPassword } = makeSut()
+    const { forgotYourPasswordSpy } = makeSut()
 
     await clickForgotButton()
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
@@ -121,12 +122,12 @@ describe('ForgotPassword', () => {
     await waitForIonicReact()
     fireEvent.submit(screen.getByTestId('form-forgot'))
 
-    expect(forgotYourPassword.callsCount).toBe(1)
+    expect(forgotYourPasswordSpy.callsCount).toBe(1)
   })
 
   test('Should not call ForgotYourPassword if form is invalid', async () => {
     const validationError = faker.lorem.words()
-    const { forgotYourPassword } = makeSut({ validationError })
+    const { forgotYourPasswordSpy } = makeSut({ validationError })
 
     await clickForgotButton()
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.lorem.words() } })
@@ -134,6 +135,25 @@ describe('ForgotPassword', () => {
     fireEvent.submit(screen.getByTestId('form-forgot'))
     await waitForIonicReact()
 
-    expect(forgotYourPassword.callsCount).toBe(0)
+    expect(forgotYourPasswordSpy.callsCount).toBe(0)
+  })
+
+  test('Should ensure show FormStatus with IsFacebookError if user facebook', async () => {
+    const { forgotYourPasswordSpy } = makeSut()
+    const error = new IsFacebookError()
+
+    await clickForgotButton()
+    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
+    jest
+      .spyOn(forgotYourPasswordSpy, 'sendEmail')
+      .mockReturnValueOnce(Promise.reject(error))
+    const form = screen.getByTestId('form-forgot')
+    fireEvent.submit(form)
+    await waitFor(() => form)
+    await waitForIonicReact()
+
+    expect(screen.getByTestId('main-info')).toHaveClass('isError')
+    expect(screen.getByTestId('main-info')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 })
