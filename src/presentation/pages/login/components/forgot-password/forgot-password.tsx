@@ -28,7 +28,7 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
 
     if (!state.forgotEmail) {
       setState(old => ({ ...old, isOpen: false }))
-    } else if (state.isLoading || state.forgotError) {
+    } else if (state.isLoading || state.forgotInfo) {
       return
     }
 
@@ -40,7 +40,7 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
   useEffect(() => {
     setState(old => ({
       ...old,
-      forgotError: validation.validate('forgot', state.forgotEmail)
+      forgotInfo: validation.validate('forgot', state.forgotEmail)
     }))
   }, [state.forgotEmail])
 
@@ -62,7 +62,7 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
           type='email'
           name='forgotEmail'
           data-testid='input-forgot'
-          title={state.forgotError || 'ok'}
+          title={state.forgotInfo || 'ok'}
           id='input-modal'
           onChange={e => setState(old => ({ ...old, [e.target.name]: e.target.value }))}
         />

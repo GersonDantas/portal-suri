@@ -33,7 +33,10 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
       if (state.isLoading || state.emailError || state.passwordError) {
         return
       }
-      setState(old => ({ ...old, isLoading: true }))
+      setState(old => ({
+        ...old,
+        isLoading: true
+      }))
       const session = await authentication.auth({
         email: state.email,
         password: state.password
@@ -47,7 +50,8 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
       setState(old => ({
         ...old,
         isLoading: false,
-        mainInfo: error.message
+        mainInfo: error.message,
+        isError: true
       }))
     }
   }

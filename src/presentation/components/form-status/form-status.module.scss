@@ -9,22 +9,31 @@
     margin-top: 30px;
   }
 
-  .error {
-    position        : absolute;
-    right           : 5%;
-    top             : 5%;
-    background-color: $valid;
-    display         : flex;
-    flex-direction  : row;
-    padding-left    : 16px;
-    border-radius   : $borderRadiusPrimary;
-    line-height     : 50px;
-    box-shadow      : $boxShadow;
 
-    .iconCheckWrap {
-      .iconCheck {
+  .error {
+    &.isError {
+      background-color: $invalid;
+    }
+
+    &.isInfo {
+      background-color: $valid;
+    }
+
+    position      : absolute;
+    right         : 5%;
+    top           : 5%;
+    display       : flex;
+    flex-direction: row;
+    padding-left  : 16px;
+    border-radius : $borderRadiusPrimary;
+    line-height   : 50px;
+    box-shadow    : $boxShadow;
+
+    .iconInfoWrap {
+      .iconInfo {
         color       : white;
         margin-right: 10px;
+        font-weight : bold;
       }
     }
 

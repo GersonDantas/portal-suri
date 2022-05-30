@@ -9,7 +9,8 @@ export const loginState = atom({
     password: '',
     passwordError: '',
     isFormInvalid: true,
-    mainInfo: ''
+    mainInfo: '',
+    isError: false
   }
 })
 
@@ -18,7 +19,7 @@ export const modalState = atom({
   default: {
     isOpen: false,
     forgotEmail: '',
-    forgotError: '',
+    forgotInfo: '',
     isLoading: false
   }
 })
