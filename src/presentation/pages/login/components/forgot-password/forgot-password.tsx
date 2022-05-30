@@ -9,6 +9,8 @@ import { IonModal } from '@ionic/react'
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
+import { loginState } from '../atom'
+
 interface Props {
   validation: Validation
   forgotYourPassword: ForgotYourPassword
@@ -16,6 +18,7 @@ interface Props {
 
 const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => {
   const [state, setState] = useRecoilState(modalState)
+  const [stateLogin, setStateLogin] = useRecoilState(loginState)
 
   const modalCancelClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
@@ -23,24 +26,33 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
     setState(old => ({ ...old, isOpen: false }))
   }
 
-  const submitOrCancel = (e: React.FormEvent<HTMLFormElement>): void => {
+  const submitOrCancel = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
 
-    if (!state.forgotEmail) {
-      setState(old => ({ ...old, isOpen: false }))
-    } else if (state.isLoading || state.forgotInfo) {
-      return
+    try {
+      if (!state.forgotEmail) {
+        setState(old => ({ ...old, isOpen: false }))
+      } else if (stateLogin.isLoading || state.forgotError) {
+        return
+      }
+
+      setStateLogin(old => ({ ...old, isLoading: true }))
+
+      await forgotYourPassword.sendEmail(state.forgotEmail)
+    } catch (error: any) {
+      setStateLogin(old => ({
+        ...old,
+        isLoading: false,
+        mainInfo: error.message,
+        isError: true
+      }))
     }
-
-    setState(old => ({ ...old, isLoading: true }))
-
-    forgotYourPassword.sendEmail(state.forgotEmail)
   }
 
   useEffect(() => {
     setState(old => ({
       ...old,
-      forgotInfo: validation.validate('forgot', state.forgotEmail)
+      forgotError: validation.validate('forgot', state.forgotEmail)
     }))
   }, [state.forgotEmail])
 
@@ -62,7 +74,7 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
           type='email'
           name='forgotEmail'
           data-testid='input-forgot'
-          title={state.forgotInfo || 'ok'}
+          title={state.forgotError || 'ok'}
           id='input-modal'
           onChange={e => setState(old => ({ ...old, [e.target.name]: e.target.value }))}
         />
