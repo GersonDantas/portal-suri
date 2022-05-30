@@ -8,18 +8,18 @@ interface Props {
 }
 
 const FormStatus: React.FC<Props> = ({ state }) => {
-  const { isLoading, mainError } = state
+  const { isLoading, mainInfo } = state
   return (
     <div data-testid='error-wrap' className={Styles.errorWrap}>
       {isLoading && <Spinner className={Styles.spinner} />}
       {
-        mainError &&
+        mainInfo &&
         <span data-testid='main-error' className={Styles.error}>
           <div className={Styles.iconCheckWrap}>
             <span className={[Styles.iconCheck, 'cb-checkmark'].join(' ')}></span>
           </div>
           <div className={Styles.errorTextWrap}>
-            <p className={Styles.errorText}>{mainError}</p>
+            <p className={Styles.errorText}>{mainInfo}</p>
             <span
               className={[Styles.iconClosed, 'cb-cross'].join(' ')}
             ></span>
