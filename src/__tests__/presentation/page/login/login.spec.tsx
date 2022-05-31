@@ -171,6 +171,18 @@ describe('Login Component', () => {
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 
+  test('Should close mainInfo if click closeInfo', async () => {
+    const { authenticationSpy } = makeSut()
+    jest
+      .spyOn(authenticationSpy, 'auth')
+      .mockReturnValueOnce(Promise.reject(new InvalidCredentialsError()))
+
+    await simulateValidSubmit()
+    fireEvent.click(screen.getByTestId('close-info'))
+
+    expect(screen.getByTestId('error-wrap').children.length).toBe(0)
+  })
+
   test('Should ensure that Authentication will save the return in localstorage on success', async () => {
     const { authenticationSpy } = makeSut()
 
