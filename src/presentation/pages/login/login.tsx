@@ -5,7 +5,7 @@ import { createTokenSuri } from 'src/main/factories/cache'
 import Button from 'src/presentation/components/button/button'
 import { Validation } from 'src/presentation/protocols'
 
-import { IonPage, useIonViewDidLeave } from '@ionic/react'
+import { IonPage } from '@ionic/react'
 import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil'
@@ -22,7 +22,7 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
   const [state, setState] = useRecoilState(loginState)
   const setModalState = useSetRecoilState(modalState)
 
-  useIonViewDidLeave(() => {
+  useEffect(() => {
     resetLoginState()
     resetModalState()
   }, [])

@@ -5,14 +5,14 @@ import React, { useEffect } from 'react'
 
 interface Props {
   state: any
-  close: () => void
+  closeInfo: () => void
 }
 
-const FormStatus: React.FC<Props> = ({ state, close }) => {
+const FormStatus: React.FC<Props> = ({ state, closeInfo }) => {
   const { isLoading, mainInfo, isError } = state
 
   useEffect(() => {
-    setTimeout(close, 5000)
+    setTimeout(closeInfo, 5000)
   }, [mainInfo])
 
   return (
@@ -32,7 +32,8 @@ const FormStatus: React.FC<Props> = ({ state, close }) => {
           <div className={Styles.errorTextWrap}>
             <p className={Styles.errorText}>{mainInfo}</p>
             <span
-              onClick={close}
+              data-testid='close-info'
+              onClick={closeInfo}
               className={[Styles.iconClosed, 'cb-cross'].join(' ')}
             ></span>
           </div>

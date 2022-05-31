@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil'
 const FormStatus: React.FC = () => {
   const [state, setState] = useRecoilState(loginState)
   return (
-    <FormStatusBase close={() => setState(old => ({ ...old, mainInfo: '' }))} state={state} />
+    <FormStatusBase closeInfo={() => setState(old => ({ ...old, mainInfo: '' }))} state={state} />
   )
 }
 
