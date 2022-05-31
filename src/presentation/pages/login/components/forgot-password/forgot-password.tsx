@@ -1,5 +1,6 @@
 import { modalState } from '..'
 
+import { loginState } from '../atom'
 import Styles from './forgot-password.module.scss'
 import { Button } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
@@ -9,7 +10,7 @@ import { IonModal } from '@ionic/react'
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { loginState } from '../atom'
+import { UnexpectedError } from 'src/domain/errors'
 
 interface Props {
   validation: Validation
@@ -38,8 +39,21 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
 
       setStateLogin(old => ({ ...old, isLoading: true }))
 
-      await forgotYourPassword.sendEmail(state.forgotEmail)
+      const forgotResponse = await forgotYourPassword.sendEmail(state.forgotEmail)
+
+      if (forgotResponse?.success) {
+        setState(old => ({ ...old, isOpen: false }))
+        setStateLogin(old => ({
+          ...old,
+          isLoading: false,
+          mainInfo: 'Um e-mail foi enviado para o endereço de e-mail informado',
+          isError: false
+        }))
+      } else {
+        throw new UnexpectedError()
+      }
     } catch (error: any) {
+      setState(old => ({ ...old, isOpen: false }))
       setStateLogin(old => ({
         ...old,
         isLoading: false,
