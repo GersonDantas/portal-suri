@@ -2,13 +2,13 @@ import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { mockForgotPasswordResponse } from 'src/__tests__/domain/mocks/mock-forgot-password'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { ForgotPasswordResponse } from 'src/data/models'
-import { IsFacebookError, UserNotFoundError } from 'src/domain/errors'
+import { IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
 import { ForgotYourPassword } from 'src/domain/usecases'
 import { Login } from 'src/presentation/pages'
 import { ForgotPassword } from 'src/presentation/pages/login/components'
 
 import faker from '@faker-js/faker'
-import { waitForIonicReact } from '@ionic/react-test-utils'
+import { waitForIonicReact, ionFireEvent } from '@ionic/react-test-utils'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -32,7 +32,7 @@ class ForgotYourPasswordSpy implements ForgotYourPassword {
   async sendEmail (email: string): Promise<ForgotPasswordResponse> {
     this.email = email
     this.callsCount++
-    return mockForgotPasswordResponse()
+    return Promise.resolve(mockForgotPasswordResponse())
   }
 }
 
@@ -56,7 +56,7 @@ const makeSut = (params?: SutParams): SutTypes => {
 }
 
 const clickForgotButton = async (): Promise<void> => {
-  fireEvent.click(screen.getByTestId('forgot-button'))
+  ionFireEvent.click(screen.getByTestId('forgot-button'))
   await waitForIonicReact()
 }
 
@@ -85,7 +85,7 @@ describe('ForgotPassword', () => {
     await clickForgotButton()
     fireEvent.click(screen.getByTestId('forgot-submit'))
 
-    expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy()
+    await waitFor(() => expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy())
   })
 
   test('Should show email error in title if validations fails', async () => {
@@ -105,11 +105,9 @@ describe('ForgotPassword', () => {
     await clickForgotButton()
     const email = faker.internet.email()
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: email } })
-    await waitForIonicReact()
     fireEvent.submit(screen.getByTestId('form-forgot'))
-    await waitForIonicReact()
 
-    expect(forgotYourPasswordSpy.email).toBe(email)
+    await waitFor(() => expect(forgotYourPasswordSpy.email).toBe(email))
   })
 
   test('Should call ForgotYourPassword only once', async () => {
@@ -117,12 +115,11 @@ describe('ForgotPassword', () => {
 
     await clickForgotButton()
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
-    await waitForIonicReact()
-    fireEvent.submit(screen.getByTestId('form-forgot'))
-    await waitForIonicReact()
-    fireEvent.submit(screen.getByTestId('form-forgot'))
+    const form = screen.getByTestId('form-forgot')
+    fireEvent.submit(form)
+    fireEvent.submit(form)
 
-    expect(forgotYourPasswordSpy.callsCount).toBe(1)
+    await waitFor(() => expect(forgotYourPasswordSpy.callsCount).toBe(1))
   })
 
   test('Should not call ForgotYourPassword if form is invalid', async () => {
@@ -131,9 +128,7 @@ describe('ForgotPassword', () => {
 
     await clickForgotButton()
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.lorem.words() } })
-    await waitForIonicReact()
     fireEvent.submit(screen.getByTestId('form-forgot'))
-    await waitForIonicReact()
 
     expect(forgotYourPasswordSpy.callsCount).toBe(0)
   })
@@ -146,14 +141,46 @@ describe('ForgotPassword', () => {
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
     jest
       .spyOn(forgotYourPasswordSpy, 'sendEmail')
-      .mockReturnValueOnce(Promise.reject(error))
+      .mockRejectedValueOnce(error)
     const form = screen.getByTestId('form-forgot')
     fireEvent.submit(form)
     await waitFor(() => form)
-    await waitForIonicReact()
 
     expect(screen.getByTestId('main-info')).toHaveClass('isError')
     expect(screen.getByTestId('main-info')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+  })
+
+  test('Should ensure show FormStatus with error message UnexpectedError if returns body empty', async () => {
+    const { forgotYourPasswordSpy } = makeSut()
+    const value = faker.random.arrayElement([undefined, null])
+
+    await clickForgotButton()
+    jest
+      .spyOn(forgotYourPasswordSpy, 'sendEmail')
+      .mockReturnValueOnce(value)
+    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
+    const form = screen.getByTestId('form-forgot')
+    fireEvent.submit(form)
+    await waitFor(() => form)
+
+    expect(screen.getByTestId('main-info')).toHaveTextContent(new UnexpectedError().message)
+  })
+
+  test('Should ensure show FormStatus with email success message if returns ResetLinkSent', async () => {
+    const { forgotYourPasswordSpy } = makeSut()
+
+    await clickForgotButton()
+    jest
+      .spyOn(forgotYourPasswordSpy, 'sendEmail')
+      .mockReturnValueOnce(Promise.resolve({ success: true, type: 2 }))
+    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
+    const form = screen.getByTestId('form-forgot')
+    fireEvent.submit(form)
+    await waitFor(() => form)
+
+    expect(screen.getByTestId('main-info')).toHaveClass('isInfo')
+    expect(screen.getByTestId('main-info')).toHaveTextContent('Um e-mail foi enviado para o endereço de e-mail informado')
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 })
