@@ -3,5 +3,5 @@ import { RemoteForgotPassword } from 'src/data/usecases'
 import { ForgotYourPassword } from 'src/domain/usecases'
 
 export const makeForgotYourPassword = (): ForgotYourPassword => {
-  return new RemoteForgotPassword(makeApiUrl('/api/v1/session/reset-password'), makeAxiosHttpClient())
+  return new RemoteForgotPassword(makeApiUrl('/api/v1/session/reset-password/'), makeAxiosHttpClient())
 }

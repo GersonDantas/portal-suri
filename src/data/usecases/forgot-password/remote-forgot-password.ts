@@ -14,7 +14,10 @@ export class RemoteForgotPassword implements ForgotYourPassword {
     const httpResponse = await this.HttpClient.request({
       url: this.url,
       method: 'post',
-      body: email
+      body: JSON.stringify(email),
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      }
     })
 
     switch (httpResponse.body.type) {

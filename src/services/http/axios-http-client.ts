@@ -9,7 +9,8 @@ export class AxiosHttpClient implements HttpClient {
       axiosResponse = await axios.request({
         url: data.url,
         method: data.method,
-        data: data.body
+        data: data.body,
+        headers: data.headers
       })
     } catch (error: any) {
       axiosResponse = error.response
