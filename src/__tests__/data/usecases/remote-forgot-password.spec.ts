@@ -38,8 +38,11 @@ describe('RemoteForgotPassword', () => {
     await sut.sendEmail(email)
 
     expect(httpClientSpy.url).toBe(url)
-    expect(httpClientSpy.body).toBe(email)
+    expect(httpClientSpy.body).toBe(JSON.stringify(email))
     expect(httpClientSpy.method).toBe('post')
+    expect(httpClientSpy.headers).toEqual({
+      'content-type': 'application/json; charset=utf-8'
+    })
   })
 
   test('Should ensure RemoteForgotPassword returns IsFacebookUserError if facebook user error', async () => {

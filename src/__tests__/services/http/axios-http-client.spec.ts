@@ -32,7 +32,8 @@ describe('AxiosHttpClient', () => {
     expect(mockedAxios.request).toHaveBeenCalledWith({
       url: request.url,
       data: request.body,
-      method: request.method
+      method: request.method,
+      headers: request.headers
     })
   })
 

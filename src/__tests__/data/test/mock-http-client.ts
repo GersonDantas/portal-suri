@@ -13,6 +13,7 @@ export class HttpClientSpy<Resp = any> implements HttpClient<Resp> {
   body?: any
   method: HttpMethod
   response: HttpClient.Response<Resp>
+  headers?: any
 
   constructor (response?: HttpClient.Response<Resp>) {
     if (response) {
@@ -28,6 +29,7 @@ export class HttpClientSpy<Resp = any> implements HttpClient<Resp> {
     this.url = params.url
     this.body = params.body
     this.method = params.method
+    this.headers = params.headers
     return await Promise.resolve(this.response)
   }
 }
