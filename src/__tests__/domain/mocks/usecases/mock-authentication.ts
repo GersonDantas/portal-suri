@@ -1,4 +1,4 @@
-import { mockSession } from './mock-session'
+import { mockSession } from 'src/__tests__/domain/mocks'
 import { Authentication } from 'src/domain/usecases'
 
 import faker from '@faker-js/faker'

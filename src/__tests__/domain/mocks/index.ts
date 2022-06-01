@@ -1,4 +1,6 @@
-export * from './mock-authentication'
-export * from './mock-platform-user'
-export * from './mock-session'
-export * from './mock-forgot-password'
+export * from './usecases/mock-authentication'
+export * from './usecases/mock-forgot-password'
+export * from './usecases/mock-link-validation'
+
+export * from './models/mock-platform-user'
+export * from './models/mock-session'

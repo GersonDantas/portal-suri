@@ -1,4 +1,4 @@
-import { LinkValidationResponse } from 'src/data/models/link-validation-response'
+import { LinkValidationResponse } from 'src/data/models'
 
 export interface LinkValidation {
   validate: (params: LinkValidation.Params) => Promise<LinkValidation.Response>
