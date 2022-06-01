@@ -1,3 +1,4 @@
+import { mockForgotPasswordResponse } from '../mock'
 import { HttpClientSpy } from 'src/__tests__/data/test'
 import { ForgotPasswordResponseType } from 'src/data/models'
 import { RemoteForgotPassword } from 'src/data/usecases'
@@ -27,10 +28,7 @@ const makeSut = ({ url, body }: SutParams = { url: faker.internet.url(), body: {
 
 describe('RemoteForgotPassword', () => {
   test('Should call HttpClient with correct values', async () => {
-    const body = {
-      success: true,
-      type: ForgotPasswordResponseType.ResetLinkSent
-    }
+    const body = mockForgotPasswordResponse({ success: true })
     const url = faker.internet.url()
     const { httpClientSpy, sut } = makeSut({ url, body })
     const email = faker.internet.email()
@@ -45,28 +43,16 @@ describe('RemoteForgotPassword', () => {
     })
   })
 
-  test('Should ensure RemoteForgotPassword returns IsFacebookUserError if facebook user error', async () => {
-    const body = {
-      success: false,
-      type: ForgotPasswordResponseType.IsFacebookUser
-    }
+  test('Should ensure RemoteForgotPassword returns IsFacebookUserError or UserNotFoundError if user error', async () => {
+    const body = mockForgotPasswordResponse()
     const { sut } = makeSut({ body })
-
     const promise = sut.sendEmail(faker.internet.email())
 
-    await expect(promise).rejects.toThrow(new IsFacebookError())
-  })
-
-  test('Should ensure RemoteForgotPassword returns UserNotFoundError if user not found error', async () => {
-    const body = {
-      success: false,
-      type: ForgotPasswordResponseType.UserNotFound
-    }
-    const { sut } = makeSut({ body })
-
-    const promise = sut.sendEmail(faker.internet.email())
-
-    await expect(promise).rejects.toThrow(new UserNotFoundError())
+    await expect(promise).rejects.toThrow(
+      body.type === ForgotPasswordResponseType.IsFacebookUser
+        ? new IsFacebookError()
+        : new UserNotFoundError()
+    )
   })
 
   test('Should ensure RemoteForgotPassword returns UnexpectedError if body is empty', async () => {
@@ -79,10 +65,7 @@ describe('RemoteForgotPassword', () => {
   })
 
   test('Should ensure RemoteForgotPassword returns success if reset link sent', async () => {
-    const body = {
-      success: true,
-      type: ForgotPasswordResponseType.ResetLinkSent
-    }
+    const body = mockForgotPasswordResponse({ success: true })
     const { sut } = makeSut({ body })
 
     const forgotPasswordResponse = await sut.sendEmail(faker.internet.email())

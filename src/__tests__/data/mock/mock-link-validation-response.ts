@@ -6,9 +6,9 @@ type params = {
   success?: boolean
 }
 
-export const mockLinkValidationResponse = ({ success }: params): LinkValidationResponse => ({
-  success: success || false,
-  type: success
+export const mockLinkValidationResponse = (params?: params): LinkValidationResponse => ({
+  success: params?.success || false,
+  type: params?.success
     ? LinkValidationResponseType.ValidResetLink
     : faker.random.arrayElement([
       LinkValidationResponseType.InvalidResetLink,

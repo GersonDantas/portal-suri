@@ -2,11 +2,16 @@ import { ForgotPasswordResponse, ForgotPasswordResponseType } from 'src/data/mod
 
 import faker from '@faker-js/faker'
 
-export const mockForgotPasswordResponse = (): ForgotPasswordResponse => ({
-  success: faker.datatype.boolean(),
-  type: faker.random.arrayElement([
-    ForgotPasswordResponseType.IsFacebookUser,
-    ForgotPasswordResponseType.UserNotFound,
-    ForgotPasswordResponseType.ResetLinkSent
-  ])
+type Params = {
+  success?: boolean
+}
+
+export const mockForgotPasswordResponse = (params?: Params): ForgotPasswordResponse => ({
+  success: params?.success || false,
+  type: params?.success
+    ? ForgotPasswordResponseType.ResetLinkSent
+    : faker.random.arrayElement([
+      ForgotPasswordResponseType.IsFacebookUser,
+      ForgotPasswordResponseType.UserNotFound
+    ])
 })
