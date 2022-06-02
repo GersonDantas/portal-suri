@@ -57,4 +57,14 @@ describe('RemoteLinkValidation', () => {
         : new LinkAlreadyUsedError()
     )
   })
+
+  test('Should ensure RemoteLinkValidation returns success if reset link sent', async () => {
+    const body = mockLinkValidationResponse({ success: true })
+    const { sut } = makeSut({ body })
+
+    const linkValidationResponse = await sut.validate(mockLinValidationParams())
+
+    expect(linkValidationResponse.success).toBe(true)
+    expect(linkValidationResponse.type).toBe(LinkValidationResponseType.ValidResetLink)
+  })
 })
