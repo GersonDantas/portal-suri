@@ -1,6 +1,6 @@
 import { LinkValidationResponseType } from 'src/data/models'
-import { HttpClient } from 'src/data/protocols/http'
-import { InvalidResetLinkError, LinkAlreadyUsedError } from 'src/domain/errors'
+import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
+import { InvalidResetLinkError, LinkAlreadyUsedError, UnexpectedError } from 'src/domain/errors'
 import { LinkValidation } from 'src/domain/usecases'
 
 export class RemoteLinkValidation implements LinkValidation {
@@ -16,14 +16,26 @@ export class RemoteLinkValidation implements LinkValidation {
       method: 'post'
     })
 
-    switch (httpResponse.body?.type) {
-      case LinkValidationResponseType.InvalidResetLink:
-        throw new InvalidResetLinkError()
-      case LinkValidationResponseType.LinkAlreadyUsed:
-        throw new LinkAlreadyUsedError()
-      default:
-        return httpResponse.body
+    const { statusCode } = httpResponse
+
+    switch (statusCode) {
+      case HttpStatusCode.ok:
+        return caseHttpStatusCodeOk(httpResponse)
+      default: throw new UnexpectedError()
     }
+  }
+}
+
+const caseHttpStatusCodeOk = (httpResponse: HttpClient.Response): RemoteLinkValidation.Model => {
+  switch (httpResponse.body?.type) {
+    case LinkValidationResponseType.ValidResetLink:
+      return httpResponse.body
+    case LinkValidationResponseType.InvalidResetLink:
+      throw new InvalidResetLinkError()
+    case LinkValidationResponseType.LinkAlreadyUsed:
+      throw new LinkAlreadyUsedError()
+    default:
+      throw new UnexpectedError()
   }
 }
 
