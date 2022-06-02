@@ -1,4 +1,4 @@
-import { ForgotPasswordResponse } from 'src/data/models'
+import { ForgotPasswordResponse } from 'src/domain/models'
 
 export interface ForgotYourPassword {
   sendEmail: (email: string) => Promise<ForgotYourPassword.Response>

@@ -1,4 +1,4 @@
-import { ForgotPasswordResponse, ForgotPasswordResponseType } from 'src/data/models'
+import { ForgotPasswordResponse, ForgotPasswordResponseType } from 'src/domain/models'
 
 import faker from '@faker-js/faker'
 

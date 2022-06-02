@@ -1,9 +1,9 @@
-import { mockForgotPasswordResponse } from '../mock'
+import { mockForgotPasswordResponse } from 'src/__tests__/data/mock'
 import { HttpClientSpy } from 'src/__tests__/data/test'
-import { ForgotPasswordResponseType } from 'src/data/models'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteForgotPassword } from 'src/data/usecases'
 import { IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
+import { ForgotPasswordResponseType } from 'src/domain/models'
 
 import faker from '@faker-js/faker'
 

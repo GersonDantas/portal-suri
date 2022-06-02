@@ -1,4 +1,4 @@
-import { LinkValidationResponse } from 'src/data/models'
+import { LinkValidationParams, LinkValidationResponse } from 'src/domain/models'
 
 export interface LinkValidation {
   validate: (params: LinkValidation.Params) => Promise<LinkValidation.Response>
@@ -7,9 +7,5 @@ export interface LinkValidation {
 export namespace LinkValidation {
   export type Response = LinkValidationResponse
 
-  export type Params = {
-    email: string
-    exp: Date
-    hash: string
-  }
+  export type Params = LinkValidationParams
 }

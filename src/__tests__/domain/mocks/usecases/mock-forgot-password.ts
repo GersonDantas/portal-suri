@@ -1,5 +1,5 @@
 import { mockForgotPasswordResponse } from 'src/__tests__/data/mock'
-import { ForgotPasswordResponse } from 'src/data/models'
+import { ForgotPasswordResponse } from 'src/domain/models'
 import { ForgotYourPassword } from 'src/domain/usecases'
 
 export class ForgotYourPasswordSpy implements ForgotYourPassword {

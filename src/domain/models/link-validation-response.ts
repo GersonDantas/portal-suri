@@ -8,3 +8,9 @@ export interface LinkValidationResponse {
   success: boolean
   type: LinkValidationResponseType
 }
+
+export type LinkValidationParams = {
+  email: string
+  exp: Date
+  hash: string
+}

@@ -1,10 +1,10 @@
-import { mockLinkValidationResponse } from '../mock/mock-link-validation-response'
-import { HttpClientSpy } from '../test'
+import { mockLinkValidationResponse } from 'src/__tests__/data/mock'
+import { HttpClientSpy } from 'src/__tests__/data/test'
 import { mockLinValidationParams } from 'src/__tests__/domain/mocks'
-import { LinkValidationResponseType } from 'src/data/models'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteLinkValidation } from 'src/data/usecases'
 import { InvalidResetLinkError, LinkAlreadyUsedError, UnexpectedError } from 'src/domain/errors'
+import { LinkValidationResponseType } from 'src/domain/models'
 
 import faker from '@faker-js/faker'
 

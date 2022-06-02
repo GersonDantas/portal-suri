@@ -1,6 +1,6 @@
-import { LinkValidationResponseType } from 'src/data/models'
 import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
 import { InvalidResetLinkError, LinkAlreadyUsedError, UnexpectedError } from 'src/domain/errors'
+import { LinkValidationResponseType } from 'src/domain/models'
 import { LinkValidation } from 'src/domain/usecases'
 
 export class RemoteLinkValidation implements LinkValidation {

@@ -1,2 +1,1 @@
-export * from './forgot-password-response'
-export * from './link-validation-response'
+export * from './remote-link-validation-model'

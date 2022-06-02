@@ -1,7 +1,7 @@
 import { AuthenticationSpy, ForgotYourPasswordSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
-import { ForgotPasswordResponseType } from 'src/data/models'
 import { IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
+import { ForgotPasswordResponseType } from 'src/domain/models'
 import { Login } from 'src/presentation/pages'
 import { ForgotPassword } from 'src/presentation/pages/login/components'
 
