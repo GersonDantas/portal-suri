@@ -78,7 +78,7 @@ describe('RemoteForgotPassword', () => {
     expect(forgotPasswordResponse.type).toBe(body.type)
   })
 
-  test('Should ensure RemoteForgotPassword returns success if reset link sent', async () => {
+  test('Should ensure RemoteForgotPassword returns UnexpectedError if statusCode is different from 200', async () => {
     const { sut } = makeSut({ statusCode: 415 })
 
     const promise = sut.sendEmail(faker.internet.email())
