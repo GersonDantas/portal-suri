@@ -1,6 +1,7 @@
 import { mockForgotPasswordResponse } from '../mock'
 import { HttpClientSpy } from 'src/__tests__/data/test'
 import { ForgotPasswordResponseType } from 'src/data/models'
+import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteForgotPassword } from 'src/data/usecases'
 import { IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
 
@@ -14,10 +15,14 @@ type SutTypes = {
 type SutParams = {
   url?: string
   body?: any
+  statusCode?: HttpStatusCode
 }
 
-const makeSut = ({ url, body }: SutParams = { url: faker.internet.url(), body: {} }): SutTypes => {
-  const httpClientSpy = new HttpClientSpy<RemoteForgotPassword.Model>({ statusCode: 200, body })
+const makeSut = ({ url, body, statusCode }: SutParams = {
+  url: faker.internet.url(),
+  body: faker.random.arrayElement([undefined, null, {}])
+}): SutTypes => {
+  const httpClientSpy = new HttpClientSpy<RemoteForgotPassword.Model>({ statusCode: statusCode ?? 200, body })
   const sut = new RemoteForgotPassword(url, httpClientSpy)
 
   return {
@@ -56,8 +61,7 @@ describe('RemoteForgotPassword', () => {
   })
 
   test('Should ensure RemoteForgotPassword returns UnexpectedError if body is empty', async () => {
-    const body = {}
-    const { sut } = makeSut({ body })
+    const { sut } = makeSut()
 
     const promise = sut.sendEmail(faker.internet.email())
 
@@ -72,5 +76,13 @@ describe('RemoteForgotPassword', () => {
 
     expect(forgotPasswordResponse.success).toBe(body.success)
     expect(forgotPasswordResponse.type).toBe(body.type)
+  })
+
+  test('Should ensure RemoteForgotPassword returns success if reset link sent', async () => {
+    const { sut } = makeSut({ statusCode: 415 })
+
+    const promise = sut.sendEmail(faker.internet.email())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
