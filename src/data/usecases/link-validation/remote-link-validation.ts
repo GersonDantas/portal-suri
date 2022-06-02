@@ -1,4 +1,3 @@
-import { mockLinkValidationResponse } from 'src/__tests__/data/mock/mock-link-validation-response'
 import { LinkValidationResponseType } from 'src/data/models'
 import { HttpClient } from 'src/data/protocols/http'
 import { InvalidResetLinkError, LinkAlreadyUsedError } from 'src/domain/errors'
@@ -23,7 +22,7 @@ export class RemoteLinkValidation implements LinkValidation {
       case LinkValidationResponseType.LinkAlreadyUsed:
         throw new LinkAlreadyUsedError()
       default:
-        return Promise.resolve(mockLinkValidationResponse())
+        return httpResponse.body
     }
   }
 }
