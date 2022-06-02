@@ -1,7 +1,6 @@
 import { ForgotPasswordResponseType } from 'src/data/models'
 import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
-import { UnexpectedError, UserNotFoundError } from 'src/domain/errors'
-import { IsFacebookError } from 'src/domain/errors/is-facebook-error'
+import { UnexpectedError, UserNotFoundError, IsFacebookError } from 'src/domain/errors'
 import { ForgotYourPassword } from 'src/domain/usecases'
 
 export class RemoteForgotPassword implements ForgotYourPassword {
