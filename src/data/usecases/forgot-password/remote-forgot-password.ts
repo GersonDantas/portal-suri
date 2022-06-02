@@ -1,5 +1,5 @@
 import { ForgotPasswordResponseType } from 'src/data/models'
-import { HttpClient } from 'src/data/protocols/http'
+import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
 import { UnexpectedError, UserNotFoundError } from 'src/domain/errors'
 import { IsFacebookError } from 'src/domain/errors/is-facebook-error'
 import { ForgotYourPassword } from 'src/domain/usecases'
@@ -20,16 +20,26 @@ export class RemoteForgotPassword implements ForgotYourPassword {
       }
     })
 
-    switch (httpResponse.body.type) {
-      case ForgotPasswordResponseType.ResetLinkSent:
-        return httpResponse.body
-      case ForgotPasswordResponseType.IsFacebookUser:
-        throw new IsFacebookError()
-      case ForgotPasswordResponseType.UserNotFound:
-        throw new UserNotFoundError()
-      default:
-        throw new UnexpectedError()
+    const { statusCode } = httpResponse
+
+    switch (statusCode) {
+      case HttpStatusCode.ok:
+        return caseHttpStatusCodeOk(httpResponse)
+      default: throw new UnexpectedError()
     }
+  }
+}
+
+const caseHttpStatusCodeOk = (httpResponse: HttpClient.Response): RemoteForgotPassword.Model => {
+  switch (httpResponse.body?.type) {
+    case ForgotPasswordResponseType.ResetLinkSent:
+      return httpResponse.body
+    case ForgotPasswordResponseType.IsFacebookUser:
+      throw new IsFacebookError()
+    case ForgotPasswordResponseType.UserNotFound:
+      throw new UserNotFoundError()
+    default:
+      throw new UnexpectedError()
   }
 }
 
