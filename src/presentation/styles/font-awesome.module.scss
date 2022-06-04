@@ -1,16 +1,15 @@
-@font-face {
-  font-family: 'cbm-icons';
-  src        : url('./fonts/cbm-icons.eot?uwy7j0');
-  src        : url('./fonts/cbm-icons.eot?uwy7j0#iefix') format('embedded-opentype'),
-    url('./fonts/cbm-icons.ttf?uwy7j0') format('truetype'),
-    url('./fonts/cbm-icons.woff?uwy7j0') format('woff'),
-    url('./fonts/cbm-icons.svg?uwy7j0#cbm-icons') format('svg');
-  font-weight : normal;
-  font-style  : normal;
-  font-display: block;
-}
-
-:global {
+@mixin font-awesome {
+  @font-face {
+    font-family: 'cbm-icons';
+    src        : url('./fonts/cbm-icons.eot?uwy7j0');
+    src        : url('./fonts/cbm-icons.eot?uwy7j0#iefix') format('embedded-opentype'),
+      url('./fonts/cbm-icons.ttf?uwy7j0') format('truetype'),
+      url('./fonts/cbm-icons.woff?uwy7j0') format('woff'),
+      url('./fonts/cbm-icons.svg?uwy7j0#cbm-icons') format('svg');
+    font-weight : normal;
+    font-style  : normal;
+    font-display: block;
+  }
 
   [class^="cb-"],
   [class*=" cb-"] {
