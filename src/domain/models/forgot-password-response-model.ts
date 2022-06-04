@@ -4,7 +4,7 @@ export enum ForgotPasswordResponseType {
   ResetLinkSent
 }
 
-export interface ForgotPasswordResponse {
+export interface ForgotPasswordResponseModel {
   success: boolean
   type: ForgotPasswordResponseType
 }

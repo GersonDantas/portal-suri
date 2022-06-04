@@ -4,7 +4,7 @@ export enum LinkValidationResponseType {
   ValidResetLink = 5
 }
 
-export interface LinkValidationResponse {
+export interface LinkValidationResponseModel {
   success: boolean
   type: LinkValidationResponseType
 }

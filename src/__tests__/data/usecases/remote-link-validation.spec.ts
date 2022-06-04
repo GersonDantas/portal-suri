@@ -1,4 +1,4 @@
-import { mockLinkValidationResponse } from 'src/__tests__/data/mock'
+import { mockLinkValidationResponseModel } from 'src/__tests__/data/mock'
 import { HttpClientSpy } from 'src/__tests__/data/test'
 import { mockLinValidationParams } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
@@ -34,7 +34,7 @@ const makeSut = ({ url, body, statusCode }: SutParams = {
 
 describe('RemoteLinkValidation', () => {
   test('Should call RemoteLinkValidation with correct values', () => {
-    const body = mockLinkValidationResponse({ success: true })
+    const body = mockLinkValidationResponseModel({ success: true })
     const params = mockLinValidationParams()
     const url = faker.internet.url()
     const { sut, httpClientSpy } = makeSut({ url, body })
@@ -47,7 +47,7 @@ describe('RemoteLinkValidation', () => {
   })
 
   test('Should ensure RemoteLinkValidation returns InvalidResetLinkError or LinkAlreadyUsedError if user error', async () => {
-    const body = mockLinkValidationResponse()
+    const body = mockLinkValidationResponseModel()
     const { sut } = makeSut({ body })
     const promise = sut.validate(mockLinValidationParams())
 
@@ -59,7 +59,7 @@ describe('RemoteLinkValidation', () => {
   })
 
   test('Should ensure RemoteLinkValidation returns success if reset link sent', async () => {
-    const body = mockLinkValidationResponse({ success: true })
+    const body = mockLinkValidationResponseModel({ success: true })
     const { sut } = makeSut({ body })
 
     const linkValidationResponse = await sut.validate(mockLinValidationParams())

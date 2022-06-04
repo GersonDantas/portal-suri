@@ -1,4 +1,4 @@
-import { mockForgotPasswordResponse } from 'src/__tests__/data/mock'
+import { mockForgotPasswordResponseModel } from 'src/__tests__/data/mock'
 import { HttpClientSpy } from 'src/__tests__/data/test'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteForgotPassword } from 'src/data/usecases'
@@ -33,7 +33,7 @@ const makeSut = ({ url, body, statusCode }: SutParams = {
 
 describe('RemoteForgotPassword', () => {
   test('Should call HttpClient with correct values', async () => {
-    const body = mockForgotPasswordResponse({ success: true })
+    const body = mockForgotPasswordResponseModel({ success: true })
     const url = faker.internet.url()
     const { httpClientSpy, sut } = makeSut({ url, body })
     const email = faker.internet.email()
@@ -49,7 +49,7 @@ describe('RemoteForgotPassword', () => {
   })
 
   test('Should ensure RemoteForgotPassword returns IsFacebookUserError or UserNotFoundError if user error', async () => {
-    const body = mockForgotPasswordResponse()
+    const body = mockForgotPasswordResponseModel()
     const { sut } = makeSut({ body })
     const promise = sut.sendEmail(faker.internet.email())
 
@@ -69,7 +69,7 @@ describe('RemoteForgotPassword', () => {
   })
 
   test('Should ensure RemoteForgotPassword returns success if reset link sent', async () => {
-    const body = mockForgotPasswordResponse({ success: true })
+    const body = mockForgotPasswordResponseModel({ success: true })
     const { sut } = makeSut({ body })
 
     const forgotPasswordResponse = await sut.sendEmail(faker.internet.email())

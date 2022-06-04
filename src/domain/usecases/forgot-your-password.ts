@@ -1,9 +1,9 @@
-import { ForgotPasswordResponse } from 'src/domain/models'
+import { ForgotPasswordResponseModel } from 'src/domain/models'
 
 export interface ForgotYourPassword {
   sendEmail: (email: string) => Promise<ForgotYourPassword.Response>
 }
 
 export namespace ForgotYourPassword {
-  export type Response = ForgotPasswordResponse
+  export type Response = ForgotPasswordResponseModel
 }
