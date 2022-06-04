@@ -11,6 +11,6 @@ export interface LinkValidationResponseModel {
 
 export type LinkValidationParams = {
   email: string
-  exp: Date
+  exp: string
   hash: string
 }
