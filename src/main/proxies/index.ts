@@ -1,1 +1,1 @@
-export { default as ValidationLinkProxy } from './validation-link-proxy'
+export { default as LinkValidationProxy } from './link-validation-proxy'

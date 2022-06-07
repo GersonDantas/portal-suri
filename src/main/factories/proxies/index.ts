@@ -1,1 +1,1 @@
-export * from './validation-link-proxy/remote-validation-link-proxy'
+export * from './link-validation-proxy/remote-link-validation-proxy'

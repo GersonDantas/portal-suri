@@ -1,9 +1,9 @@
-import { RemoteValidationLink } from 'src/data/usecases'
+import { RemoteLinkValidation } from 'src/data/usecases'
 import { makeApiUrl, makeAxiosHttpClient } from 'src/main/factories/http'
 
-export const makeRemoteValidationLink = (): RemoteValidationLink => {
+export const makeRemoteLinkValidation = (): RemoteLinkValidation => {
   return (
-    new RemoteValidationLink(
+    new RemoteLinkValidation(
       makeApiUrl('/api/v1/session/reset-password/check/'),
       makeAxiosHttpClient()
     )
