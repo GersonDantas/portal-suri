@@ -16,11 +16,23 @@ type SutType = {
   remoteLinkValidationSpy: RemoteLinkValidationSpy
 }
 
+type SutParams = {
+  email: string
+  exp: string
+  hash: string
+}
+
+const populateParams = (): SutParams => {
+  const email = faker.internet.email()
+  const exp = faker.datatype.datetime().toString()
+  const hash = faker.datatype.uuid()
+
+  return { email, exp, hash }
+}
+
 const makeSut = (
   response: LinkValidation.Response,
-  email = faker.internet.email(),
-  exp = faker.datatype.datetime(),
-  hash = faker.datatype.uuid()
+  { email, exp, hash }: SutParams = populateParams()
 ): SutType => {
   const history = createMemoryHistory({
     initialEntries: [
