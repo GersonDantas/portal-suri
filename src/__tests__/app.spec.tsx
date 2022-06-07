@@ -1,10 +1,10 @@
 
 import App from 'src/main/routes/router'
 
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import React from 'react'
 
-test('Should renders without crashing', () => {
+test('Should renders without crashing', async () => {
   const { baseElement } = render(<App />)
-  expect(baseElement).toBeDefined()
+  await waitFor(() => expect(baseElement).toBeDefined())
 })

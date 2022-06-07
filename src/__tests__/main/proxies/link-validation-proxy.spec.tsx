@@ -64,7 +64,7 @@ describe('LinkValidationProxy', () => {
     const { history, baseElement } = makeSut({ success: true, type: 5 })
 
     await waitFor(() => expect(baseElement).toBeDefined())
-    expect(history.location.pathname).toBe('/mudar-senha')
+    expect(history.location.pathname).toBe('/')
   })
 
   test('Should LinkValidationProxy render to ErrorPage if linkValidation fails', async () => {
