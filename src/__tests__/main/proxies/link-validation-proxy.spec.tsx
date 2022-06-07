@@ -33,7 +33,6 @@ const makeSut = (
       <IonReactRouter>
         <Router history={history}>
           <LinkValidationProxy
-            path='/'
             linkValidation={remoteLinkValidationSpy}
           />
         </Router>

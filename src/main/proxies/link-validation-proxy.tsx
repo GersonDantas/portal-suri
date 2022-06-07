@@ -12,7 +12,7 @@ interface Props extends RouteProps {
   linkValidation: LinkValidation
 }
 
-const LinkValidationProxy: React.FC<Props> = ({ linkValidation, ...props }): any => {
+const LinkValidationProxy: React.FC<Props> = ({ linkValidation }): any => {
   const [state, setState] = useRecoilState(linkValidationState)
   const { search } = useLocation()
   const { email, exp, k } = queryString.parse(search)
