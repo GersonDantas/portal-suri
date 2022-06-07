@@ -1,0 +1,36 @@
+@import '../../styles/variables.module.scss';
+
+.errorPageWrap {
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  background-color: rgba($black, .05);
+  height          : 100vh;
+
+  .error {
+    display         : flex;
+    flex-direction  : column;
+    background-color: $white;
+    border-radius   : $borderRadiusPrimary;
+    padding         : 20px;
+
+    .errorMessage {
+      line-height  : 30px;
+      font-size    : 18px;
+      font-weight  : 400;
+      margin-bottom: 10px;
+    }
+
+    .button {
+      padding      : 5px 10px;
+      border-radius: $borderRadiusSecondary;
+      width        : 100px;
+      align-self   : center;
+
+      p {
+        line-height: 20px;
+      }
+    }
+  }
+
+}
