@@ -1,4 +1,3 @@
-import { UnexpectedError } from 'src/domain/errors'
 import { LinkValidationResponseModel, LinkValidationResponseType } from 'src/domain/models'
 import { LinkValidation } from 'src/domain/usecases'
 
@@ -18,14 +17,10 @@ export const mockLinkValidationResponseModel = (params?: Params): LinkValidation
     ])
 })
 
-export class RemoteLinkValidationSpy implements LinkValidation {
+export class LinkValidationSpy implements LinkValidation {
   response: LinkValidation.Response
 
   async validate (params: LinkValidation.Params): Promise<LinkValidation.Response> {
-    if (this.response.success) {
-      return this.response
-    } else {
-      throw new UnexpectedError()
-    }
+    return Promise.resolve(this.response)
   }
 }

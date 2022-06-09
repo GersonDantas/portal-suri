@@ -1,8 +1,10 @@
-import { RemoteLinkValidationSpy } from 'src/__tests__/data/mock'
-import { LinkValidation } from 'src/domain/usecases'
+import { LinkValidationSpy } from 'src/__tests__/data/mock'
+import { UnexpectedError } from 'src/domain/errors'
 import { LinkValidationProxy } from 'src/main/proxies'
+import { ForgotPasswordPage } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
+import { IonRouterOutlet } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
 import { render, waitFor } from '@testing-library/react'
 import { createMemoryHistory, MemoryHistory } from 'history'
@@ -12,8 +14,7 @@ import { RecoilRoot } from 'recoil'
 
 type SutType = {
   history: MemoryHistory
-  baseElement: Element
-  remoteLinkValidationSpy: RemoteLinkValidationSpy
+  linkValidationSpy: LinkValidationSpy
 }
 
 type SutParams = {
@@ -31,22 +32,23 @@ const populateParams = (): SutParams => {
 }
 
 const makeSut = (
-  response: LinkValidation.Response,
   { email, exp, hash }: SutParams = populateParams()
 ): SutType => {
   const history = createMemoryHistory({
     initialEntries: [
       `/?mode=recover-password&email=${email}&exp=${exp}&k=${hash}`]
   })
-  const remoteLinkValidationSpy = new RemoteLinkValidationSpy()
-  remoteLinkValidationSpy.response = response
-  const { baseElement } = render(
+  const linkValidationSpy = new LinkValidationSpy()
+  render(
     <RecoilRoot>
       <IonReactRouter>
         <Router history={history}>
-          <LinkValidationProxy
-            linkValidation={remoteLinkValidationSpy}
-          />
+          <IonRouterOutlet>
+            <LinkValidationProxy
+              path='/' component={ForgotPasswordPage}
+              linkValidation={linkValidationSpy}
+            />
+          </IonRouterOutlet>
         </Router>
       </IonReactRouter>
     </RecoilRoot>
@@ -54,23 +56,27 @@ const makeSut = (
 
   return {
     history,
-    baseElement,
-    remoteLinkValidationSpy
+    linkValidationSpy
   }
 }
 
 describe('LinkValidationProxy', () => {
   test('Should LinkValidationProxy render to "/" if RemoteValidation success', async () => {
-    const { history, baseElement } = makeSut({ success: true, type: 5 })
+    const { linkValidationSpy, history } = makeSut()
+    jest
+      .spyOn(linkValidationSpy, 'validate')
+      .mockReturnValueOnce(Promise.resolve({ success: true, type: 5 }))
 
-    await waitFor(() => expect(baseElement).toBeDefined())
-    expect(history.location.pathname).toBe('/')
+    await waitFor(() => expect(history.location.pathname).toBe('/'))
   })
 
   test('Should LinkValidationProxy render to ErrorPage if linkValidation fails', async () => {
-    const { history, baseElement } = makeSut({ success: false, type: 4 })
+    const { linkValidationSpy, history } = makeSut()
 
-    await waitFor(() => expect(baseElement).toBeDefined())
-    expect(history.location.pathname).toBe('/erro')
+    jest
+      .spyOn(linkValidationSpy, 'validate')
+      .mockRejectedValueOnce(new UnexpectedError())
+
+    await waitFor(() => expect(history.location.pathname).toBe('/'))
   })
 })

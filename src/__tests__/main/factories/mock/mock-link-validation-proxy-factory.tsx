@@ -1,6 +1,7 @@
 // TODO: Este arquivo deve ser apagado, criado por enquanto a api não dá resposta
-import { RemoteLinkValidationSpy } from 'src/__tests__/data/mock'
+import { UnexpectedError } from 'src/domain/errors'
 import { LinkValidationResponseType } from 'src/domain/models'
+import { LinkValidation } from 'src/domain/usecases'
 import { LinkValidationProxy } from 'src/main/proxies'
 import { ForgotPasswordPage } from 'src/presentation/pages'
 
@@ -8,13 +9,25 @@ import React from 'react'
 
 type Props = {
   success: boolean
-  type: LinkValidationResponseType
+  type?: LinkValidationResponseType
 }
 
-export const MockMakeValidationLinkProxy: React.FC<Props> = (response) => {
-  const remoteLinkValidationSpy = new RemoteLinkValidationSpy()
-  remoteLinkValidationSpy.response = response
-  return <LinkValidationProxy path='/' component={ForgotPasswordPage} linkValidation={remoteLinkValidationSpy} />
+class LinkValidationSpy implements LinkValidation {
+  response: LinkValidation.Response
+
+  async validate (params: LinkValidation.Params): Promise<LinkValidation.Response> {
+    if (this.response.success) {
+      return Promise.resolve(this.response)
+    } else {
+      throw new UnexpectedError()
+    }
+  }
+}
+
+export const MockMakeValidationLinkProxy: React.FC<Props> = ({ success, type = 5 }) => {
+  const linkValidationSpy = new LinkValidationSpy()
+  linkValidationSpy.response = { success, type }
+  return <LinkValidationProxy path='/' component={ForgotPasswordPage} linkValidation={linkValidationSpy} />
 }
 
 export default MockMakeValidationLinkProxy
