@@ -17,8 +17,8 @@ const Router: React.FC = () => {
       <IonReactRouter>
         <IonRouterOutlet>
           <Route path='/login' exact component={MakeLogin} />
-          <Route path='/erro' exact component={ErrorPage} />
-          <MockMakeValidationLinkProxy success type={5} />
+          <Route path='/erro' component={ErrorPage} />
+          <MockMakeValidationLinkProxy success={false} />
         </IonRouterOutlet>
       </IonReactRouter>
     </RecoilRoot>

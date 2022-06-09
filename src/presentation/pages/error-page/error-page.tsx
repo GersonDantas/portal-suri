@@ -1,22 +1,25 @@
+import { errorPageState } from './atom'
 import Styles from './error-page.module.scss'
 import { Button } from 'src/presentation/components'
 
+import { IonPage } from '@ionic/react'
 import React from 'react'
+import { useRecoilValue } from 'recoil'
 
-type Props = {
-  errorMessage: string
-}
+const ErrorPage: React.FC = () => {
+  const mainError = useRecoilValue(errorPageState)
 
-const ErrorPage: React.FC<Props> = ({ errorMessage }) => {
   return (
-    <div className={Styles.errorPageWrap}>
-      <div className={Styles.error}>
-        <span className={Styles.errorMessage}>{errorMessage ?? 'Erro, não obtivemos resposta'}</span>
-        <Button className={Styles.button}>
-          <p>Reload</p>
-        </Button>
+    <IonPage>
+      <div className={Styles.errorPageWrap}>
+        <div className={Styles.error}>
+          <span className={Styles.errorMessage}>{mainError}</span>
+          <Button className={Styles.button}>
+            <p>Reload</p>
+          </Button>
+        </div>
       </div>
-    </div>
+    </IonPage>
   )
 }
 

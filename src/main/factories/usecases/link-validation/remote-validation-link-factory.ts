@@ -1,3 +1,6 @@
+/**
+* ! Este método será ultilizado quando corrigirem a url da api
+*/
 import { RemoteLinkValidation } from 'src/data/usecases'
 import { makeApiUrl, makeAxiosHttpClient } from 'src/main/factories/http'
 
