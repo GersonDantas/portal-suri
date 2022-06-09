@@ -103,6 +103,7 @@
       "<rootDir>/src/**/*.{ts,tsx}",
       "!<rootDir>/src/main/**/*",
       "!<rootDir>/src/domain/**/*",
+      "!<rootDir>/src/__tests__/**/*",
       "!<rootDir>/src/**/index.{ts,js,tsx}",
       "!<rootDir>/**/*.d.ts"
     ],

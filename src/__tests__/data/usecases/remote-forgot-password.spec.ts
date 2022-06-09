@@ -3,7 +3,6 @@ import { HttpClientSpy } from 'src/__tests__/data/test'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteForgotPassword } from 'src/data/usecases'
 import { IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
-import { ForgotPasswordResponseType } from 'src/domain/models'
 
 import faker from '@faker-js/faker'
 
@@ -31,6 +30,14 @@ const makeSut = ({ url, body, statusCode }: SutParams = {
   }
 }
 
+const setError = async (type: 0 | 1): Promise<void> => {
+  const body = mockForgotPasswordResponseModel({ type })
+  const { sut } = makeSut({ body })
+  const promise = sut.sendEmail(faker.internet.email())
+
+  await expect(promise).rejects.toThrow(type === 1 ? new IsFacebookError() : new UserNotFoundError())
+}
+
 describe('RemoteForgotPassword', () => {
   test('Should call HttpClient with correct values', async () => {
     const body = mockForgotPasswordResponseModel({ success: true })
@@ -48,17 +55,13 @@ describe('RemoteForgotPassword', () => {
     })
   })
 
-  test('Should ensure RemoteForgotPassword returns IsFacebookUserError or UserNotFoundError if user error', async () => {
-    const body = mockForgotPasswordResponseModel()
-    const { sut } = makeSut({ body })
-    const promise = sut.sendEmail(faker.internet.email())
+  test('Should ensure RemoteForgotPassword returns IsFacebookUserError if user from facebook',
+    async () => await setError(1)
+  )
 
-    await expect(promise).rejects.toThrow(
-      body.type === ForgotPasswordResponseType.IsFacebookUser
-        ? new IsFacebookError()
-        : new UserNotFoundError()
-    )
-  })
+  test('Should ensure RemoteForgotPassword returns UserNotFoundError if not find user',
+    async () => await setError(0)
+  )
 
   test('Should ensure RemoteForgotPassword returns UnexpectedError if body is empty', async () => {
     const { sut } = makeSut()

@@ -63,9 +63,7 @@ const makeSut = (
 describe('LinkValidationProxy', () => {
   test('Should LinkValidationProxy render to "/" if RemoteValidation success', async () => {
     const { linkValidationSpy, history } = makeSut()
-    jest
-      .spyOn(linkValidationSpy, 'validate')
-      .mockReturnValueOnce(Promise.resolve({ success: true, type: 5 }))
+    linkValidationSpy.response = { success: true, type: 5 }
 
     await waitFor(() => expect(history.location.pathname).toBe('/'))
   })

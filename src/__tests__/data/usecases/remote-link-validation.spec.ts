@@ -32,6 +32,14 @@ const makeSut = ({ url, body, statusCode }: SutParams = {
   }
 }
 
+const setError = async (type: 3 | 4): Promise<void> => {
+  const body = mockLinkValidationResponseModel({ type })
+  const { sut } = makeSut({ body })
+  const promise = sut.validate(mockLinValidationParams())
+
+  await expect(promise).rejects.toThrow(type === 3 ? new InvalidResetLinkError() : new LinkAlreadyUsedError())
+}
+
 describe('RemoteLinkValidation', () => {
   test('Should call RemoteLinkValidation with correct values', () => {
     const body = mockLinkValidationResponseModel({ success: true })
@@ -46,17 +54,13 @@ describe('RemoteLinkValidation', () => {
     expect(httpClientSpy.method).toBe('post')
   })
 
-  test('Should ensure RemoteLinkValidation returns InvalidResetLinkError or LinkAlreadyUsedError if user error', async () => {
-    const body = mockLinkValidationResponseModel()
-    const { sut } = makeSut({ body })
-    const promise = sut.validate(mockLinValidationParams())
+  test('Should ensure RemoteForgotPassword returns InvalidResetLinkError if link invalid',
+    async () => await setError(3)
+  )
 
-    await expect(promise).rejects.toThrow(
-      body.type === LinkValidationResponseType.InvalidResetLink
-        ? new InvalidResetLinkError()
-        : new LinkAlreadyUsedError()
-    )
-  })
+  test('Should ensure RemoteForgotPassword returns LinkAlreadyUsedError if link already used',
+    async () => await setError(4)
+  )
 
   test('Should ensure RemoteLinkValidation returns success if reset link sent', async () => {
     const body = mockLinkValidationResponseModel({ success: true })

@@ -32,10 +32,10 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, ...props }): any
         isLoading: false
       }))
     }).catch((error) => {
-      console.log(error)
       setState(old => ({
         ...old,
-        isLoading: false
+        isLoading: false,
+        success: false
       }))
       setMainError(error.message)
     })
