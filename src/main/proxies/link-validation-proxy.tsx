@@ -1,12 +1,12 @@
 import { linkValidationState } from './atom'
 import { LinkValidation } from 'src/domain/usecases'
-import { errorPageState } from 'src/presentation/pages/error-page/atom'
+import { ErrorPage } from 'src/presentation/pages'
 
 import { IonPage, useIonViewWillEnter } from '@ionic/react'
 import queryString from 'query-string'
 import React, { useCallback } from 'react'
-import { RouteProps, useLocation, Redirect, Route } from 'react-router-dom'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { RouteProps, useLocation, Route, Redirect } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 
 type Props = RouteProps & {
   linkValidation: LinkValidation
@@ -14,7 +14,6 @@ type Props = RouteProps & {
 
 const LinkValidationProxy: React.FC<Props> = ({ linkValidation, ...props }): any => {
   const [state, setState] = useRecoilState(linkValidationState)
-  const setMainError = useSetRecoilState(errorPageState)
   const { search } = useLocation()
   const { email, exp, k } = queryString.parse(search)
 
@@ -35,9 +34,9 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, ...props }): any
       setState(old => ({
         ...old,
         isLoading: false,
-        success: false
+        success: false,
+        mainError: error.message
       }))
-      setMainError(error.message)
     })
   }, [])
 
@@ -47,7 +46,10 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, ...props }): any
         ? <div>isLoading...</div>
         : state.success
           ? <Route {...props} />
-          : <Route {...props} component={() => <Redirect to='/erro' />} />
+          : <>
+            <Redirect to='/erro' />
+            <ErrorPage errorMessage={state.mainError} />
+          </>
       }
     </IonPage>
   )
