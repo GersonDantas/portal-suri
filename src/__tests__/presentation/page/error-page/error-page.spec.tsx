@@ -5,14 +5,25 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
 
+const makeSut = (error: string): void => {
+  render(
+    <RecoilRoot>
+      <ErrorPage errorMessage={error} />
+    </RecoilRoot>
+  )
+}
+
 describe('ErrorPage', () => {
   test('Should ensure ErrorPage render to correct error', async () => {
     const error = new UnexpectedError()
-    render(
-      <RecoilRoot>
-        <ErrorPage errorMessage={error.message} />
-      </RecoilRoot>
-    )
+    makeSut(error.message)
+
+    expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
+  })
+
+  test('Should ensure ErrorPage render to correct error', async () => {
+    const error = new UnexpectedError()
+    makeSut(error.message)
 
     expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
   })

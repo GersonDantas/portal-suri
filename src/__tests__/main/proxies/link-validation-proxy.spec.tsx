@@ -6,7 +6,7 @@ import { ForgotPasswordPage } from 'src/presentation/pages'
 import faker from '@faker-js/faker'
 import { IonRouterOutlet } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-import { render, waitFor } from '@testing-library/react'
+import { render, waitFor, screen } from '@testing-library/react'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -36,7 +36,8 @@ const makeSut = (
 ): SutType => {
   const history = createMemoryHistory({
     initialEntries: [
-      `/?mode=recover-password&email=${email}&exp=${exp}&k=${hash}`]
+      `/?mode=recover-password&email=${email}&exp=${exp}&k=${hash}`, '/erro'],
+    initialIndex: 0
   })
   const linkValidationSpy = new LinkValidationSpy()
   render(
@@ -70,11 +71,13 @@ describe('LinkValidationProxy', () => {
 
   test('Should LinkValidationProxy render to ErrorPage if linkValidation fails', async () => {
     const { linkValidationSpy, history } = makeSut()
+    const error = new UnexpectedError()
 
     jest
       .spyOn(linkValidationSpy, 'validate')
       .mockRejectedValueOnce(new UnexpectedError())
 
-    await waitFor(() => expect(history.location.pathname).toBe('/'))
+    await waitFor(() => expect(screen.getByTestId('main-error')).toHaveTextContent(error.message))
+    expect(history.location.pathname).toBe('/erro')
   })
 })
