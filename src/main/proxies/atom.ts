@@ -5,6 +5,7 @@ export const linkValidationState = atom({
   default: {
     success: false,
     isLoading: true,
-    mainError: ''
+    mainError: '',
+    urlWithParams: true
   }
 })

@@ -10,15 +10,20 @@ import { useRecoilState } from 'recoil'
 
 type Props = RouteProps & {
   linkValidation: LinkValidation
+  fallbackRoute: string
 }
 
-const LinkValidationProxy: React.FC<Props> = ({ linkValidation, ...props }): any => {
+const LinkValidationProxy: React.FC<Props> = ({ linkValidation, fallbackRoute, ...props }): JSX.Element => {
   const [state, setState] = useRecoilState(linkValidationState)
   const { search } = useLocation()
   const { email, exp, k } = queryString.parse(search)
 
   useIonViewWillEnter(() => {
-    validate()
+    if (search) {
+      validate()
+    } else {
+      setState(old => ({ ...old, urlWithParams: false }))
+    }
   }, [])
 
   const validate = useCallback(() => {
@@ -40,17 +45,21 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, ...props }): any
     })
   }, [])
 
+  const RenderComponent = useCallback((): JSX.Element => {
+    if (state.urlWithParams) {
+      if (state.isLoading) {
+        return <div>isLoading...</div>
+      } else {
+        return state.success ? <Route {...props} /> : <ErrorPage errorMessage={state.mainError} />
+      }
+    } else {
+      return <Redirect to={fallbackRoute} />
+    }
+  }, [state.isLoading, state.urlWithParams])
+
   return (
     <IonPage>
-      {state.isLoading
-        ? <div>isLoading...</div>
-        : state.success
-          ? <Route {...props} />
-          : <>
-            <Redirect to='/erro' />
-            <ErrorPage errorMessage={state.mainError} />
-          </>
-      }
+      <RenderComponent />
     </IonPage>
   )
 }

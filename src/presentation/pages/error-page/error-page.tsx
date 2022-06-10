@@ -15,7 +15,7 @@ const ErrorPage: React.FC<Props> = ({ errorMessage }) => {
         <div className={Styles.error}>
           <span className={Styles.errorMessage} data-testid='main-error'>{errorMessage}</span>
           <Button className={Styles.button}>
-            <p>Página de Login</p>
+            <p>Reload</p>
           </Button>
         </div>
       </div>

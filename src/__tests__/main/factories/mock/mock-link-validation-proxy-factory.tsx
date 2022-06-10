@@ -27,7 +27,12 @@ class LinkValidationSpy implements LinkValidation {
 export const MockMakeValidationLinkProxy: React.FC<Props> = ({ success, type = 5 }) => {
   const linkValidationSpy = new LinkValidationSpy()
   linkValidationSpy.response = { success, type }
-  return <LinkValidationProxy path='/' component={ForgotPasswordPage} linkValidation={linkValidationSpy} />
+  return <LinkValidationProxy
+    fallbackRoute='/login'
+    path='/'
+    component={ForgotPasswordPage}
+    linkValidation={linkValidationSpy}
+  />
 }
 
 export default MockMakeValidationLinkProxy
