@@ -6,7 +6,7 @@ import { ForgotPasswordPage } from 'src/presentation/pages'
 import faker from '@faker-js/faker'
 import { IonRouterOutlet } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-import { render, waitFor, screen } from '@testing-library/react'
+import { render, waitFor, screen, fireEvent } from '@testing-library/react'
 import { createMemoryHistory, MemoryHistory } from 'history'
 import React from 'react'
 import { Router } from 'react-router-dom'
@@ -14,25 +14,23 @@ import { RecoilRoot } from 'recoil'
 
 type SutType = {
   createHistory: MemoryHistory
-  linkValidationSpy: LinkValidationSpy
 }
 
 type SutParams = {
-  urlWithParams: boolean
+  linkValidationSpy: LinkValidationSpy
   fallbackRoute?: string
+  urlWithParams?: boolean
 }
 
-const makeSut = ({ urlWithParams, fallbackRoute }: SutParams = {
-  urlWithParams: true, fallbackRoute: faker.internet.url()
+const makeSut = ({ linkValidationSpy, fallbackRoute, urlWithParams }: SutParams = {
+  linkValidationSpy: new LinkValidationSpy(), fallbackRoute: faker.internet.url(), urlWithParams: true
 }): SutType => {
   const email = faker.internet.email()
   const exp = faker.datatype.datetime().toString()
   const hash = faker.datatype.uuid()
   const createHistory = createMemoryHistory({
-    initialEntries: [`/?mode=recover-password&email=${email}&exp=${exp}&k=${hash}`]
+    initialEntries: [urlWithParams ? '/' : `/?mode=recover-password&email=${email}&exp=${exp}&k=${hash}`]
   })
-  urlWithParams || createHistory.replace('/')
-  const linkValidationSpy = new LinkValidationSpy()
   render(
     <RecoilRoot>
       <IonReactRouter>
@@ -50,34 +48,45 @@ const makeSut = ({ urlWithParams, fallbackRoute }: SutParams = {
   )
 
   return {
-    createHistory,
-    linkValidationSpy
+    createHistory
   }
 }
 
 describe('LinkValidationProxy', () => {
-  test('Should LinkValidationProxy render to ErrorPage if linkValidation fails', async () => {
+  test('Should LinkValidationProxy render to fallback', async () => {
     const fallbackRoute = faker.internet.url()
-    const { createHistory } = makeSut({ urlWithParams: false, fallbackRoute })
+    const linkValidationSpy = new LinkValidationSpy()
+    const { createHistory } = makeSut({ linkValidationSpy, fallbackRoute, urlWithParams: true })
 
     await waitFor(() => expect(createHistory.location.pathname).toBe(fallbackRoute))
   })
 
   test('Should LinkValidationProxy render to "/" if RemoteValidation success', async () => {
-    const { linkValidationSpy, createHistory } = makeSut()
+    const linkValidationSpy = new LinkValidationSpy()
     linkValidationSpy.response = { success: true, type: 5 }
+    const { createHistory } = makeSut({ linkValidationSpy })
 
     await waitFor(() => expect(createHistory.location.pathname).toBe('/'))
   })
 
   test('Should LinkValidationProxy render to ErrorPage if linkValidation fails', async () => {
-    const { linkValidationSpy } = makeSut()
+    const linkValidationSpy = new LinkValidationSpy()
     const error = new UnexpectedError()
-
-    jest
-      .spyOn(linkValidationSpy, 'validate')
-      .mockRejectedValueOnce(new UnexpectedError())
+    jest.spyOn(linkValidationSpy, 'validate').mockRejectedValueOnce(error)
+    makeSut({ linkValidationSpy })
 
     await waitFor(() => expect(screen.getByTestId('main-error')).toHaveTextContent(error.message))
+  })
+
+  test('Should LinkValidationProxy render to ErrorPage if linkValidation fails', async () => {
+    const linkValidationSpy = new LinkValidationSpy()
+    const fallbackRoute = faker.internet.url()
+    const error = new UnexpectedError()
+    jest.spyOn(linkValidationSpy, 'validate').mockRejectedValueOnce(error)
+    const { createHistory } = makeSut({ linkValidationSpy, fallbackRoute })
+    await waitFor(() => screen.getByTestId('main-error'))
+    fireEvent.click(screen.getByTestId('go-fall-back'))
+
+    expect(createHistory.location.pathname).toBe(fallbackRoute)
   })
 })
