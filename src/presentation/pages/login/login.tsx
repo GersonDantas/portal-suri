@@ -22,10 +22,11 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
   const [state, setState] = useRecoilState(loginState)
   const setModalState = useSetRecoilState(modalState)
 
-  useEffect(() => {
-    resetLoginState()
-    resetModalState()
-  }, [])
+  const validate = (field: string): void => {
+    const { email, password } = state
+    const formData = { email, password }
+    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
@@ -57,12 +58,12 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
   }
 
   useEffect(() => {
-    setState(old => ({
-      ...old,
-      emailError: validation.validate('email', state.email),
-      passwordError: validation.validate('password', state.password)
-    }))
-  }, [state.email, state.password])
+    resetLoginState()
+    resetModalState()
+  }, [])
+
+  useEffect(() => validate('email'), [state.email])
+  useEffect(() => validate('password'), [state.password])
 
   return (
     <IonPage>
