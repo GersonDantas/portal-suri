@@ -17,8 +17,10 @@ export const mockLinkValidationResponseModel = (params?: Params): LinkValidation
 
 export class LinkValidationSpy implements LinkValidation {
   response: LinkValidation.Response
+  callsCount = 0
 
   async validate (params: LinkValidation.Params): Promise<LinkValidation.Response> {
-    return this.response
+    this.callsCount++
+    return Promise.resolve(this.response)
   }
 }

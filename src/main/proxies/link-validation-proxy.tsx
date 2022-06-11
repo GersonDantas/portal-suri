@@ -26,20 +26,21 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, fallbackRoute, .
     }
   }, [])
 
+  const goFallBackRoute = (): void => {
+    setState(old => ({ ...old, urlWithParams: false }))
+  }
+
   const validate = useCallback(() => {
     linkValidation.validate({
       email: `${email}`, exp: `${exp}`, hash: `${k}`
     }).then(({ success }) => {
       setState(old => ({
         ...old,
-        success,
-        isLoading: false
+        success
       }))
     }).catch((error) => {
       setState(old => ({
         ...old,
-        isLoading: false,
-        success: false,
         mainError: error.message
       }))
     })
@@ -47,15 +48,13 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, fallbackRoute, .
 
   const RenderComponent = useCallback((): JSX.Element => {
     if (state.urlWithParams) {
-      if (state.isLoading) {
-        return <div>isLoading...</div>
-      } else {
-        return state.success ? <Route {...props} /> : <ErrorPage errorMessage={state.mainError} />
-      }
+      return state.success
+        ? <Route {...props} />
+        : <ErrorPage goFallBack={goFallBackRoute} errorMessage={state.mainError} />
     } else {
       return <Redirect to={fallbackRoute} />
     }
-  }, [state.isLoading, state.urlWithParams])
+  }, [state.urlWithParams, state.success, state.mainError])
 
   return (
     <IonPage>

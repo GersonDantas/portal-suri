@@ -1,9 +1,9 @@
-import Styles from './forgot-password.module.scss'
+import Styles from './forgot-password-page.module.scss'
 import { Button } from 'src/presentation/components'
 
 import React from 'react'
 
-const ForgotPassword: React.FC = () => {
+const ForgotPasswordPage: React.FC = () => {
   return (
     <div className={Styles.forgotPasswordWrap}>
       <form
@@ -33,4 +33,4 @@ const ForgotPassword: React.FC = () => {
   )
 }
 
-export default ForgotPassword
+export default ForgotPasswordPage
