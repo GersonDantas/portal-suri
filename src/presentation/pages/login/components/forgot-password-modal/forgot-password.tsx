@@ -64,9 +64,10 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
   }
 
   useEffect(() => {
+    const { forgotEmail } = state
     setState(old => ({
       ...old,
-      forgotError: validation.validate('forgot', state.forgotEmail)
+      forgotError: validation.validate('forgotEmail', { forgotEmail })
     }))
   }, [state.forgotEmail])
 
