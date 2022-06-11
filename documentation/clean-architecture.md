@@ -4,7 +4,7 @@
  - ``src/Data`` :
    - Ter as implementações dos nossos casos de uso, ultilizando alguma implementação
    - colocamos no nome da classe qual o tipo de implementação dessa classe
- - `src/services` :
+ - `src/infra` :
    - Componentes que ultilizam bibliotecas de terceiros ou não
      - lá dentro que é que eu vou decidir se uso um fetch mesmo
  -  `src/presentation` :
@@ -16,3 +16,5 @@
     - é aqui onde fica `classes` que `geram instâncias` de outras `classes`
   - quem vai implementar as outras camadas e vai se ligar a todas
     - designer patter chamado `composition roots`. Acoplar uma camada com todas as outras, para mantê-las desacopladas
+
+
