@@ -1,5 +1,5 @@
 export { default as LoginHeader } from './login-header/login-header'
-export { default as ForgotPassword } from './forgot-password-modal/forgot-password'
+export { default as ForgotPasswordModal } from './forgot-password-modal/forgot-password-modal'
 export { default as InputWrap } from './input-wrap'
 export { default as FormStatus } from './form-status'
 export * from './atom'
