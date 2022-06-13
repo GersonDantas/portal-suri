@@ -3,7 +3,7 @@ import { ValidationStub } from 'src/__tests__/presentation/test'
 import { IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
 import { ForgotPasswordResponseType } from 'src/domain/models'
 import { Login } from 'src/presentation/pages'
-import { ForgotPassword } from 'src/presentation/pages/login/components'
+import { ForgotPasswordModal } from 'src/presentation/pages/login/components'
 
 import faker from '@faker-js/faker'
 import { ionFireEvent } from '@ionic/react-test-utils'
@@ -31,7 +31,7 @@ const makeSut = (params?: SutParams): SutTypes => {
     <RecoilRoot>
       <Router history={history} >
         <Login validation={new ValidationStub()} authentication={new AuthenticationSpy()} >
-          <ForgotPassword validation={validationStub} forgotYourPassword={forgotYourPasswordSpy} />
+          <ForgotPasswordModal validation={validationStub} forgotYourPassword={forgotYourPasswordSpy} />
         </Login>
       </Router>
     </RecoilRoot>
@@ -49,8 +49,8 @@ const validSubmitForm = async (): Promise<void> => {
   await waitFor(() => form)
 }
 
-describe('ForgotPassword', () => {
-  test('Should ensure that it will show the ForgotPassword component', () => {
+describe('ForgotPasswordModal', () => {
+  test('Should ensure that it will show the ForgotPasswordModal component', () => {
     makeSut()
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))

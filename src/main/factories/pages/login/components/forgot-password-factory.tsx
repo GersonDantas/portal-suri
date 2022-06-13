@@ -1,12 +1,12 @@
 import { makeForgotPasswordValidation } from './forgot-password-validation-factory'
 import { makeForgotYourPassword } from 'src/main/factories/usecases'
-import { ForgotPassword } from 'src/presentation/pages/login/components'
+import { ForgotPasswordModal } from 'src/presentation/pages/login/components'
 
 import React from 'react'
 
 const MakeForgotPassword: React.FC = () => {
   return (
-    <ForgotPassword
+    <ForgotPasswordModal
       validation={makeForgotPasswordValidation()}
       forgotYourPassword={makeForgotYourPassword()}
     />)

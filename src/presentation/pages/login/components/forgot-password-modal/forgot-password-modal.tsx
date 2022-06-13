@@ -1,7 +1,7 @@
 import { modalState } from '..'
 
 import { loginState } from '../atom'
-import Styles from './forgot-password.module.scss'
+import Styles from './forgot-password-modal.module.scss'
 import { Button } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
 import { ForgotYourPassword } from 'src/domain/usecases'
@@ -17,7 +17,7 @@ interface Props {
   forgotYourPassword: ForgotYourPassword
 }
 
-const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => {
+const ForgotPasswordModal: React.FC<Props> = ({ validation, forgotYourPassword }) => {
   const [state, setState] = useRecoilState(modalState)
   const [stateLogin, setStateLogin] = useRecoilState(loginState)
 
@@ -114,4 +114,4 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
   )
 }
 
-export default ForgotPassword
+export default ForgotPasswordModal
