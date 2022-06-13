@@ -15,7 +15,7 @@ const ForgotPasswordPage: React.FC = () => {
       <label className={Styles.label} htmlFor='input-modal'>Repita a senha</label>
       <input
         className={Styles.input}
-        type='email'
+        type='text'
       />
       <div className={Styles.buttonsWrap}>
         <Button
