@@ -23,7 +23,6 @@ const ForgotPasswordPage: React.FC = () => {
         <div className={Styles.buttonsWrap}>
           <Button
             type='submit'
-            className={Styles.send}
           >
             enviar
           </Button>

@@ -4,13 +4,19 @@ $valid        : #2fab90;
 $white        : #fff;
 $black        : #000;
 
+$commonTextColor: rgba($black, .6);
+
+$fontSize12: 12px;
+$fontSize16: 16px;
+$fontSize30: 30px;
+
 $backgroundLight : #f8fafb;
 
 $borderRadiusPrimary  : 4px;
 $borderRadiusSecondary: 8px;
 $borderRadiusTertiary : 16px;
 
-$boxShadow : 4px 4px 12px 2px rgba(black, .3);
+$boxShadow : 4px 4px 12px 2px rgba($black, .3);
 
 $disabledBackground: #ccc;
-$disabledColor     : rgba(black, .4);
+$disabledColor     : rgba($black, .4);
