@@ -2,6 +2,7 @@ import { InputWrap, LoginHeader, FormStatus, loginState, modalState } from './co
 import Styles from './login.module.scss'
 import { Authentication } from 'src/domain/usecases'
 import { createTokenSuri } from 'src/main/factories/cache'
+import { FormWrap } from 'src/presentation/components'
 import Button from 'src/presentation/components/button/button'
 import { Validation } from 'src/presentation/protocols'
 
@@ -67,21 +68,19 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
 
   return (
     <IonPage>
-      <div className={Styles.loginWrap}>
-        <form data-testid='form' className={Styles.form} onSubmit={handleSubmit}>
-          <LoginHeader />
-          <InputWrap className={Styles.email} name='email' type='email' />
-          <InputWrap className={Styles.password} name='password' type='password' />
-          <a
-            data-testid='forgot-button'
-            className={Styles.forgot}
-            onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
-          >Esqueceu sua senha?</a>
-          <Button disabled={!!state.emailError || !!state.passwordError} data-testid='submit' className={Styles.submit} >Fazer login</Button>
-          <p>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
-          <FormStatus />
-        </form>
-      </div>
+      <FormWrap data-testid='login-form' onSubmit={handleSubmit}>
+        <LoginHeader />
+        <InputWrap className={Styles.email} name='email' type='email' />
+        <InputWrap className={Styles.password} name='password' type='password' />
+        <a
+          data-testid='forgot-button'
+          className={Styles.forgot}
+          onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
+        >Esqueceu sua senha?</a>
+        <Button disabled={!!state.emailError || !!state.passwordError} data-testid='submit' className={Styles.submit} >Fazer login</Button>
+        <p className={Styles.toSignup}>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
+        <FormStatus />
+      </FormWrap>
       {props.children}
     </IonPage>
   )

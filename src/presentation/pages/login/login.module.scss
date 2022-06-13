@@ -1,59 +1,39 @@
 @import '../../styles/variables.module.scss';
 
-.loginWrap {
-  display         : flex;
-  flex-direction  : column;
-  height          : 100vh;
-  justify-content : center;
-  background-color: $backgroundLight;
+.forgot {
+  font-size      : $fontSize12;
+  text-decoration: none;
+  margin-bottom  : 20px;
+  text-align     : end;
+  color          : $primaryColor;
+  cursor         : pointer;
+}
 
-  .form {
-    display         : flex;
-    flex-direction  : column;
-    background-color: $white;
-    width           : 450px;
-    height          : fit-content;
-    padding         : 40px;
-    align-self      : center;
-    box-shadow      : $boxShadow;
-    border-radius   : $borderRadiusSecondary;
+.submit {
+  margin-bottom: 10px;
 
-    .forgot {
-      font-size      : $fontSize12;
-      text-decoration: none;
-      margin-bottom  : 20px;
-      text-align     : end;
-      color          : $primaryColor;
-      cursor         : pointer;
+  &:disabled {
+    background-color: $disabledBackground;
+    color           : $disabledColor;
+
+    &:hover {
+      opacity: 1;
+      cursor : default;
     }
+  }
+}
 
-    .submit {
-      margin-bottom: 10px;
+.toSignup {
+  font-size: $fontSize12;
+  color    : $commonTextColor;
 
-      &:disabled {
-        background-color: $disabledBackground;
-        color           : $disabledColor;
+  a {
+    text-decoration: none;
+    color          : $primaryColor;
+    font-size      : $fontSize12;
 
-        &:hover {
-          opacity: 1;
-          cursor : default;
-        }
-      }
-    }
-
-    p {
-      font-size: $fontSize12;
-      color    : $commonTextColor;
-
-      a {
-        text-decoration: none;
-        color          : $primaryColor;
-        font-size      : $fontSize12;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

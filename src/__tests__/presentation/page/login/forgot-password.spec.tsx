@@ -44,7 +44,7 @@ const makeSut = (params?: SutParams): SutTypes => {
 
 const validSubmitForm = async (): Promise<void> => {
   fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
-  const form = screen.getByTestId('form-forgot')
+  const form = screen.getByTestId('forgot-form')
   fireEvent.submit(form)
   await waitFor(() => form)
 }
@@ -55,7 +55,7 @@ describe('ForgotPassword', () => {
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
 
-    expect(screen.getByTestId('form-forgot')).toBeInTheDocument()
+    expect(screen.getByTestId('forgot-form')).toBeInTheDocument()
   })
 
   test('Should ensure close modal if click cancel button', () => {
@@ -93,7 +93,7 @@ describe('ForgotPassword', () => {
     ionFireEvent.click(screen.getByTestId('forgot-button'))
     const email = faker.internet.email()
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: email } })
-    fireEvent.submit(screen.getByTestId('form-forgot'))
+    fireEvent.submit(screen.getByTestId('forgot-form'))
 
     await waitFor(() => expect(forgotYourPasswordSpy.email).toBe(email))
   })
@@ -103,7 +103,7 @@ describe('ForgotPassword', () => {
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
-    const form = screen.getByTestId('form-forgot')
+    const form = screen.getByTestId('forgot-form')
     fireEvent.submit(form)
     fireEvent.submit(form)
 
@@ -116,7 +116,7 @@ describe('ForgotPassword', () => {
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
     fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.lorem.words() } })
-    fireEvent.submit(screen.getByTestId('form-forgot'))
+    fireEvent.submit(screen.getByTestId('forgot-form'))
 
     expect(forgotYourPasswordSpy.callsCount).toBe(0)
   })

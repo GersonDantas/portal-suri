@@ -79,7 +79,7 @@ const ForgotPassword: React.FC<Props> = ({ validation, forgotYourPassword }) => 
     >
       <form
         onSubmit={submitOrCancel}
-        data-testid='form-forgot'
+        data-testid='forgot-form'
         className={Styles.formForgot}
       >
         <h3 className={Styles.title}>Esqueceu a senha?</h3>

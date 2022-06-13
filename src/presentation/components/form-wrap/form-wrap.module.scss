@@ -1,0 +1,21 @@
+@import '../../styles/variables.module.scss';
+
+.formWrap {
+  display         : flex;
+  flex-direction  : column;
+  height          : 100vh;
+  justify-content : center;
+  background-color: $backgroundLight;
+
+  .form {
+    display         : flex;
+    flex-direction  : column;
+    background-color: $white;
+    width           : 450px;
+    height          : fit-content;
+    padding         : 40px;
+    align-self      : center;
+    box-shadow      : $boxShadow;
+    border-radius   : $borderRadiusSecondary;
+  }
+}

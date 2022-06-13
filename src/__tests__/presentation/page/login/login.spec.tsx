@@ -55,7 +55,7 @@ const simulateValidSubmit = async (
 ): Promise<void> => {
   populateField('email', email)
   populateField('password', password)
-  const form = screen.getByTestId('form')
+  const form = screen.getByTestId('login-form')
   fireEvent.submit(form)
   await waitFor(() => form)
 }
@@ -153,7 +153,7 @@ describe('Login Component', () => {
     const { authenticationSpy } = makeSut({ validationError })
     populateField('email')
 
-    fireEvent.submit(screen.getByTestId('form'))
+    fireEvent.submit(screen.getByTestId('login-form'))
 
     expect(authenticationSpy.callsCount).toBe(0)
   })
@@ -187,7 +187,7 @@ describe('Login Component', () => {
     const { authenticationSpy } = makeSut()
 
     await simulateValidSubmit()
-    const form = screen.getByTestId('form')
+    const form = screen.getByTestId('login-form')
     await waitFor(() => form)
 
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', createTokenSuri(
