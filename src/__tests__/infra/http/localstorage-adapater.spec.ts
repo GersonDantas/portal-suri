@@ -1,15 +1,9 @@
-import { SetStorage } from 'src/data/protocols/http'
+import { LocalStorageAdapter } from 'src/infra/cache'
 
 import 'jest-localstorage-mock'
 import faker from '@faker-js/faker'
 
 const makeSut = (): LocalStorageAdapter => new LocalStorageAdapter()
-
-class LocalStorageAdapter implements SetStorage {
-  set (key: string, value: object): any {
-    localStorage.setItem(key, JSON.stringify(value))
-  }
-}
 
 describe('LocalStorageAdapter', () => {
   beforeEach(() => localStorage.clear())
@@ -22,5 +16,14 @@ describe('LocalStorageAdapter', () => {
     sut.set(key, value)
 
     expect(localStorage.setItem).toHaveBeenCalledWith(key, JSON.stringify(value))
+  })
+
+  test('Should call localstorage.removeItem with correct key if value is undefined', () => {
+    const sut = makeSut()
+    const key = faker.database.column()
+
+    sut.set(key, undefined)
+
+    expect(localStorage.removeItem).toHaveBeenCalledWith(key)
   })
 })
