@@ -26,4 +26,16 @@ describe('LocalStorageAdapter', () => {
 
     expect(localStorage.removeItem).toHaveBeenCalledWith(key)
   })
+
+  test('Should call localstorage.getItem returns correct values', () => {
+    const sut = makeSut()
+    const key = faker.database.column()
+    const value = { [faker.random.word()]: faker.random.word() }
+    const getItem = jest.spyOn(localStorage, 'getItem').mockReturnValueOnce(JSON.stringify(value))
+
+    const obj = sut.get(key)
+
+    expect(obj).toEqual(value)
+    expect(getItem).toHaveBeenCalledWith(key)
+  })
 })
