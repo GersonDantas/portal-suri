@@ -3,6 +3,7 @@ node_modules
 coverage
 public
 build
+__mocks__
 
 *.eot
 *.cbm

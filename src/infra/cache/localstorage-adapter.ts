@@ -1,13 +1,17 @@
-import { GetStorage, SetStorage } from 'src/data/protocols/http'
+import { GetStorage, RemoveStorage, SetStorage } from 'src/data/protocols/http'
 
-export class LocalStorageAdapter implements SetStorage, GetStorage {
-  set (key: string, value: object): any {
-    value
-      ? localStorage.setItem(key, JSON.stringify(value))
-      : localStorage.removeItem(key)
+import { Storage } from '@capacitor/storage'
+export class LocalStorageAdapter implements SetStorage, GetStorage, RemoveStorage {
+  async set (key: string, value: object): Promise<any> {
+    await Storage.set({ key, value: JSON.stringify(value) })
   }
 
-  get (key: string): any {
-    return JSON.parse(localStorage.getItem(key))
+  async remove (key: string): Promise<void> {
+    await Storage.remove({ key })
+  }
+
+  async get (key: string): Promise<any> {
+    const { value } = await Storage.get({ key })
+    return JSON.parse(value)
   }
 }
