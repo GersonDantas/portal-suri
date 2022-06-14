@@ -9,6 +9,8 @@ export interface SessionModel {
   tokenSession: string
 }
 
+export type CbmAuth = `${SessionModel['tokenSession']}:${PlatformUserModel['id']}`
+
 export namespace SessionModel {
   export interface Settings {
     environment: 'PROD' | 'STG' | 'DEV'

@@ -12,6 +12,11 @@
 </br>
 </br>
 
+
+ - ``src/__mocks__`` :
+   - Onde ficam os [mocks manuais][1], mocks da pasta `node_modules`
+ - ``src/__tests__`` :
+   - Onde ficam os testes e mocks
  - ``src/domain`` :
    - Criar as regras de negócios como uma ``interface``
  - ``src/Data`` :
@@ -29,3 +34,5 @@
     - é aqui onde fica `classes` que `geram instâncias` de outras `classes`
   - quem vai implementar as outras camadas e vai se ligar a todas
     - designer patter chamado `composition roots`. Acoplar uma camada com todas as outras, para mantê-las desacopladas
+
+[1]:https://jestjs.io/docs/manual-mocks

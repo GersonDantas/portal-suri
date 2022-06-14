@@ -2,14 +2,14 @@ import { InputWrap, LoginHeader, FormStatus, loginState, modalState } from './co
 import Styles from './login.module.scss'
 import { Authentication } from 'src/domain/usecases'
 import { createTokenSuri } from 'src/main/factories/cache'
-import { FormWrap } from 'src/presentation/components'
+import { currentCbmAuthState, FormWrap } from 'src/presentation/components'
 import Button from 'src/presentation/components/button/button'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
 import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
 
 interface Props {
   validation: Validation
@@ -22,6 +22,7 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
   const resetModalState = useResetRecoilState(modalState)
   const [state, setState] = useRecoilState(loginState)
   const setModalState = useSetRecoilState(modalState)
+  const { setCurrentCbmAuth } = useRecoilValue(currentCbmAuthState)
 
   const validate = (field: string): void => {
     const { email, password } = state
@@ -43,10 +44,9 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
         email: state.email,
         password: state.password
       })
-      localStorage.setItem('accessToken', createTokenSuri(
-        session.tokenSession,
-        session.platformUser.id
-      ))
+      const { tokenSession, platformUser } = session
+      const userId = platformUser.id
+      await setCurrentCbmAuth(createTokenSuri({ tokenSession, userId }))
       history.replace('/')
     } catch (error: any) {
       setState(old => ({

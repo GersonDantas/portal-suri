@@ -1,5 +1,10 @@
-type TokenFormatted = string
+import { CbmAuth, PlatformUserModel, SessionModel } from 'src/domain/models'
 
-export const createTokenSuri = (currentSessionId: string, userId: string): TokenFormatted => {
-  return `${currentSessionId}:${userId}`
+type Params = {
+  tokenSession: SessionModel['tokenSession']
+  userId: PlatformUserModel['id']
+}
+
+export const createTokenSuri = ({ tokenSession, userId }: Params): CbmAuth => {
+  return `${tokenSession}:${userId}`
 }
