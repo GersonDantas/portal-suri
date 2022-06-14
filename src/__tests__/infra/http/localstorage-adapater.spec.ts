@@ -1,4 +1,4 @@
-import { LocalStorageAdapter } from 'src/infra/cache'
+import { LocalStorageAdapter } from 'src/infra/http'
 
 /**
  * * explicação aqui: https://capacitorjs.com/docs/guides/mocking-plugins

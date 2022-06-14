@@ -1,7 +1,9 @@
 import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { InvalidCredentialsError } from 'src/domain/errors'
+import { CbmAuth } from 'src/domain/models'
 import { createTokenSuri } from 'src/main/factories/cache'
+import { currentCbmAuthState } from 'src/presentation/components'
 import { Login } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
@@ -10,11 +12,12 @@ import { createMemoryHistory } from 'history'
 import React, { ReactElement } from 'react'
 import 'jest-localstorage-mock'
 import { Router } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
+import { MutableSnapshot, RecoilRoot } from 'recoil'
 
 interface SutTypes {
   validationStub: ValidationStub
   authenticationSpy: AuthenticationSpy
+  setCurrentCbmAuthMock: (cbmAuth: CbmAuth) => Promise<void>
 }
 
 interface SutParams {
@@ -25,11 +28,19 @@ interface SutParams {
 const history = createMemoryHistory({ initialEntries: ['/login'] })
 
 const makeSut = (params?: SutParams): SutTypes => {
+  const setCurrentCbmAuthMock = jest.fn().mockResolvedValue(Promise.resolve(''))
+  const getCurrentCbmAuthMock = jest.fn().mockReturnValue(Promise.resolve(''))
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   const authenticationSpy = new AuthenticationSpy()
+  const initializeState = ({ set }: MutableSnapshot): void => {
+    set(currentCbmAuthState, {
+      setCurrentCbmAuth: setCurrentCbmAuthMock,
+      getCurrentCbmAuth: getCurrentCbmAuthMock
+    })
+  }
   render(
-    <RecoilRoot>
+    <RecoilRoot initializeState={initializeState}>
       <Router history={history} >
         <Login validation={validationStub} authentication={authenticationSpy} >
           {params?.childrenMock}
@@ -40,7 +51,8 @@ const makeSut = (params?: SutParams): SutTypes => {
 
   return {
     validationStub,
-    authenticationSpy
+    authenticationSpy,
+    setCurrentCbmAuthMock
   }
 }
 
@@ -67,9 +79,6 @@ const simulateStatusForField = (fieldName: string, validationError?: string): vo
 }
 
 describe('Login Component', () => {
-  beforeEach(() => {
-    localStorage.clear()
-  })
   test('Should start with initial state', () => {
     const validationError = faker.random.words()
     const anyText = faker.datatype.uuid()
@@ -184,16 +193,16 @@ describe('Login Component', () => {
   })
 
   test('Should ensure that Authentication will save the return in localstorage on success', async () => {
-    const { authenticationSpy } = makeSut()
+    const { authenticationSpy, setCurrentCbmAuthMock } = makeSut()
 
     await simulateValidSubmit()
     const form = screen.getByTestId('login-form')
     await waitFor(() => form)
 
-    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', createTokenSuri(
-      authenticationSpy.session.tokenSession,
-      authenticationSpy.session.platformUser.id
-    ))
+    const tokenSession = authenticationSpy.session.tokenSession
+    const userId = authenticationSpy.session.platformUser.id
+
+    expect(setCurrentCbmAuthMock).toHaveBeenCalledWith(createTokenSuri({ tokenSession, userId }))
     expect(history.index).toBe(0)
     expect(history.location.pathname).toBe('/')
   })
