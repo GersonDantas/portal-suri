@@ -1,5 +1,5 @@
 import { mockPlatformUser } from './mock-platform-user'
-import { SessionModel } from 'src/domain/models'
+import { CbmAuth, SessionModel } from 'src/domain/models'
 import { Authentication } from 'src/domain/usecases'
 
 import faker from '@faker-js/faker'
@@ -22,3 +22,5 @@ export const mockSettings = (): SessionModel.Settings => {
     pliqSurveyUrl: faker.internet.url()
   }
 }
+
+export const mockCbmAuth = (): CbmAuth => `${faker.datatype.uuid()}:${faker.internet.password(8)}`
