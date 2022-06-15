@@ -1,4 +1,4 @@
-import { AuthenticationSpy } from 'src/__tests__/domain/mocks'
+import { AuthenticationSpy, mockCbmAuth } from 'src/__tests__/domain/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { InvalidCredentialsError } from 'src/domain/errors'
 import { CbmAuth } from 'src/domain/models'
@@ -28,8 +28,8 @@ interface SutParams {
 const history = createMemoryHistory({ initialEntries: ['/login'] })
 
 const makeSut = (params?: SutParams): SutTypes => {
-  const setCurrentCbmAuthMock = jest.fn().mockResolvedValue(Promise.resolve(''))
-  const getCurrentCbmAuthMock = jest.fn().mockReturnValue(Promise.resolve(''))
+  const setCurrentCbmAuthMock = jest.fn().mockResolvedValue(Promise.resolve())
+  const getCurrentCbmAuthMock = jest.fn().mockReturnValue(Promise.resolve(mockCbmAuth()))
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
   const authenticationSpy = new AuthenticationSpy()
