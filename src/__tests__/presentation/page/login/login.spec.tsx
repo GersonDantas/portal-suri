@@ -1,4 +1,5 @@
 import { AuthenticationSpy, mockCbmAuth } from 'src/__tests__/domain/mocks'
+import { Helpers } from 'src/__tests__/presentation/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { InvalidCredentialsError } from 'src/domain/errors'
 import { CbmAuth } from 'src/domain/models'
@@ -56,26 +57,15 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
-const populateField = (fieldName: string, value = faker.internet.email()): void => {
-  const input = screen.getByTestId(fieldName)
-  fireEvent.input(input, { target: { value } })
-}
-
 const simulateValidSubmit = async (
   email = faker.internet.email(),
   password = faker.internet.password()
 ): Promise<void> => {
-  populateField('email', email)
-  populateField('password', password)
+  Helpers.populateField('email', email)
+  Helpers.populateField('password', password)
   const form = screen.getByTestId('login-form')
   fireEvent.submit(form)
   await waitFor(() => form)
-}
-
-const simulateStatusForField = (fieldName: string, validationError?: string): void => {
-  populateField(fieldName)
-  const input = screen.getByTestId(fieldName)
-  expect(input.title).toBe(validationError ?? 'ok')
 }
 
 describe('Login Component', () => {
@@ -89,8 +79,8 @@ describe('Login Component', () => {
     expect(screen.queryByText(new RegExp(anyText, 'i'))).toBeInTheDocument()
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit')).toBeDisabled()
-    expect(screen.getByTestId('email')).toHaveProperty('title', validationError)
-    expect(screen.getByTestId('password')).toHaveProperty('title', validationError)
+    Helpers.testStatusForField('email', validationError)
+    Helpers.testStatusForField('password', validationError)
   })
 
   test('Should show email error if Validations fails', () => {
@@ -98,7 +88,7 @@ describe('Login Component', () => {
 
     makeSut({ validationError })
 
-    simulateStatusForField('email', validationError)
+    Helpers.testStatusForField('email', validationError)
   })
 
   test('Should show password error if Validations fails', () => {
@@ -106,26 +96,26 @@ describe('Login Component', () => {
 
     makeSut({ validationError })
 
-    simulateStatusForField('password', validationError)
+    Helpers.testStatusForField('password', validationError)
   })
 
   test('Should show valid email state if Validations success', () => {
     makeSut()
 
-    simulateStatusForField('email')
+    Helpers.testStatusForField('email')
   })
 
   test('Should show valid password state if Validations success', () => {
     makeSut()
 
-    simulateStatusForField('password')
+    Helpers.testStatusForField('password')
   })
 
   test('Should enable submit button if form is valid', () => {
     makeSut()
 
-    populateField('email')
-    populateField('password')
+    Helpers.populateField('email')
+    Helpers.populateField('password')
 
     expect(screen.getByTestId('submit')).not.toBeDisabled()
   })
@@ -160,7 +150,7 @@ describe('Login Component', () => {
   test('Should not call Authentication if form is invalid', () => {
     const validationError = faker.random.words()
     const { authenticationSpy } = makeSut({ validationError })
-    populateField('email')
+    Helpers.populateField('email')
 
     fireEvent.submit(screen.getByTestId('login-form'))
 

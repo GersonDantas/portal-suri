@@ -1,4 +1,5 @@
-import { ValidationStub } from '../../test'
+import { Helpers } from 'src/__tests__/presentation/mocks'
+import { ValidationStub } from 'src/__tests__/presentation/test'
 import { ForgotPasswordPage } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
@@ -27,7 +28,7 @@ describe('ForgotPasswordPage', () => {
 
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit-forgot')).toBeDisabled()
-    expect(screen.getByTestId('forgotPassword')).toHaveProperty('title', validationError)
-    expect(screen.getByTestId('forgotPasswordConfirmation')).toHaveProperty('title', validationError)
+    Helpers.testStatusForField('forgotPassword', validationError)
+    Helpers.testStatusForField('forgotPasswordConfirmation', validationError)
   })
 })
