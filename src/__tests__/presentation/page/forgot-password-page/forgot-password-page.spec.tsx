@@ -6,16 +6,24 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
 
+type SutParams = {
+  validationError?: string
+}
+
+const makeSut = (params?: SutParams): void => {
+  const validationStub = new ValidationStub()
+  validationStub.errorMessage = params?.validationError
+  render(
+    <RecoilRoot>
+      <ForgotPasswordPage validation={validationStub} />
+    </RecoilRoot>
+  )
+}
+
 describe('ForgotPasswordPage', () => {
   test('Should ensure render to initial state', () => {
     const validationError = faker.random.words()
-    const validationStub = new ValidationStub()
-    validationStub.errorMessage = validationError
-    render(
-      <RecoilRoot>
-        <ForgotPasswordPage validation={validationStub} />
-      </RecoilRoot>
-    )
+    makeSut({ validationError })
 
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit-forgot')).toBeDisabled()
