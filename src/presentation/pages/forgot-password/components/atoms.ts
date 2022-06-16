@@ -3,7 +3,12 @@ import { atom } from 'recoil'
 export const forgotPasswordPageState = atom({
   key: 'forgotPasswordPageState',
   default: {
+    isLoading: false,
     forgotPassword: '',
-    forgotError: ''
+    forgotPasswordError: '',
+    forgotPasswordConfirmation: '',
+    forgotPasswordConfirmationError: '',
+    mainInfo: '',
+    isError: false
   }
 })

@@ -30,20 +30,21 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, fallbackRoute, .
     setState(old => ({ ...old, urlWithParams: false }))
   }
 
-  const validate = useCallback(() => {
-    linkValidation.validate({
-      email: `${email}`, exp: `${exp}`, hash: `${k}`
-    }).then(({ success }) => {
+  const validate = useCallback(async () => {
+    try {
+      const { success } = await linkValidation.validate({
+        email: `${email}`, exp: `${exp}`, hash: `${k}`
+      })
       setState(old => ({
         ...old,
         success
       }))
-    }).catch((error) => {
+    } catch (error: any) {
       setState(old => ({
         ...old,
         mainError: error.message
       }))
-    })
+    }
   }, [])
 
   const RenderComponent = useCallback((): JSX.Element => {
