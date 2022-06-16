@@ -50,4 +50,18 @@ describe('ForgotPasswordPage', () => {
     Helpers.populateField('forgotPasswordConfirmation')
     Helpers.testStatusForField('forgotPasswordConfirmation', validationError)
   })
+
+  test('Should show valid forgotPassword state if Validation success', () => {
+    makeSut()
+
+    Helpers.populateField('forgotPassword')
+    Helpers.testStatusForField('forgotPassword')
+  })
+
+  test('Should show valid forgotPasswordConfirmation state if Validation success', () => {
+    makeSut()
+
+    Helpers.populateField('forgotPasswordConfirmation')
+    Helpers.testStatusForField('forgotPasswordConfirmation')
+  })
 })
