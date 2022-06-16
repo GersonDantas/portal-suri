@@ -28,12 +28,13 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
     const { email, password } = state
     const formData = { email, password }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+    setState(old => ({ ...old, isFormInvalid: !!old.emailError || !!old.passwordError }))
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault()
     try {
-      if (state.isLoading || state.emailError || state.passwordError) {
+      if (state.isLoading || state.isFormInvalid) {
         return
       }
       setState(old => ({
@@ -77,7 +78,7 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
           className={Styles.forgot}
           onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
         >Esqueceu sua senha?</a>
-        <Button disabled={!!state.emailError || !!state.passwordError} data-testid='submit' className={Styles.submit} >Fazer login</Button>
+        <Button disabled={state.isFormInvalid} data-testid='submit' className={Styles.submit} >Fazer login</Button>
         <p className={Styles.toSignup}>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
         <FormStatus />
       </FormWrap>

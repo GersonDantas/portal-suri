@@ -11,6 +11,7 @@ const Input: React.FC<Props> = (props) => {
   return (
     <InputBase
       {...props}
+      data-status={state.forgotError ? 'invalid' : 'valid'}
       data-testid='input-email-forgot'
       title={state.forgotError || 'ok'}
       id='input-modal'

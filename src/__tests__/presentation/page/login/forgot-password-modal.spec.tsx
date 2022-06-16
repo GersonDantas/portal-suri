@@ -1,4 +1,5 @@
 import { AuthenticationSpy, ForgotYourPasswordSpy } from 'src/__tests__/domain/mocks'
+import { Helpers } from 'src/__tests__/presentation/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
 import { ForgotPasswordResponseType } from 'src/domain/models'
@@ -43,7 +44,7 @@ const makeSut = (params?: SutParams): SutTypes => {
 }
 
 const validSubmitForm = async (): Promise<void> => {
-  fireEvent.input(screen.getByTestId('input-email-forgot'), { target: { value: faker.internet.email() } })
+  Helpers.populateField('input-email-forgot')
   const form = screen.getByTestId('forgot-form')
   fireEvent.submit(form)
   await waitFor(() => form)
@@ -76,13 +77,21 @@ describe('ForgotPasswordModal', () => {
     await waitFor(() => expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy())
   })
 
+  test('Should start initial with state', async () => {
+    const validationError = faker.lorem.words()
+    makeSut({ validationError })
+
+    ionFireEvent.click(screen.getByTestId('forgot-button'))
+
+    Helpers.testStatusForField('input-email-forgot', validationError)
+  })
+
   test('Should show email error in title if validations fails', () => {
     const validationError = faker.lorem.words()
     makeSut({ validationError })
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
-    const input = screen.getByTestId('input-email-forgot')
-    fireEvent.input(input, { target: { value: faker.internet.email() } })
+    const input = Helpers.populateField('input-email-forgot')
 
     expect(input.title).toBe(validationError)
   })
@@ -92,7 +101,7 @@ describe('ForgotPasswordModal', () => {
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
     const email = faker.internet.email()
-    fireEvent.input(screen.getByTestId('input-email-forgot'), { target: { value: email } })
+    Helpers.populateField('input-email-forgot', email)
     fireEvent.submit(screen.getByTestId('forgot-form'))
 
     await waitFor(() => expect(forgotYourPasswordSpy.email).toBe(email))
@@ -102,7 +111,7 @@ describe('ForgotPasswordModal', () => {
     const { forgotYourPasswordSpy } = makeSut()
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
-    fireEvent.input(screen.getByTestId('input-email-forgot'), { target: { value: faker.internet.email() } })
+    Helpers.populateField('input-email-forgot')
     const form = screen.getByTestId('forgot-form')
     fireEvent.submit(form)
     fireEvent.submit(form)
@@ -115,7 +124,7 @@ describe('ForgotPasswordModal', () => {
     const { forgotYourPasswordSpy } = makeSut({ validationError })
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
-    fireEvent.input(screen.getByTestId('input-email-forgot'), { target: { value: faker.lorem.words() } })
+    Helpers.populateField('input-email-forgot')
     fireEvent.submit(screen.getByTestId('forgot-form'))
 
     expect(forgotYourPasswordSpy.callsCount).toBe(0)

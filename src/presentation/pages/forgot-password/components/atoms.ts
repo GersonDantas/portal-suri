@@ -8,6 +8,7 @@ export const forgotPasswordPageState = atom({
     forgotPasswordError: '',
     forgotPasswordConfirmation: '',
     forgotPasswordConfirmationError: '',
+    isFormInvalid: true,
     mainInfo: '',
     isError: false
   }

@@ -20,6 +20,7 @@ const InputWrap: React.FC<Props> = ({ state, setState, ...props }) => {
       <label htmlFor={`${props.name}-input`} >{capitalize}</label>
       <InputBase
         {...props}
+        data-status={error ? 'invalid' : 'valid'}
         data-testid={props.name}
         title={error || 'ok'}
         id={`${props.name}-input`}

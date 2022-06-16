@@ -18,6 +18,7 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation }) => {
     const { forgotPassword, forgotPasswordConfirmation } = state
     const formData = { forgotPassword, forgotPasswordConfirmation }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+    setState(old => ({ ...old, isFormInvalid: !!old.forgotPasswordError || !!old.forgotPasswordConfirmationError }))
   }
 
   useEffect(() => validate('forgotPassword'), [state.forgotPassword])
@@ -35,7 +36,7 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation }) => {
           <Button
             type='submit'
             data-testid='submit-forgot'
-            disabled={!!state.forgotPasswordError || !!state.forgotPasswordConfirmationError}
+            disabled={state.isFormInvalid}
           >
             enviar
           </Button>
