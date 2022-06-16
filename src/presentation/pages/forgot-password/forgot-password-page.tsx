@@ -35,7 +35,7 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation }) => {
           <Button
             type='submit'
             data-testid='submit-forgot'
-            disabled={true}
+            disabled={!!state.forgotPasswordError || !!state.forgotPasswordConfirmationError}
           >
             enviar
           </Button>
