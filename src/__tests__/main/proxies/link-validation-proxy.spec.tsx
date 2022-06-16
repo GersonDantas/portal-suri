@@ -17,7 +17,7 @@ type SutType = {
 }
 
 type SutParams = {
-  linkValidationSpy: LinkValidationSpy
+  linkValidationSpy?: LinkValidationSpy
   fallbackRoute?: string
   urlWithParams?: boolean
 }
@@ -55,8 +55,7 @@ const makeSut = ({ linkValidationSpy, fallbackRoute, urlWithParams }: SutParams 
 describe('LinkValidationProxy', () => {
   test('Should LinkValidationProxy render to fallback', async () => {
     const fallbackRoute = faker.internet.url()
-    const linkValidationSpy = new LinkValidationSpy()
-    const { createHistory } = makeSut({ linkValidationSpy, fallbackRoute, urlWithParams: true })
+    const { createHistory } = makeSut({ fallbackRoute, urlWithParams: true })
 
     await waitFor(() => expect(createHistory.location.pathname).toBe(fallbackRoute))
   })
