@@ -64,4 +64,13 @@ describe('ForgotPasswordPage', () => {
     Helpers.populateField('forgotPasswordConfirmation')
     Helpers.testStatusForField('forgotPasswordConfirmation')
   })
+
+  test('Should enable submit button if form is valid', () => {
+    makeSut()
+
+    Helpers.populateField('forgotPassword')
+    Helpers.populateField('forgotPasswordConfirmation')
+
+    expect(screen.getByTestId('submit-forgot')).not.toBeDisabled()
+  })
 })
