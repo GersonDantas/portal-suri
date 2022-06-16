@@ -1,6 +1,6 @@
-import { forgotPasswordPageState, FormStatus, InputWrap } from './components'
+import { forgotPasswordPageState, FormStatus, InputWrap, SubmitButton } from './components'
 import Styles from './forgot-password-page.module.scss'
-import { Button, FormWrap, Logo } from 'src/presentation/components'
+import { FormWrap, Logo } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
@@ -33,13 +33,7 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation }) => {
         <InputWrap aria-label='digite a nova senha' className={Styles.input} type='text' name='forgotPassword' />
         <InputWrap aria-label='repita a nova senha' className={Styles.input} type='text' name='forgotPasswordConfirmation' />
         <div className={Styles.buttonsWrap}>
-          <Button
-            type='submit'
-            data-testid='submit-forgot'
-            disabled={state.isFormInvalid}
-          >
-            enviar
-          </Button>
+          <SubmitButton text='Enviar' />
         </div>
         <FormStatus />
       </FormWrap>

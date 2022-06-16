@@ -7,7 +7,6 @@ import { Login } from 'src/presentation/pages'
 import { ForgotPasswordModal } from 'src/presentation/pages/login/components'
 
 import faker from '@faker-js/faker'
-import { ionFireEvent } from '@ionic/react-test-utils'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -51,18 +50,18 @@ const validSubmitForm = async (): Promise<void> => {
 }
 
 describe('ForgotPasswordModal', () => {
-  test('Should ensure that it will show the ForgotPasswordModal component', () => {
+  test('Should ensure that it will show the ForgotPasswordModal component', async () => {
     makeSut()
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
 
-    expect(screen.getByTestId('forgot-form')).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByTestId('forgot-form')).toBeInTheDocument())
   })
 
   test('Should ensure close modal if click cancel button', () => {
     makeSut()
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     fireEvent.click(screen.getByTestId('forgot-cancel'))
 
     expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy()
@@ -71,7 +70,7 @@ describe('ForgotPasswordModal', () => {
   test('Should ensure close modal if empty input and submit button click ', async () => {
     makeSut()
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     fireEvent.click(screen.getByTestId('forgot-submit'))
 
     await waitFor(() => expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy())
@@ -81,7 +80,7 @@ describe('ForgotPasswordModal', () => {
     const validationError = faker.lorem.words()
     makeSut({ validationError })
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
 
     Helpers.testStatusForField('input-email-forgot', validationError)
   })
@@ -90,7 +89,7 @@ describe('ForgotPasswordModal', () => {
     const validationError = faker.lorem.words()
     makeSut({ validationError })
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     const input = Helpers.populateField('input-email-forgot')
 
     expect(input.title).toBe(validationError)
@@ -99,7 +98,7 @@ describe('ForgotPasswordModal', () => {
   test('Should call ForgotYourPassword with correct value', async () => {
     const { forgotYourPasswordSpy } = makeSut()
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     const email = faker.internet.email()
     Helpers.populateField('input-email-forgot', email)
     fireEvent.submit(screen.getByTestId('forgot-form'))
@@ -110,7 +109,7 @@ describe('ForgotPasswordModal', () => {
   test('Should call ForgotYourPassword only once', async () => {
     const { forgotYourPasswordSpy } = makeSut()
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     Helpers.populateField('input-email-forgot')
     const form = screen.getByTestId('forgot-form')
     fireEvent.submit(form)
@@ -123,7 +122,7 @@ describe('ForgotPasswordModal', () => {
     const validationError = faker.lorem.words()
     const { forgotYourPasswordSpy } = makeSut({ validationError })
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     Helpers.populateField('input-email-forgot')
     fireEvent.submit(screen.getByTestId('forgot-form'))
 
@@ -134,7 +133,7 @@ describe('ForgotPasswordModal', () => {
     const { forgotYourPasswordSpy } = makeSut()
     const error = faker.random.arrayElement([new IsFacebookError(), new UserNotFoundError()])
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     jest
       .spyOn(forgotYourPasswordSpy, 'sendEmail')
       .mockRejectedValueOnce(error)
@@ -149,7 +148,7 @@ describe('ForgotPasswordModal', () => {
     const { forgotYourPasswordSpy } = makeSut()
     const value = faker.random.arrayElement([undefined, null])
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     jest
       .spyOn(forgotYourPasswordSpy, 'sendEmail')
       .mockReturnValueOnce(value)
@@ -161,7 +160,7 @@ describe('ForgotPasswordModal', () => {
   test('Should ensure show FormStatus with email success message if returns ResetLinkSent', async () => {
     const { forgotYourPasswordSpy } = makeSut()
 
-    ionFireEvent.click(screen.getByTestId('forgot-button'))
+    fireEvent.click(screen.getByTestId('forgot-button'))
     jest
       .spyOn(forgotYourPasswordSpy, 'sendEmail')
       .mockReturnValueOnce(Promise.resolve({ success: true, type: ForgotPasswordResponseType.ResetLinkSent }))

@@ -28,7 +28,7 @@ describe('ForgotPasswordPage', () => {
     makeSut({ validationError })
 
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
-    expect(screen.getByTestId('submit-forgot')).toBeDisabled()
+    expect(screen.getByTestId('submit')).toBeDisabled()
     Helpers.testStatusForField('forgotPassword', validationError)
     Helpers.testStatusForField('forgotPasswordConfirmation', validationError)
   })
@@ -71,6 +71,6 @@ describe('ForgotPasswordPage', () => {
     Helpers.populateField('forgotPassword')
     Helpers.populateField('forgotPasswordConfirmation')
 
-    expect(screen.getByTestId('submit-forgot')).not.toBeDisabled()
+    expect(screen.getByTestId('submit')).not.toBeDisabled()
   })
 })

@@ -1,4 +1,4 @@
-import { loginState } from './atom'
+import { loginState } from './atoms'
 import { FormStatusBase } from 'src/presentation/components'
 
 import React from 'react'

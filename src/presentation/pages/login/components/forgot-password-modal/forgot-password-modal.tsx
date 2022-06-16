@@ -1,6 +1,6 @@
 import { modalState } from '..'
 
-import { loginState } from '../atom'
+import { loginState } from '../atoms'
 import Styles from './forgot-password-modal.module.scss'
 import { Button } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
@@ -11,7 +11,7 @@ import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
 import { UnexpectedError } from 'src/domain/errors'
-import { Input } from './components'
+import { Input, SubmitButton } from './components'
 
 interface Props {
   validation: Validation
@@ -94,13 +94,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ validation, forgotYourPassword }
           >
             cancelar
           </Button>
-          <Button
-            type='submit'
-            data-testid='forgot-submit'
-            className={Styles.send}
-          >
-            enviar
-          </Button>
+          <SubmitButton text='Enviar' />
         </div>
       </form>
     </IonModal>

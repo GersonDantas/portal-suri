@@ -1,9 +1,8 @@
-import { InputWrap, LoginHeader, FormStatus, loginState, modalState } from './components'
+import { InputWrap, LoginHeader, FormStatus, loginState, modalState, SubmitButton } from './components'
 import Styles from './login.module.scss'
 import { Authentication } from 'src/domain/usecases'
 import { createTokenSuri } from 'src/main/factories/cache'
 import { currentCbmAuthState, FormWrap } from 'src/presentation/components'
-import Button from 'src/presentation/components/button/button'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
@@ -78,7 +77,7 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
           className={Styles.forgot}
           onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
         >Esqueceu sua senha?</a>
-        <Button disabled={state.isFormInvalid} data-testid='submit' className={Styles.submit} >Fazer login</Button>
+        <SubmitButton text='Fazer Login' />
         <p className={Styles.toSignup}>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
         <FormStatus />
       </FormWrap>

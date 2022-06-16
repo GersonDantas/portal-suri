@@ -1,4 +1,4 @@
-import { loginState } from './atom'
+import { loginState } from './atoms'
 import { InputWrapBase } from 'src/presentation/components'
 
 import React from 'react'

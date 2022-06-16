@@ -1,4 +1,4 @@
-import { linkValidationState } from './atom'
+import { linkValidationState } from './atoms'
 import { LinkValidation } from 'src/domain/usecases'
 import { ErrorPage } from 'src/presentation/pages'
 
