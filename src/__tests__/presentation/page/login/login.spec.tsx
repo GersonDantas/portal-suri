@@ -88,6 +88,7 @@ describe('Login Component', () => {
 
     makeSut({ validationError })
 
+    Helpers.populateField('email')
     Helpers.testStatusForField('email', validationError)
   })
 
@@ -96,18 +97,21 @@ describe('Login Component', () => {
 
     makeSut({ validationError })
 
+    Helpers.populateField('password')
     Helpers.testStatusForField('password', validationError)
   })
 
   test('Should show valid email state if Validations success', () => {
     makeSut()
 
+    Helpers.populateField('email')
     Helpers.testStatusForField('email')
   })
 
   test('Should show valid password state if Validations success', () => {
     makeSut()
 
+    Helpers.populateField('password')
     Helpers.testStatusForField('password')
   })
 

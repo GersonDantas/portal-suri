@@ -24,11 +24,30 @@ const makeSut = (params?: SutParams): void => {
 describe('ForgotPasswordPage', () => {
   test('Should ensure render to initial state', () => {
     const validationError = faker.random.words()
+
     makeSut({ validationError })
 
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit-forgot')).toBeDisabled()
     Helpers.testStatusForField('forgotPassword', validationError)
+    Helpers.testStatusForField('forgotPasswordConfirmation', validationError)
+  })
+
+  test('Should show forgotPassword error if Validation fails', () => {
+    const validationError = faker.random.words()
+
+    makeSut({ validationError })
+
+    Helpers.populateField('forgotPassword')
+    Helpers.testStatusForField('forgotPassword', validationError)
+  })
+
+  test('Should show forgotPasswordConfirmation error if Validation fails', () => {
+    const validationError = faker.random.words()
+
+    makeSut({ validationError })
+
+    Helpers.populateField('forgotPasswordConfirmation')
     Helpers.testStatusForField('forgotPasswordConfirmation', validationError)
   })
 })
