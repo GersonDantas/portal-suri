@@ -71,7 +71,7 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
       <FormWrap data-testid='login-form' onSubmit={handleSubmit}>
         <LoginHeader />
         <InputWrap className={Styles.email} name='email' type='email' />
-        <InputWrap className={Styles.password} name='password' type='password' />
+        <InputWrap aria-label='senha' className={Styles.password} name='password' type='password' />
         <a
           data-testid='forgot-button'
           className={Styles.forgot}

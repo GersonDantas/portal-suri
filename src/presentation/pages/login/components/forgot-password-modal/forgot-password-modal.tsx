@@ -11,6 +11,7 @@ import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
 import { UnexpectedError } from 'src/domain/errors'
+import { Input } from './components'
 
 interface Props {
   validation: Validation
@@ -84,15 +85,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ validation, forgotYourPassword }
       >
         <h3 className={Styles.title}>Esqueceu a senha?</h3>
         <label className={Styles.label} htmlFor='input-modal'>Qual o e-mail do cadastro?</label>
-        <input
-          className={Styles.input}
-          type='email'
-          name='forgotEmail'
-          data-testid='input-forgot'
-          title={state.forgotError || 'ok'}
-          id='input-modal'
-          onChange={e => setState(old => ({ ...old, [e.target.name]: e.target.value }))}
-        />
+        <Input className={Styles.input} type='email' name='forgotEmail' />
         <div className={Styles.buttonsWrap}>
           <Button
             data-testid='forgot-cancel'

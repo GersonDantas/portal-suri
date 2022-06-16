@@ -25,16 +25,3 @@
 body {
   background-color: $backgroundLight;
 }
-
-input[type='password'],
-input[type=email],
-input[type=text] {
-  border       : 1px solid rgba(black, .5);
-  line-height  : 40px;
-  border-radius: $borderRadiusTertiary;
-  padding      : 0px 10px;
-
-  &:focus {
-    outline-color: $primaryColor;
-  }
-}

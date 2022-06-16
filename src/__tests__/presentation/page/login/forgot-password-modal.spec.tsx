@@ -43,7 +43,7 @@ const makeSut = (params?: SutParams): SutTypes => {
 }
 
 const validSubmitForm = async (): Promise<void> => {
-  fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
+  fireEvent.input(screen.getByTestId('input-email-forgot'), { target: { value: faker.internet.email() } })
   const form = screen.getByTestId('forgot-form')
   fireEvent.submit(form)
   await waitFor(() => form)
@@ -81,7 +81,7 @@ describe('ForgotPasswordModal', () => {
     makeSut({ validationError })
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
-    const input = screen.getByTestId('input-forgot')
+    const input = screen.getByTestId('input-email-forgot')
     fireEvent.input(input, { target: { value: faker.internet.email() } })
 
     expect(input.title).toBe(validationError)
@@ -92,7 +92,7 @@ describe('ForgotPasswordModal', () => {
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
     const email = faker.internet.email()
-    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: email } })
+    fireEvent.input(screen.getByTestId('input-email-forgot'), { target: { value: email } })
     fireEvent.submit(screen.getByTestId('forgot-form'))
 
     await waitFor(() => expect(forgotYourPasswordSpy.email).toBe(email))
@@ -102,7 +102,7 @@ describe('ForgotPasswordModal', () => {
     const { forgotYourPasswordSpy } = makeSut()
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
-    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.internet.email() } })
+    fireEvent.input(screen.getByTestId('input-email-forgot'), { target: { value: faker.internet.email() } })
     const form = screen.getByTestId('forgot-form')
     fireEvent.submit(form)
     fireEvent.submit(form)
@@ -115,7 +115,7 @@ describe('ForgotPasswordModal', () => {
     const { forgotYourPasswordSpy } = makeSut({ validationError })
 
     ionFireEvent.click(screen.getByTestId('forgot-button'))
-    fireEvent.input(screen.getByTestId('input-forgot'), { target: { value: faker.lorem.words() } })
+    fireEvent.input(screen.getByTestId('input-email-forgot'), { target: { value: faker.lorem.words() } })
     fireEvent.submit(screen.getByTestId('forgot-form'))
 
     expect(forgotYourPasswordSpy.callsCount).toBe(0)
