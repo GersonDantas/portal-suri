@@ -14,25 +14,25 @@
 
 
  - ``src/__mocks__`` :
-   - Onde ficam os [mocks manuais][1], mocks da pasta `node_modules`
+   - Onde ficam os [mocks manuais][1], mocks da pasta `node_modules`.
  - ``src/__tests__`` :
-   - Onde ficam os testes e mocks
+   - Onde ficam os testes e mocks.
  - ``src/domain`` :
-   - Criar as regras de negócios como uma ``interface``
+   - Criar as regras de negócios como uma ``interface``.
  - ``src/Data`` :
-   - Ter as implementações dos nossos casos de uso, ultilizando alguma implementação
-   - colocamos no nome da classe qual o tipo de implementação dessa classe
+   - Ter as implementações dos nossos casos de uso, ultilizando alguma implementação.
+   - colocamos no nome da classe qual o tipo de implementação dessa classe.
  - `src/infra` :
-   - Componentes que ultilizam bibliotecas de terceiros ou não
-     - lá dentro que é que eu vou decidir se uso um fetch mesmo
+   - Componentes que ultilizam bibliotecas de terceiros ou não.
+     - lá dentro, eu decido se uso um fetch mesmo ou axios, por exemplo.
  -  `src/presentation` :
-    -  Converter os dados para mandar para a `UI`, que seria útil em outros projetos, mas com react, agora com os hooks, é mais prático manter a ui no `presentation`
+    -  Converter os dados para mandar para a `UI`, que seria útil em outros projetos, mas com react, agora com os hooks, é mais prático manter a ui no `presentation`.
 - `src/validation` :
-  - onde ficam os validadores de formulários
+  - onde ficam os validadores de formulários.
 - `src/main` :
-  - É aqui onde fica os patterns como `factories`
-    - é aqui onde fica `classes` que `geram instâncias` de outras `classes`
-  - quem vai implementar as outras camadas e vai se ligar a todas
-    - designer patter chamado `composition roots`. Acoplar uma camada com todas as outras, para mantê-las desacopladas
+  - É aqui onde ficam os patterns como `factories`.
+    - é aqui onde ficam `classes` que `geram instâncias` de outras `classes`.
+  - quem vai implementar as outras camadas e vai se ligar a todas.
+    - designer patter chamado `composition roots`. Acoplar uma camada com todas as outras, para mantê-las desacopladas.
 
 [1]:https://jestjs.io/docs/manual-mocks
