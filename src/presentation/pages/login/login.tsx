@@ -76,7 +76,7 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
           data-testid='forgot-button'
           className={Styles.forgot}
           onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
-        >Esqueceu sua senha?</a>
+        ><p>Esqueceu sua senha?</p></a>
         <SubmitButton text='Fazer Login' />
         <p className={Styles.toSignup}>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
         <FormStatus />

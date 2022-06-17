@@ -17,13 +17,13 @@ const InputWrap: React.FC<Props> = ({ state, setState, ...props }) => {
     : capitalizeText(props.name)
   return (
     <div data-testid={`${props.name}-wrap`} className={Styles.inputWrap}>
-      <label htmlFor={`${props.name}-input`} >{capitalize}</label>
+      <label htmlFor={`${props.name}${props['aria-label']}-input`} >{capitalize}</label>
       <InputBase
         {...props}
         data-status={error ? 'invalid' : 'valid'}
         data-testid={props.name}
         title={error || 'ok'}
-        id={`${props.name}-input`}
+        id={`${props.name}${props['aria-label']}-input`}
         onChange={e => setState({ ...state, [e.target.name]: e.target.value })}
       />
     </div>
