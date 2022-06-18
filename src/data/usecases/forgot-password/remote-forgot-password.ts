@@ -1,5 +1,5 @@
 import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
-import { UnexpectedError, UserNotFoundError, IsFacebookError } from 'src/domain/errors'
+import { UnexpectedError, UserNotFoundError, IsFacebookError, InvalidCredentialsError } from 'src/domain/errors'
 import { ForgotPasswordResponseType } from 'src/domain/models'
 import { ForgotYourPassword } from 'src/domain/usecases'
 
@@ -24,6 +24,8 @@ export class RemoteForgotPassword implements ForgotYourPassword {
     switch (statusCode) {
       case HttpStatusCode.ok:
         return caseHttpStatusCodeOk(httpResponse)
+      case HttpStatusCode.badRequest:
+        throw new InvalidCredentialsError()
       default: throw new UnexpectedError()
     }
   }
