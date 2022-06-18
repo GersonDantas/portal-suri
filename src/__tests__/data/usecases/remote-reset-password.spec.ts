@@ -1,20 +1,28 @@
 import { HttpClientSpy } from '../test'
+import { mockResetPasswordParams } from 'src/__tests__/domain/mocks'
 import { RemoteResetPassword } from 'src/data/usecases'
-import { ResetPassword } from 'src/domain/usecases/reset-password'
 
 import faker from '@faker-js/faker'
 
-const mockResetPasswordParams = (): ResetPassword.Params => ({
-  email: faker.internet.email(),
-  hash: faker.datatype.uuid(),
-  password: faker.internet.password()
-})
+type SutType = {
+  httpClientSpy: HttpClientSpy
+  sut: RemoteResetPassword
+}
+
+const makeSut = (url = faker.internet.url()): SutType => {
+  const httpClientSpy = new HttpClientSpy()
+  const sut = new RemoteResetPassword(url, httpClientSpy)
+
+  return {
+    httpClientSpy,
+    sut
+  }
+}
 
 describe('RemoteResetPassword', () => {
   test('Should call RemoteResetPassword with correct values', () => {
     const url = faker.internet.url()
-    const httpClientSpy = new HttpClientSpy()
-    const sut = new RemoteResetPassword(url, httpClientSpy)
+    const { httpClientSpy, sut } = makeSut(url)
     const params = mockResetPasswordParams()
 
     sut.reset(params)
