@@ -32,6 +32,7 @@ describe('RemoteAuthentication', () => {
 
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.body).toEqual(authenticationParams)
+    expect(httpClientSpy.method).toEqual('post')
   })
 
   it('Should throw InvalidCredentialError if HttpClient return 401', async () => {
