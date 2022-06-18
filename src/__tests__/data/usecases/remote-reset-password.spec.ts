@@ -2,7 +2,7 @@ import { HttpClientSpy } from '../test'
 import { mockResetPasswordParams } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteResetPassword } from 'src/data/usecases'
-import { InvalidCredentialsError } from 'src/domain/errors'
+import { InvalidCredentialsError, UnexpectedError } from 'src/domain/errors'
 
 import faker from '@faker-js/faker'
 
@@ -43,5 +43,27 @@ describe('RemoteResetPassword', () => {
     const promise = sut.reset(mockResetPasswordParams())
 
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
+  })
+
+  it('Should throw UnexpectedError if HttpClient return 500', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    const promise = sut.reset(mockResetPasswordParams())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('Should throw UnexpectedError if HttpClient return 404', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.notFound
+    }
+
+    const promise = sut.reset(mockResetPasswordParams())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
