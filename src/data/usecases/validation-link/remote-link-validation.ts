@@ -1,5 +1,5 @@
 import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
-import { InvalidResetLinkError, LinkAlreadyUsedError, UnexpectedError } from 'src/domain/errors'
+import { InvalidCredentialsError, InvalidResetLinkError, LinkAlreadyUsedError, UnexpectedError } from 'src/domain/errors'
 import { LinkValidationResponseType } from 'src/domain/models'
 import { LinkValidation } from 'src/domain/usecases'
 
@@ -21,6 +21,8 @@ export class RemoteLinkValidation implements LinkValidation {
     switch (statusCode) {
       case HttpStatusCode.ok:
         return caseHttpStatusCodeOk(httpResponse)
+      case HttpStatusCode.badRequest:
+        throw new InvalidCredentialsError()
       default: throw new UnexpectedError()
     }
   }
