@@ -92,6 +92,28 @@ describe('RemoteForgotPassword', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
+  it('Should throw UnexpectedError if HttpClient return 500', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    const promise = sut.sendEmail(faker.internet.email())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('Should throw UnexpectedError if HttpClient return 404', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.notFound
+    }
+
+    const promise = sut.sendEmail(faker.internet.email())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
   test('Should ensure RemoteForgotPassword returns UnexpectedError if statusCode is different from 200', async () => {
     const { sut } = makeSut({ statusCode: 415 })
 
