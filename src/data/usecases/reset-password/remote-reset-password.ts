@@ -1,5 +1,5 @@
 import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
-import { InvalidCredentialsError, UnexpectedError } from 'src/domain/errors'
+import { InvalidCredentialsError, UnchangedPasswordError, UnexpectedError } from 'src/domain/errors'
 import { ResetPassword } from 'src/domain/usecases'
 
 export class RemoteResetPassword implements ResetPassword {
@@ -17,7 +17,11 @@ export class RemoteResetPassword implements ResetPassword {
 
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
-        return httpResponse.body
+        if (httpResponse.body) {
+          return httpResponse.body
+        } else {
+          throw new UnchangedPasswordError()
+        }
       case HttpStatusCode.badRequest:
         throw new InvalidCredentialsError()
       default:
