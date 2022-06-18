@@ -7,5 +7,3 @@ export const mockResetPasswordParams = (): ResetPassword.Params => ({
   hash: faker.datatype.uuid(),
   password: faker.internet.password()
 })
-
-export const mockResetPasswordResponse = (): ResetPassword.Response => faker.datatype.boolean()
