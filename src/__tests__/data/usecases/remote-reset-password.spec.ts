@@ -2,7 +2,7 @@ import { HttpClientSpy } from '../test'
 import { mockResetPasswordParams } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteResetPassword } from 'src/data/usecases'
-import { InvalidCredentialsError, UnexpectedError } from 'src/domain/errors'
+import { InvalidCredentialsError, UnchangedPasswordError, UnexpectedError } from 'src/domain/errors'
 
 import faker from '@faker-js/faker'
 
@@ -81,5 +81,17 @@ describe('RemoteResetPassword', () => {
     const httpResponse = await sut.reset(mockResetPasswordParams())
 
     expect(httpResponse).toBe(true)
+  })
+
+  it('Should RemoteAuthentication return ok but UnchangedPasswordError if HttpClient return 200 and body false', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: false
+    }
+
+    const promise = sut.reset(mockResetPasswordParams())
+
+    await expect(promise).rejects.toThrow(new UnchangedPasswordError())
   })
 })
