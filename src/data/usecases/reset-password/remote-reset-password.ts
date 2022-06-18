@@ -1,4 +1,5 @@
-import { HttpClient } from 'src/data/protocols/http'
+import { HttpClient, HttpStatusCode } from 'src/data/protocols/http'
+import { InvalidCredentialsError } from 'src/domain/errors'
 import { ResetPassword } from 'src/domain/usecases'
 
 export class RemoteResetPassword implements ResetPassword {
@@ -8,11 +9,16 @@ export class RemoteResetPassword implements ResetPassword {
   ) { }
 
   async reset (params: ResetPassword.Params): Promise<ResetPassword.Response> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'put',
       body: params
     })
+
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.badRequest:
+        throw new InvalidCredentialsError()
+    }
     return Promise.resolve(true)
   }
 }
