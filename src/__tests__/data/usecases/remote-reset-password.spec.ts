@@ -1,5 +1,5 @@
 import { HttpClientSpy } from '../test'
-import { mockResetPasswordParams } from 'src/__tests__/domain/mocks'
+import { mockResetPasswordParams, mockResetPasswordResponse } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteResetPassword } from 'src/data/usecases'
 import { InvalidCredentialsError, UnexpectedError } from 'src/domain/errors'
@@ -65,5 +65,18 @@ describe('RemoteResetPassword', () => {
     const promise = sut.reset(mockResetPasswordParams())
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('Should RemoteResetPassword reutrn ok if HttpClient return 200', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    const httpResult = mockResetPasswordResponse()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+
+    const response = await sut.reset(mockResetPasswordParams())
+
+    expect(response).toEqual(httpResult)
   })
 })
