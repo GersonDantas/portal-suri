@@ -3,7 +3,7 @@ import { HttpClientSpy } from 'src/__tests__/data/test'
 import { mockLinValidationParams } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteLinkValidation } from 'src/data/usecases'
-import { InvalidCredentialsError, InvalidResetLinkError, LinkAlreadyUsedError } from 'src/domain/errors'
+import { InvalidCredentialsError, InvalidResetLinkError, LinkAlreadyUsedError, UnexpectedError } from 'src/domain/errors'
 import { LinkValidationResponseType } from 'src/domain/models'
 
 import faker from '@faker-js/faker'
@@ -81,5 +81,27 @@ describe('RemoteLinkValidation', () => {
     const promise = sut.validate(mockLinValidationParams())
 
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
+  })
+
+  it('Should throw UnexpectedError if HttpClient return 500', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    const promise = sut.validate(mockLinValidationParams())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('Should throw UnexpectedError if HttpClient return 404', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.notFound
+    }
+
+    const promise = sut.validate(mockLinValidationParams())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
