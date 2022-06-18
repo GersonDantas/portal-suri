@@ -2,7 +2,7 @@ import { mockForgotPasswordResponseModel } from 'src/__tests__/data/mock'
 import { HttpClientSpy } from 'src/__tests__/data/test'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteForgotPassword } from 'src/data/usecases'
-import { IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
+import { InvalidCredentialsError, IsFacebookError, UnexpectedError, UserNotFoundError } from 'src/domain/errors'
 
 import faker from '@faker-js/faker'
 
@@ -79,6 +79,17 @@ describe('RemoteForgotPassword', () => {
 
     expect(forgotPasswordResponse.success).toBe(body.success)
     expect(forgotPasswordResponse.type).toBe(body.type)
+  })
+
+  it('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+
+    const promise = sut.sendEmail(faker.internet.email())
+
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
   test('Should ensure RemoteForgotPassword returns UnexpectedError if statusCode is different from 200', async () => {
