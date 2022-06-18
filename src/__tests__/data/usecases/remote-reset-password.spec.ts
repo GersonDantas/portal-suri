@@ -1,5 +1,5 @@
 import { HttpClientSpy } from '../test'
-import { mockResetPasswordParams, mockResetPasswordResponse } from 'src/__tests__/domain/mocks'
+import { mockResetPasswordParams } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteResetPassword } from 'src/data/usecases'
 import { InvalidCredentialsError, UnexpectedError } from 'src/domain/errors'
@@ -26,6 +26,10 @@ describe('RemoteResetPassword', () => {
     const url = faker.internet.url()
     const { httpClientSpy, sut } = makeSut(url)
     const params = mockResetPasswordParams()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: true
+    }
 
     sut.reset(params)
 
@@ -67,16 +71,15 @@ describe('RemoteResetPassword', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('Should RemoteResetPassword reutrn ok if HttpClient return 200', async () => {
+  it('Should RemoteAuthentication return ok if HttpClient return 200 and body true', async () => {
     const { httpClientSpy, sut } = makeSut()
-    const httpResult = mockResetPasswordResponse()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.ok,
-      body: httpResult
+      body: true
     }
 
-    const response = await sut.reset(mockResetPasswordParams())
+    const httpResponse = await sut.reset(mockResetPasswordParams())
 
-    expect(response).toEqual(httpResult)
+    expect(httpResponse).toBe(true)
   })
 })
