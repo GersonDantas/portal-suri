@@ -3,7 +3,7 @@ import { HttpClientSpy } from 'src/__tests__/data/test'
 import { mockLinValidationParams } from 'src/__tests__/domain/mocks'
 import { HttpStatusCode } from 'src/data/protocols/http'
 import { RemoteLinkValidation } from 'src/data/usecases'
-import { InvalidResetLinkError, LinkAlreadyUsedError, UnexpectedError } from 'src/domain/errors'
+import { InvalidCredentialsError, InvalidResetLinkError, LinkAlreadyUsedError } from 'src/domain/errors'
 import { LinkValidationResponseType } from 'src/domain/models'
 
 import faker from '@faker-js/faker'
@@ -23,7 +23,7 @@ const makeSut = ({ url, body, statusCode }: SutParams = {
   url: faker.internet.url(),
   body: faker.random.arrayElement([undefined, null, {}])
 }): SutTypes => {
-  const httpClientSpy = new HttpClientSpy<RemoteLinkValidation.Model>({ statusCode: statusCode ?? 200, body })
+  const httpClientSpy = new HttpClientSpy<RemoteLinkValidation.Model>({ statusCode: 200, body })
   const sut = new RemoteLinkValidation(url, httpClientSpy)
 
   return {
@@ -72,11 +72,14 @@ describe('RemoteLinkValidation', () => {
     expect(linkValidationResponse.type).toBe(LinkValidationResponseType.ValidResetLink)
   })
 
-  test('Should ensure RemoteLinkValidation returns success if reset link sent', async () => {
-    const { sut } = makeSut({ statusCode: 415 })
+  it('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
+    const { httpClientSpy, sut } = makeSut()
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
 
     const promise = sut.validate(mockLinValidationParams())
 
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 })
