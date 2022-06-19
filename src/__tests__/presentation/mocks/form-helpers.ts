@@ -1,11 +1,11 @@
 import faker from '@faker-js/faker'
 import { fireEvent, screen } from '@testing-library/react'
 
-export const testStatusForField = (fieldName: string, validationError?: string): void => {
+export const testStatusForField = (fieldName: string, validationError = ''): void => {
   populateField(fieldName)
-  const input = screen.getByTestId(fieldName)
-  expect(input.title).toBe(validationError ?? 'ok')
-  expect(input).toHaveAttribute('data-status', validationError ? 'invalid' : 'valid')
+  const field = screen.getByTestId(fieldName)
+  expect(field).toHaveProperty('title', validationError)
+  expect(field).toHaveAttribute('data-status', validationError ? 'invalid' : 'valid')
 }
 
 export const populateField = (fieldName: string, value = faker.internet.email()): HTMLElement => {

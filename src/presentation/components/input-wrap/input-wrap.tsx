@@ -22,7 +22,7 @@ const InputWrap: React.FC<Props> = ({ state, setState, ...props }) => {
         {...props}
         data-status={error ? 'invalid' : 'valid'}
         data-testid={props.name}
-        title={error || 'ok'}
+        title={error}
         id={`${props.name}${props['aria-label']}-input`}
         onChange={e => setState({ ...state, [e.target.name]: e.target.value })}
       />

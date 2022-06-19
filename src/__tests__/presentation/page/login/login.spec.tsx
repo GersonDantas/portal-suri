@@ -124,6 +124,16 @@ describe('Login Component', () => {
     expect(screen.getByTestId('submit')).not.toBeDisabled()
   })
 
+  test('Should disable submit button if form is invalid', async () => {
+    const validationError = faker.random.words()
+    makeSut({ validationError })
+
+    Helpers.populateField('email')
+    Helpers.testStatusForField('password', validationError)
+
+    expect(screen.getByTestId('submit')).toBeDisabled()
+  })
+
   test('Should show spinner on submit click', async () => {
     makeSut()
 

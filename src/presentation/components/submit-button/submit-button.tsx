@@ -8,7 +8,7 @@ type Props = {
   dataTestId?: string
 }
 
-const SubmitButton: React.FC<Props> = ({ text, state, dataTestId }: Props) => {
+const SubmitButton: React.FC<Props> = ({ text, state, dataTestId }) => {
   return (
     <Button disabled={state.isFormInvalid} data-testid={dataTestId ?? 'submit'} type='submit'>
       {text}

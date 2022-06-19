@@ -14,15 +14,15 @@ type Props = {
 const ForgotPasswordPage: React.FC<Props> = ({ validation }) => {
   const [state, setState] = useRecoilState(forgotPasswordPageState)
 
+  useEffect(() => validate('forgotPassword'), [state.forgotPassword])
+  useEffect(() => validate('forgotPasswordConfirmation'), [state.forgotPasswordConfirmation])
+
   const validate = (field: string): void => {
     const { forgotPassword, forgotPasswordConfirmation } = state
     const formData = { forgotPassword, forgotPasswordConfirmation }
     setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
     setState(old => ({ ...old, isFormInvalid: !!old.forgotPasswordError || !!old.forgotPasswordConfirmationError }))
   }
-
-  useEffect(() => validate('forgotPassword'), [state.forgotPassword])
-  useEffect(() => validate('forgotPasswordConfirmation'), [state.forgotPasswordConfirmation])
 
   return (
     <IonPage>

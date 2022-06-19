@@ -3,7 +3,7 @@ import { ValidationStub } from 'src/__tests__/presentation/test'
 import { ForgotPasswordPage } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
 
@@ -65,12 +65,22 @@ describe('ForgotPasswordPage', () => {
     Helpers.testStatusForField('forgotPasswordConfirmation')
   })
 
-  test('Should enable submit button if form is valid', () => {
+  test('Should enable submit button if form is valid', async () => {
     makeSut()
 
     Helpers.populateField('forgotPassword')
     Helpers.populateField('forgotPasswordConfirmation')
 
-    expect(screen.getByTestId('submit')).not.toBeDisabled()
+    await waitFor(() => expect(screen.getByTestId('submit')).not.toBeDisabled())
+  })
+
+  test('Should disable submit button if form is invalid', async () => {
+    const validationError = faker.random.words()
+    makeSut({ validationError })
+
+    Helpers.populateField('forgotPassword')
+    Helpers.testStatusForField('forgotPasswordConfirmation', validationError)
+
+    expect(screen.getByTestId('submit')).toBeDisabled()
   })
 })
