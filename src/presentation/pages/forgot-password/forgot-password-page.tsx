@@ -37,6 +37,7 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
       ...old,
       isLoading: true
     }))
+    if (state.isLoading) return
     await resetPassword.reset({ email: `${email}`, hash: `${hash}`, password: state.forgotPassword })
   }
 
