@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="fmEPCrcAMLsokTtu_gAn" name="Page-1">
-        <mxGraphModel dx="5228" dy="2404" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2927" dy="1602" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -110,7 +110,7 @@
                 <mxCell id="64" value="&lt;font color=&quot;#000000&quot;&gt;ErrorPage&lt;/font&gt;" style="whiteSpace=wrap;html=1;rounded=0;fontSize=24;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
                     <mxGeometry x="559" y="490" width="261" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="69" style="edgeStyle=none;html=1;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1" source="68">
+                <mxCell id="69" style="edgeStyle=none;html=1;endArrow=none;endFill=0;dashed=1;" parent="1" source="68" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="374" y="330" as="targetPoint"/>
                         <Array as="points">
@@ -118,7 +118,7 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="68" value="&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;font-size: 24px&quot;&gt;savePasswordChangeInfo&lt;/span&gt;&lt;span style=&quot;font-size: 24px&quot;&gt;('email.and.hash', {email, hash})&lt;/span&gt;&lt;/font&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;rounded=1;fillColor=#eeeeee;strokeColor=#36393d;" vertex="1" parent="1">
+                <mxCell id="68" value="&lt;font color=&quot;#000000&quot;&gt;&lt;span style=&quot;font-size: 24px&quot;&gt;{path: `/?email=${email}&amp;amp;hash=${hash}`&amp;nbsp;&lt;/span&gt;&lt;/font&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;rounded=1;fillColor=#eeeeee;strokeColor=#36393d;" parent="1" vertex="1">
                     <mxGeometry x="-208" y="724" width="772" height="62" as="geometry"/>
                 </mxCell>
             </root>
