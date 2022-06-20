@@ -144,7 +144,16 @@ describe('ForgotPasswordPage', () => {
     expect(resetPasswordSpy.callsCount).toBe(1)
   })
 
-  test('Should present UnchangedPasswordError if form is invalid', async () => {
+  test('Should not call RemoteResetPassword if form is invalid', async () => {
+    const validationError = faker.random.words()
+    const { resetPasswordSpy } = makeSut({ validationError })
+
+    await simulateValidSubmit()
+
+    expect(resetPasswordSpy.callsCount).toBe(0)
+  })
+
+  test('Should present UnchangedPasswordError if reset password fails', async () => {
     const { resetPasswordSpy } = makeSut()
     const error = new UnchangedPasswordError()
     jest.spyOn(resetPasswordSpy, 'reset').mockReturnValueOnce(Promise.reject(error))
