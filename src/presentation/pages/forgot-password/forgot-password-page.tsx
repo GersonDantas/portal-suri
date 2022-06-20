@@ -8,7 +8,7 @@ import { IonPage } from '@ionic/react'
 import queryString from 'query-string'
 import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useResetRecoilState } from 'recoil'
 
 type Props = {
   validation: Validation
@@ -16,12 +16,10 @@ type Props = {
 }
 
 const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
+  const resetForgotPasswordPageState = useResetRecoilState(forgotPasswordPageState)
   const [state, setState] = useRecoilState(forgotPasswordPageState)
   const { search } = useLocation()
   const { email, hash } = queryString.parse(search)
-
-  useEffect(() => validate('forgotPassword'), [state.forgotPassword])
-  useEffect(() => validate('forgotPasswordConfirmation'), [state.forgotPasswordConfirmation])
 
   const validate = (field: string): void => {
     const { forgotPassword, forgotPasswordConfirmation } = state
@@ -33,13 +31,26 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
 
-    setState(old => ({
-      ...old,
-      isLoading: true
-    }))
-    if (state.isLoading) return
-    await resetPassword.reset({ email: `${email}`, hash: `${hash}`, password: state.forgotPassword })
+    try {
+      setState(old => ({
+        ...old,
+        isLoading: true
+      }))
+      if (state.isLoading) return
+      await resetPassword.reset({ email: `${email}`, hash: `${hash}`, password: state.forgotPassword })
+    } catch (error: any) {
+      setState(old => ({
+        ...old,
+        isLoading: false,
+        mainInfo: error.message,
+        isError: true
+      }))
+    }
   }
+
+  useEffect(() => resetForgotPasswordPageState(), [])
+  useEffect(() => validate('forgotPassword'), [state.forgotPassword])
+  useEffect(() => validate('forgotPasswordConfirmation'), [state.forgotPasswordConfirmation])
 
   return (
     <IonPage>
