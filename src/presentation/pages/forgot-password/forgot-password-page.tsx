@@ -32,11 +32,11 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
     event.preventDefault()
 
     try {
+      if (state.isLoading || state.isFormInvalid) return
       setState(old => ({
         ...old,
         isLoading: true
       }))
-      if (state.isLoading) return
       await resetPassword.reset({ email: `${email}`, hash: `${hash}`, password: state.forgotPassword })
     } catch (error: any) {
       setState(old => ({
