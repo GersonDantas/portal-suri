@@ -5,7 +5,7 @@ import { ErrorPage } from 'src/presentation/pages'
 import { IonPage, useIonViewWillEnter } from '@ionic/react'
 import queryString from 'query-string'
 import React, { useCallback } from 'react'
-import { RouteProps, useLocation, Route, Redirect } from 'react-router-dom'
+import { RouteProps, useLocation, Redirect } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 
 type Props = RouteProps & {
@@ -50,7 +50,7 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, fallbackRoute, .
   const RenderComponent = useCallback((): JSX.Element => {
     if (state.urlWithParams) {
       return state.success
-        ? <Route {...props} />
+        ? <Redirect to={`/mudar-senha/${email}/${k}`} />
         : <ErrorPage goFallBack={goFallBackRoute} errorMessage={state.mainError} />
     } else {
       return <Redirect to={fallbackRoute} />
