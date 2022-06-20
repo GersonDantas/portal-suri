@@ -29,7 +29,7 @@ export const MockMakeValidationLinkProxy: React.FC<Props> = ({ success, type = 5
   linkValidationSpy.response = { success, type }
   return <LinkValidationProxy
     fallbackRoute='/login'
-    path='/'
+    path={['/mudar-senha/:email/:hash', '/']}
     component={ForgotPasswordPage}
     linkValidation={linkValidationSpy}
   />

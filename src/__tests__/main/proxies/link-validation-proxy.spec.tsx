@@ -20,14 +20,18 @@ type SutParams = {
   linkValidationSpy?: LinkValidationSpy
   fallbackRoute?: string
   urlWithParams?: boolean
+  hash?: string
+  email?: string
 }
 
-const makeSut = ({ linkValidationSpy, fallbackRoute, urlWithParams }: SutParams = {
-  linkValidationSpy: new LinkValidationSpy(), fallbackRoute: faker.internet.url(), urlWithParams: true
+const makeSut = ({ linkValidationSpy, fallbackRoute, urlWithParams, email, hash }: SutParams = {
+  linkValidationSpy: new LinkValidationSpy(),
+  fallbackRoute: faker.internet.url(),
+  urlWithParams: true,
+  hash: faker.datatype.uuid(),
+  email: faker.internet.email()
 }): SutType => {
-  const email = faker.internet.email()
   const exp = faker.datatype.datetime().toString()
-  const hash = faker.datatype.uuid()
   const createHistory = createMemoryHistory({
     initialEntries: [urlWithParams ? '/' : `/?mode=recover-password&email=${email}&exp=${exp}&k=${hash}`]
   })
@@ -60,12 +64,14 @@ describe('LinkValidationProxy', () => {
     await waitFor(() => expect(createHistory.location.pathname).toBe(fallbackRoute))
   })
 
-  test('Should LinkValidationProxy render to "/" if RemoteValidation success', async () => {
+  test('Should LinkValidationProxy render to "/mudar-senha/:email/:hash" with params if RemoteValidation success', async () => {
     const linkValidationSpy = new LinkValidationSpy()
     linkValidationSpy.response = { success: true, type: 5 }
-    const { createHistory } = makeSut({ linkValidationSpy })
+    const hash = faker.datatype.uuid()
+    const email = faker.internet.email()
+    const { createHistory } = makeSut({ linkValidationSpy, email, hash })
 
-    await waitFor(() => expect(createHistory.location.pathname).toBe('/'))
+    await waitFor(() => expect(createHistory.location.pathname).toBe(`/mudar-senha/${email}/${hash}`))
   })
 
   test('Should LinkValidationProxy render to ErrorPage if linkValidation fails', async () => {

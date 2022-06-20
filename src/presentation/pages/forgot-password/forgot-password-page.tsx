@@ -5,9 +5,8 @@ import { FormWrap, Logo } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
-import queryString from 'query-string'
 import React, { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
 type Props = {
@@ -18,8 +17,7 @@ type Props = {
 const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
   const resetForgotPasswordPageState = useResetRecoilState(forgotPasswordPageState)
   const [state, setState] = useRecoilState(forgotPasswordPageState)
-  const { search } = useLocation()
-  const { email, hash } = queryString.parse(search)
+  const { email, hash } = useParams<{ email: string, hash: string }>()
 
   const validate = (field: string): void => {
     const { forgotPassword, forgotPasswordConfirmation } = state
@@ -37,7 +35,7 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
         ...old,
         isLoading: true
       }))
-      await resetPassword.reset({ email: `${email}`, hash: `${hash}`, password: state.forgotPassword })
+      await resetPassword.reset({ email, hash, password: state.forgotPassword })
     } catch (error: any) {
       setState(old => ({
         ...old,

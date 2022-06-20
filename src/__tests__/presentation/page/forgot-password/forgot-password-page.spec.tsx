@@ -8,7 +8,7 @@ import faker from '@faker-js/faker'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { Router } from 'react-router-dom'
+import { Route, Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 
 type SutParams = {
@@ -24,14 +24,16 @@ type SutType = {
 const makeSut = (params: SutParams = {
   email: faker.internet.email(), hash: faker.datatype.uuid(), validationError: undefined
 }): SutType => {
-  const createHistory = createMemoryHistory({ initialEntries: [`/?email=${params.email}&hash=${params.hash}`] })
+  const createHistory = createMemoryHistory({ initialEntries: [`/mudar-senha/${params.email}/${params.hash}`] })
   const validationStub = new ValidationStub()
   const resetPasswordSpy = new RemoteResetPasswordSpy()
   validationStub.errorMessage = params?.validationError
   render(
     <RecoilRoot>
       <Router history={createHistory}>
-        <ForgotPasswordPage validation={validationStub} resetPassword={resetPasswordSpy} />
+        <Route path='/mudar-senha/:email/:hash'>
+          <ForgotPasswordPage validation={validationStub} resetPassword={resetPasswordSpy} />
+        </Route>
       </Router>
     </RecoilRoot>
   )
