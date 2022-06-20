@@ -133,4 +133,13 @@ describe('ForgotPasswordPage', () => {
       hash
     })
   })
+
+  test('Should call RemoteResetPassword only once', async () => {
+    const { resetPasswordSpy } = makeSut()
+
+    await simulateValidSubmit()
+    await simulateValidSubmit()
+
+    expect(resetPasswordSpy.callsCount).toBe(1)
+  })
 })
