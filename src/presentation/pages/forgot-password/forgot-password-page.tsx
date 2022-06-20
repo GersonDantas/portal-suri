@@ -1,18 +1,24 @@
 import { forgotPasswordPageState, FormStatus, InputWrap, SubmitButton } from './components'
 import Styles from './forgot-password-page.module.scss'
+import { ResetPassword } from 'src/domain/usecases'
 import { FormWrap, Logo } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
+import queryString from 'query-string'
 import React, { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 
 type Props = {
   validation: Validation
+  resetPassword: ResetPassword
 }
 
-const ForgotPasswordPage: React.FC<Props> = ({ validation }) => {
+const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
   const [state, setState] = useRecoilState(forgotPasswordPageState)
+  const { search } = useLocation()
+  const { email, hash } = queryString.parse(search)
 
   useEffect(() => validate('forgotPassword'), [state.forgotPassword])
   useEffect(() => validate('forgotPasswordConfirmation'), [state.forgotPasswordConfirmation])
@@ -24,9 +30,19 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation }) => {
     setState(old => ({ ...old, isFormInvalid: !!old.forgotPasswordError || !!old.forgotPasswordConfirmationError }))
   }
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault()
+
+    setState(old => ({
+      ...old,
+      isLoading: true
+    }))
+    await resetPassword.reset({ email: `${email}`, hash: `${hash}`, password: state.forgotPassword })
+  }
+
   return (
     <IonPage>
-      <FormWrap>
+      <FormWrap data-testid='forgot-form' onSubmit={handleSubmit}>
         <h1 className={Styles.logo}>
           <Logo />
         </h1>
