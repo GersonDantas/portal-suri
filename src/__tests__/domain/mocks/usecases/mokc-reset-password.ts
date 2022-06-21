@@ -1,4 +1,4 @@
-import { ResetPassword } from 'src/domain/usecases'
+import { ResetPassword, UserInfoResetPassword } from 'src/domain/usecases'
 
 import faker from '@faker-js/faker'
 
@@ -9,6 +9,11 @@ export const mockResetPasswordParams = (): ResetPassword.Params => ({
 })
 
 export const mockResetPasswordResponse = (): ResetPassword.Response => faker.datatype.boolean()
+
+export const mockUserInfoResetPassword = (): UserInfoResetPassword => ({
+  email: faker.internet.email(),
+  hash: faker.datatype.uuid()
+})
 
 export class RemoteResetPasswordSpy implements ResetPassword {
   response = mockResetPasswordResponse()

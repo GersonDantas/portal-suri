@@ -1,11 +1,14 @@
 // TODO: Este arquivo deve ser apagado, criado por enquanto a api não dá resposta
+import { userInfoResetPasswordState } from './atoms'
 import { UnexpectedError } from 'src/domain/errors'
 import { LinkValidationResponseType } from 'src/domain/models'
 import { LinkValidation } from 'src/domain/usecases'
+import { getUserInfoResetPasswordAdapter, setUserInfoResetPasswordAdapter } from 'src/main/adapters'
 import { LinkValidationProxy } from 'src/main/proxies'
 import { ForgotPasswordPage } from 'src/presentation/pages'
 
 import React from 'react'
+import { MutableSnapshot, RecoilRoot } from 'recoil'
 
 type Props = {
   success: boolean
@@ -27,12 +30,22 @@ class LinkValidationSpy implements LinkValidation {
 export const MockMakeValidationLinkProxy: React.FC<Props> = ({ success, type = 5 }) => {
   const linkValidationSpy = new LinkValidationSpy()
   linkValidationSpy.response = { success, type }
-  return <LinkValidationProxy
-    fallbackRoute='/login'
-    path={['/mudar-senha/:email/:hash', '/']}
-    component={ForgotPasswordPage}
-    linkValidation={linkValidationSpy}
-  />
+  return (
+    <RecoilRoot initializeState={({ set }: MutableSnapshot) => {
+      set(userInfoResetPasswordState, {
+        setUserInfoResetPassword: setUserInfoResetPasswordAdapter,
+        getUserInfoResetPassword: getUserInfoResetPasswordAdapter
+      })
+    }}
+    >
+      <LinkValidationProxy
+        fallbackRoute='/login'
+        path='/'
+        component={ForgotPasswordPage}
+        linkValidation={linkValidationSpy}
+      />
+    </RecoilRoot>
+  )
 }
 
 export default MockMakeValidationLinkProxy
