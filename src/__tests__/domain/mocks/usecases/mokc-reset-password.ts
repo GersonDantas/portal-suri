@@ -11,11 +11,13 @@ export const mockResetPasswordParams = (): ResetPassword.Params => ({
 export const mockResetPasswordResponse = (): ResetPassword.Response => faker.datatype.boolean()
 
 export class RemoteResetPasswordSpy implements ResetPassword {
+  response = mockResetPasswordResponse()
   params: ResetPassword.Params
   callsCount = 0
+
   async reset (params: ResetPassword.Params): Promise<boolean> {
     this.params = params
     this.callsCount++
-    return Promise.resolve(mockResetPasswordResponse())
+    return Promise.resolve(this.response)
   }
 }
