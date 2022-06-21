@@ -23,6 +23,14 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
   const setModalState = useSetRecoilState(modalState)
   const { setCurrentCbmAuth } = useRecoilValue(currentCbmAuthState)
 
+  useEffect(() => {
+    resetLoginState()
+    resetModalState()
+  }, [])
+
+  useEffect(() => validate('email'), [state.email])
+  useEffect(() => validate('password'), [state.password])
+
   const validate = (field: string): void => {
     const { email, password } = state
     const formData = { email, password }
@@ -58,20 +66,12 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
     }
   }
 
-  useEffect(() => {
-    resetLoginState()
-    resetModalState()
-  }, [])
-
-  useEffect(() => validate('email'), [state.email])
-  useEffect(() => validate('password'), [state.password])
-
   return (
     <IonPage>
       <FormWrap data-testid='login-form' onSubmit={handleSubmit}>
         <LoginHeader />
-        <InputWrap className={Styles.email} name='email' type='email' />
-        <InputWrap aria-label='senha' className={Styles.password} name='password' type='password' />
+        <InputWrap name='email' type='email' />
+        <InputWrap aria-label='senha' name='password' type='password' />
         <a
           data-testid='forgot-button'
           className={Styles.forgot}

@@ -2,7 +2,7 @@
 
 .forgot {
   display        : flex;
-  justify-content: end;
+  justify-content: flex-end;
 
   p {
     font-size      : $fontSize12;
@@ -14,20 +14,6 @@
     &:hover {
       cursor         : pointer;
       text-decoration: underline;
-    }
-  }
-}
-
-.submit {
-  margin-bottom: 10px;
-
-  &:disabled {
-    background-color: $disabledBackground;
-    color           : $disabledColor;
-
-    &:hover {
-      opacity: 1;
-      cursor : default;
     }
   }
 }

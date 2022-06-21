@@ -2,7 +2,7 @@
 
 .buttonWrap {
   background-color: $primaryColor;
-  color           : white;
+  color           : $white;
   border-radius   : $borderRadiusTertiary;
   font-family     : 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight     : 500;
@@ -12,9 +12,18 @@
   font-size       : $fontSize16;
   border          : none;
   line-height     : 30px;
+  cursor          : pointer;
+
+  &:disabled {
+    background-color: $disabledBackground;
+    color           : $disableColor;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 
   &:hover {
     opacity: 0.9;
-    cursor : pointer;
   }
 }

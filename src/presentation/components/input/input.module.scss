@@ -15,6 +15,12 @@
   }
 
   &:focus {
-    outline-color: $primaryColor;
+    &[data-status='valid'] {
+      outline-color: $primaryColor;
+    }
+
+    &[data-status='invalid'] {
+      outline-color: $invalid;
+    }
   }
 }
