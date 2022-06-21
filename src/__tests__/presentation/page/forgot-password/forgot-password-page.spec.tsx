@@ -1,15 +1,18 @@
 import { RemoteResetPasswordSpy } from 'src/__tests__/domain/mocks'
+import { userInfoResetPasswordState } from 'src/__tests__/main/factories/mock'
 import { Helpers } from 'src/__tests__/presentation/mocks'
 import { ValidationStub } from 'src/__tests__/presentation/test'
 import { UnchangedPasswordError } from 'src/domain/errors'
 import { ForgotPasswordPage } from 'src/presentation/pages'
 
 import faker from '@faker-js/faker'
+import { IonRouterOutlet } from '@ionic/react'
+import { IonReactRouter } from '@ionic/react-router'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
-import { Route, Router } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
+import { Router } from 'react-router-dom'
+import { MutableSnapshot, RecoilRoot } from 'recoil'
 
 type SutParams = {
   validationError?: string
@@ -24,17 +27,26 @@ type SutType = {
 const makeSut = (params: SutParams = {
   email: faker.internet.email(), hash: faker.datatype.uuid(), validationError: undefined
 }): SutType => {
-  const createHistory = createMemoryHistory({ initialEntries: [`/mudar-senha/${params.email}/${params.hash}`] })
+  const getUserInfoResetPasswordMock = jest.fn().mockResolvedValueOnce(Promise.resolve({ email: params.email, hash: params.hash }))
+  const createHistory = createMemoryHistory({ initialEntries: ['/'] })
   const validationStub = new ValidationStub()
   const resetPasswordSpy = new RemoteResetPasswordSpy()
   validationStub.errorMessage = params?.validationError
   render(
-    <RecoilRoot>
-      <Router history={createHistory}>
-        <Route path='/mudar-senha/:email/:hash'>
-          <ForgotPasswordPage validation={validationStub} resetPassword={resetPasswordSpy} />
-        </Route>
-      </Router>
+    <RecoilRoot initializeState={({ set }: MutableSnapshot) => {
+      set(userInfoResetPasswordState, {
+        setUserInfoResetPassword: jest.fn(),
+        getUserInfoResetPassword: getUserInfoResetPasswordMock
+      })
+    }}
+    >
+      <IonReactRouter>
+        <Router history={createHistory}>
+          <IonRouterOutlet>
+            <ForgotPasswordPage validation={validationStub} resetPassword={resetPasswordSpy} />
+          </IonRouterOutlet>
+        </Router>
+      </IonReactRouter>
     </RecoilRoot>
   )
 
