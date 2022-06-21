@@ -200,8 +200,6 @@ describe('Login Component', () => {
     const { authenticationSpy, setCurrentCbmAuthMock } = makeSut()
 
     await simulateValidSubmit()
-    const form = screen.getByTestId('login-form')
-    await waitFor(() => form)
 
     const tokenSession = authenticationSpy.session.tokenSession
     const userId = authenticationSpy.session.platformUser.id
