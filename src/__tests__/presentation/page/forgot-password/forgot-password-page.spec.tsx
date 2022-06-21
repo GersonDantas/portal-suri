@@ -188,4 +188,14 @@ describe('ForgotPasswordPage', () => {
     expect(screen.getByTestId('main-info')).toHaveTextContent('Senha alterada com sucesso!')
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
+
+  test('Should ensure redirect to login if closeInfo click', async () => {
+    const { resetPasswordSpy } = makeSut()
+    resetPasswordSpy.response = true
+
+    await simulateValidSubmit()
+    fireEvent.click(screen.getByTestId('close-info'))
+
+    expect(createHistory.location.pathname).toBe('/login')
+  })
 })
