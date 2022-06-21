@@ -36,7 +36,10 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
         isLoading: true
       }))
       const { email, hash } = await getUserInfoResetPassword()
-      await resetPassword.reset({ email, hash, password: state.forgotPassword })
+      const success = await resetPassword.reset({ email, hash, password: state.forgotPassword })
+      if (success) {
+        setState(old => ({ ...old, isLoading: false, mainInfo: 'Senha alterada com sucesso!' }))
+      }
     } catch (error: any) {
       setState(old => ({
         ...old,
