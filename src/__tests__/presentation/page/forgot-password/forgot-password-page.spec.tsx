@@ -23,12 +23,12 @@ type SutParams = {
 type SutType = {
   resetPasswordSpy: RemoteResetPasswordSpy
 }
+const createHistory = createMemoryHistory({ initialEntries: ['/'] })
 
 const makeSut = (params: SutParams = {
   email: faker.internet.email(), hash: faker.datatype.uuid(), validationError: undefined
 }): SutType => {
   const getUserInfoResetPasswordMock = jest.fn().mockResolvedValueOnce(Promise.resolve({ email: params.email, hash: params.hash }))
-  const createHistory = createMemoryHistory({ initialEntries: ['/'] })
   const validationStub = new ValidationStub()
   const resetPasswordSpy = new RemoteResetPasswordSpy()
   validationStub.errorMessage = params?.validationError
@@ -116,7 +116,7 @@ describe('ForgotPasswordPage', () => {
     await waitFor(() => expect(screen.getByTestId('submit')).not.toBeDisabled())
   })
 
-  test('Should disable submit button if form is invalid', async () => {
+  test('Should disable submit button if form is invalid', () => {
     const validationError = faker.random.words()
     makeSut({ validationError })
 
@@ -127,7 +127,8 @@ describe('ForgotPasswordPage', () => {
   })
 
   test('Should show spinner on submit button click', async () => {
-    makeSut()
+    const { resetPasswordSpy } = makeSut()
+    resetPasswordSpy.response = false
 
     await simulateValidSubmit()
 
@@ -175,6 +176,16 @@ describe('ForgotPasswordPage', () => {
     await simulateValidSubmit()
 
     expect(screen.getByTestId('main-info')).toHaveTextContent(error.message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+  })
+
+  test('Should hide spinner and show mainInfo with success if ResetPassword return true', async () => {
+    const { resetPasswordSpy } = makeSut()
+    resetPasswordSpy.response = true
+
+    await simulateValidSubmit()
+
+    expect(screen.getByTestId('main-info')).toHaveTextContent('Senha alterada com sucesso!')
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 })

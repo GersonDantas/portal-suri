@@ -4,8 +4,8 @@ import { UnexpectedError } from 'src/domain/errors'
 import { LinkValidationResponseType } from 'src/domain/models'
 import { LinkValidation } from 'src/domain/usecases'
 import { getUserInfoResetPasswordAdapter, setUserInfoResetPasswordAdapter } from 'src/main/adapters'
+import { MakeForgotPasswordPage } from 'src/main/factories/pages'
 import { LinkValidationProxy } from 'src/main/proxies'
-import { ForgotPasswordPage } from 'src/presentation/pages'
 
 import React from 'react'
 import { MutableSnapshot, RecoilRoot } from 'recoil'
@@ -41,7 +41,7 @@ export const MockMakeValidationLinkProxy: React.FC<Props> = ({ success, type = 5
       <LinkValidationProxy
         fallbackRoute='/login'
         path='/'
-        component={ForgotPasswordPage}
+        component={MakeForgotPasswordPage}
         linkValidation={linkValidationSpy}
       />
     </RecoilRoot>
