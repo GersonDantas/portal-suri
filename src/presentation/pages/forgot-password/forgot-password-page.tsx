@@ -1,13 +1,13 @@
 import { forgotPasswordPageState, FormStatus, InputWrap, SubmitButton } from './components'
 import Styles from './forgot-password-page.module.scss'
+import { userInfoResetPasswordState } from 'src/__tests__/main/factories/mock'
 import { ResetPassword } from 'src/domain/usecases'
 import { FormWrap, Logo } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { useRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 type Props = {
   validation: Validation
@@ -17,7 +17,7 @@ type Props = {
 const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
   const resetForgotPasswordPageState = useResetRecoilState(forgotPasswordPageState)
   const [state, setState] = useRecoilState(forgotPasswordPageState)
-  const { email, hash } = useParams<{ email: string, hash: string }>()
+  const { getUserInfoResetPassword } = useRecoilValue(userInfoResetPasswordState)
 
   const validate = (field: string): void => {
     const { forgotPassword, forgotPasswordConfirmation } = state
@@ -35,6 +35,7 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
         ...old,
         isLoading: true
       }))
+      const { email, hash } = await getUserInfoResetPassword()
       await resetPassword.reset({ email, hash, password: state.forgotPassword })
     } catch (error: any) {
       setState(old => ({
