@@ -72,7 +72,7 @@ describe('RemoteLinkValidation', () => {
     expect(linkValidationResponse.type).toBe(LinkValidationResponseType.ValidResetLink)
   })
 
-  it('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
+  test('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
@@ -83,7 +83,7 @@ describe('RemoteLinkValidation', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  it('Should throw UnexpectedError if HttpClient return 500', async () => {
+  test('Should throw UnexpectedError if HttpClient return 500', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
@@ -94,11 +94,19 @@ describe('RemoteLinkValidation', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('Should throw UnexpectedError if HttpClient return 404', async () => {
+  test('Should throw UnexpectedError if HttpClient return 404', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound
     }
+
+    const promise = sut.validate(mockLinValidationParams())
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should throw UnexpectedError if returns body empty', async () => {
+    const { sut } = makeSut()
 
     const promise = sut.validate(mockLinValidationParams())
 
