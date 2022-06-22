@@ -79,6 +79,8 @@ describe('Login Component', () => {
     expect(screen.queryByText(new RegExp(anyText, 'i'))).toBeInTheDocument()
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit')).toBeDisabled()
+    expect(screen.getByTestId('email')).toHaveAttribute('data-status', '')
+    expect(screen.getByTestId('password')).toHaveAttribute('data-status', '')
     Helpers.testStatusForField('email', validationError)
     Helpers.testStatusForField('password', validationError)
   })
