@@ -34,7 +34,9 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
   const validate = (field: string): void => {
     const { email, password } = state
     const formData = { email, password }
-    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, formData) }))
+    setState(old => {
+      return ({ ...old, [`${field}Error`]: validation.validate(field, formData) })
+    })
     setState(old => ({ ...old, isFormInvalid: !!old.emailError || !!old.passwordError }))
   }
 

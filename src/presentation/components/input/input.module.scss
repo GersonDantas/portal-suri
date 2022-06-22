@@ -22,5 +22,7 @@
     &[data-status='invalid'] {
       outline-color: $invalid;
     }
+
+    outline-color: rgba($black, .5);
   }
 }
