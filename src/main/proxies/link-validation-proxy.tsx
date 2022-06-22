@@ -6,15 +6,16 @@ import { ErrorPage } from 'src/presentation/pages'
 import { IonPage, useIonViewWillEnter } from '@ionic/react'
 import queryString from 'query-string'
 import React, { useCallback } from 'react'
-import { RouteProps, useLocation, Redirect, Route } from 'react-router-dom'
+import { RouteProps, useLocation, Redirect, Route, useHistory } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 type Props = RouteProps & {
   linkValidation: LinkValidation
-  fallbackRoute: string
+  fallbackRoute: '/login' | '/'
 }
 
 const LinkValidationProxy: React.FC<Props> = ({ linkValidation, fallbackRoute, ...props }): JSX.Element => {
+  const history = useHistory()
   const [state, setState] = useRecoilState(linkValidationState)
   const { setUserInfoResetPassword } = useRecoilValue(userInfoResetPasswordState)
   const { search } = useLocation()
@@ -27,10 +28,6 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, fallbackRoute, .
       setState(old => ({ ...old, urlWithParams: false }))
     }
   }, [])
-
-  const goFallBackRoute = (): void => {
-    setState(old => ({ ...old, urlWithParams: false }))
-  }
 
   const validate = useCallback(async () => {
     try {
@@ -54,7 +51,7 @@ const LinkValidationProxy: React.FC<Props> = ({ linkValidation, fallbackRoute, .
     if (state.urlWithParams) {
       return state.success
         ? <Route {...props} />
-        : <ErrorPage goFallBack={goFallBackRoute} errorMessage={state.mainError} />
+        : <ErrorPage goFallBack={() => history.replace(fallbackRoute)} errorMessage={state.mainError} />
     } else {
       return <Redirect to={fallbackRoute} />
     }
