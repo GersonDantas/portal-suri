@@ -74,11 +74,13 @@ const Login: React.FC<Props> = ({ validation, authentication, ...props }) => {
         <LoginHeader />
         <InputWrap name='email' type='email' />
         <InputWrap aria-label='senha' name='password' type='password' />
-        <a
-          data-testid='forgot-button'
-          className={Styles.forgot}
-          onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
-        ><p>Esqueceu sua senha?</p></a>
+        <div className={Styles.forgotWrap}>
+          <a
+            data-testid='forgot-button'
+            className={Styles.forgot}
+            onClick={() => setModalState(old => ({ ...old, isOpen: true }))}
+          >Esqueceu sua senha?</a>
+        </div>
         <SubmitButton text='Fazer Login' />
         <p className={Styles.toSignup}>Não é cadastrado ainda?<Link to='/signup' data-testid='signup'> Crie sua conta</Link></p>
         <FormStatus />
