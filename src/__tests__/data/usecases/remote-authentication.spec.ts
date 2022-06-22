@@ -23,7 +23,7 @@ const makeSut = (url: string = faker.internet.url()): SutTypes => {
 }
 
 describe('RemoteAuthentication', () => {
-  it('Should call HttpClient with correct values', async () => {
+  test('Should call HttpClient with correct values', async () => {
     const url = faker.internet.url()
     const { httpClientSpy, sut } = makeSut(url)
     const authenticationParams = mockAuthenticationParams()
@@ -35,7 +35,7 @@ describe('RemoteAuthentication', () => {
     expect(httpClientSpy.method).toEqual('post')
   })
 
-  it('Should throw InvalidCredentialError if HttpClient return 401', async () => {
+  test('Should throw InvalidCredentialError if HttpClient return 401', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.unauthorized
@@ -46,7 +46,7 @@ describe('RemoteAuthentication', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  it('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
+  test('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
@@ -57,7 +57,7 @@ describe('RemoteAuthentication', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  it('Should throw UnexpectedError if HttpClient return 500', async () => {
+  test('Should throw UnexpectedError if HttpClient return 500', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
@@ -68,7 +68,7 @@ describe('RemoteAuthentication', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('Should throw UnexpectedError if HttpClient return 404', async () => {
+  test('Should throw UnexpectedError if HttpClient return 404', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound
@@ -79,7 +79,7 @@ describe('RemoteAuthentication', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('Should RemoteAuthentication return ok if HttpClient return 200', async () => {
+  test('Should RemoteAuthentication return ok if HttpClient return 200', async () => {
     const { httpClientSpy, sut } = makeSut()
     const httpResult = mockSession()
     httpClientSpy.response = {

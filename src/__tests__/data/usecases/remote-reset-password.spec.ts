@@ -38,7 +38,7 @@ describe('RemoteResetPassword', () => {
     expect(httpClientSpy.method).toEqual('put')
   })
 
-  it('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
+  test('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
@@ -49,7 +49,7 @@ describe('RemoteResetPassword', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  it('Should throw UnexpectedError if HttpClient return 500', async () => {
+  test('Should throw UnexpectedError if HttpClient return 500', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
@@ -60,7 +60,7 @@ describe('RemoteResetPassword', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('Should throw UnexpectedError if HttpClient return 404', async () => {
+  test('Should throw UnexpectedError if HttpClient return 404', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound
@@ -71,7 +71,7 @@ describe('RemoteResetPassword', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('Should RemoteAuthentication return ok if HttpClient return 200 and body true', async () => {
+  test('Should RemoteAuthentication return ok if HttpClient return 200 and body true', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.ok,
@@ -83,7 +83,7 @@ describe('RemoteResetPassword', () => {
     expect(httpResponse).toBe(true)
   })
 
-  it('Should RemoteAuthentication return ok but UnchangedPasswordError if HttpClient return 200 and body false', async () => {
+  test('Should RemoteAuthentication return ok but UnchangedPasswordError if HttpClient return 200 and body false', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.ok,

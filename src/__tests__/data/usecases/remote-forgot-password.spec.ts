@@ -81,7 +81,7 @@ describe('RemoteForgotPassword', () => {
     expect(forgotPasswordResponse.type).toBe(body.type)
   })
 
-  it('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
+  test('Should throw InvalidCredentialsError if HttpClient return 400', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
@@ -92,7 +92,7 @@ describe('RemoteForgotPassword', () => {
     await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
-  it('Should throw UnexpectedError if HttpClient return 500', async () => {
+  test('Should throw UnexpectedError if HttpClient return 500', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
@@ -103,7 +103,7 @@ describe('RemoteForgotPassword', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('Should throw UnexpectedError if HttpClient return 404', async () => {
+  test('Should throw UnexpectedError if HttpClient return 404', async () => {
     const { httpClientSpy, sut } = makeSut()
     httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound
