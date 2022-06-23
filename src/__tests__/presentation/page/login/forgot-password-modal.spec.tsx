@@ -42,8 +42,8 @@ const makeSut = (params?: SutParams): SutTypes => {
   }
 }
 
-const validSubmitForm = async (): Promise<void> => {
-  Helpers.populateField('input-email-forgot')
+const validSubmitForm = async (email = faker.internet.email()): Promise<void> => {
+  Helpers.populateField('input-email-forgot', email)
   const form = screen.getByTestId('forgot-form')
   fireEvent.submit(form)
   await waitFor(() => form)
@@ -67,15 +67,6 @@ describe('ForgotPasswordModal', () => {
     expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy()
   })
 
-  test('Should ensure close modal if empty input and submit button click ', async () => {
-    makeSut()
-
-    fireEvent.click(screen.getByTestId('forgot-button'))
-    fireEvent.click(screen.getByTestId('forgot-submit'))
-
-    await waitFor(() => expect(screen.queryByText('Qual o e-mail do cadastro?')).toBeFalsy())
-  })
-
   test('Should start initial with state', async () => {
     const validationError = faker.lorem.words()
     makeSut({ validationError })
@@ -83,6 +74,7 @@ describe('ForgotPasswordModal', () => {
     fireEvent.click(screen.getByTestId('forgot-button'))
 
     Helpers.testStatusForField('input-email-forgot', validationError)
+    expect(screen.getByTestId('forgot-submit')).toBeDisabled()
   })
 
   test('Should show email error in title if validations fails', () => {
@@ -100,10 +92,9 @@ describe('ForgotPasswordModal', () => {
 
     fireEvent.click(screen.getByTestId('forgot-button'))
     const email = faker.internet.email()
-    Helpers.populateField('input-email-forgot', email)
-    fireEvent.submit(screen.getByTestId('forgot-form'))
+    await validSubmitForm(email)
 
-    await waitFor(() => expect(forgotYourPasswordSpy.email).toBe(email))
+    expect(forgotYourPasswordSpy.email).toBe(email)
   })
 
   test('Should call ForgotYourPassword only once', async () => {
