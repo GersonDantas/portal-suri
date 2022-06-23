@@ -77,7 +77,9 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
         <div className={Styles.buttonsWrap}>
           <SubmitButton text='Enviar' />
         </div>
-        <Link className={Styles.toLogin} to='/login' data-testid='to-login'>Ir para o Login</Link>
+        <div className={Styles.toLoginWrap}>
+          <Link className={Styles.toLogin} to='/login' data-testid='to-login'>Ir para o Login</Link>
+        </div>
         <FormStatus />
       </FormWrap>
     </IonPage>
