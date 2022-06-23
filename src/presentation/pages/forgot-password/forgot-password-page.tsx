@@ -7,6 +7,7 @@ import { Validation } from 'src/presentation/protocols'
 
 import { IonPage } from '@ionic/react'
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 type Props = {
@@ -42,14 +43,22 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
       const { email, hash } = await getUserInfoResetPassword()
       const success = await resetPassword.reset({ email, hash, password: state.forgotPassword })
       if (success) {
-        setState(old => ({ ...old, isLoading: false, mainInfo: 'Senha alterada com sucesso!' }))
+        setState(old => ({
+          ...old,
+          isLoading: false,
+          mainInfo: 'Senha alterada com sucesso!',
+          forgotPassword: '',
+          forgotPasswordConfirmation: ''
+        }))
       }
     } catch (error: any) {
       setState(old => ({
         ...old,
         isLoading: false,
         mainInfo: error.message,
-        isError: true
+        isError: true,
+        forgotPassword: '',
+        forgotPasswordConfirmation: ''
       }))
     }
   }
@@ -60,11 +69,12 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
         <h1 className={Styles.logo}>
           <Logo />
         </h1>
-        <InputWrap aria-label='digite a nova senha' className={Styles.input} type='text' name='forgotPassword' />
-        <InputWrap aria-label='repita a nova senha' className={Styles.input} type='text' name='forgotPasswordConfirmation' />
+        <InputWrap aria-label='digite a nova senha' value={state.forgotPassword} className={Styles.input} type='password' name='forgotPassword' />
+        <InputWrap aria-label='repita a nova senha' value={state.forgotPasswordConfirmation} className={Styles.input} type='password' name='forgotPasswordConfirmation' />
         <div className={Styles.buttonsWrap}>
           <SubmitButton text='Enviar' />
         </div>
+        <Link className={Styles.toLogin} to='/Login' data-testid='signup'>Ir para o Login</Link>
         <FormStatus />
       </FormWrap>
     </IonPage>
