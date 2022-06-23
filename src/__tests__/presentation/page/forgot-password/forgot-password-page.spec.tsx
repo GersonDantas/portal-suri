@@ -127,12 +127,12 @@ describe('ForgotPasswordPage', () => {
   })
 
   test('Should show spinner on submit button click', async () => {
-    const { resetPasswordSpy } = makeSut()
-    resetPasswordSpy.response = false
+    makeSut()
 
-    await simulateValidSubmit()
+    const form = screen.getByTestId('forgot-form')
+    fireEvent.submit(form)
 
-    expect(screen.getByTestId('spinner')).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByTestId('spinner')).toBeInTheDocument())
   })
 
   test('Should call RemoteResetPassword with correct values', async () => {
@@ -189,5 +189,15 @@ describe('ForgotPasswordPage', () => {
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
     expect(screen.getByTestId('forgotPassword')).toHaveAttribute('value', '')
     expect(screen.getByTestId('forgotPasswordConfirmation')).toHaveAttribute('value', '')
+  })
+
+  test('Should throw UnchangedPasswordError if ResetPassword returns false', async () => {
+    const { resetPasswordSpy } = makeSut()
+    resetPasswordSpy.response = false
+
+    await simulateValidSubmit()
+
+    expect(screen.getByTestId('main-info')).toHaveTextContent(new UnchangedPasswordError().message)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 })
