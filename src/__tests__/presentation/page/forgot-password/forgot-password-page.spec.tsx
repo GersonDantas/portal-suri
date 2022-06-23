@@ -23,7 +23,7 @@ type SutParams = {
 type SutType = {
   resetPasswordSpy: RemoteResetPasswordSpy
 }
-const createHistory = createMemoryHistory({ initialEntries: ['/'] })
+const history = createMemoryHistory({ initialEntries: ['/'] })
 
 const makeSut = (params: SutParams = {
   email: faker.internet.email(), hash: faker.datatype.uuid(), validationError: undefined
@@ -41,7 +41,7 @@ const makeSut = (params: SutParams = {
     }}
     >
       <IonReactRouter>
-        <Router history={createHistory}>
+        <Router history={history}>
           <IonRouterOutlet>
             <ForgotPasswordPage validation={validationStub} resetPassword={resetPasswordSpy} />
           </IonRouterOutlet>
@@ -199,5 +199,14 @@ describe('ForgotPasswordPage', () => {
 
     expect(screen.getByTestId('main-info')).toHaveTextContent(new UnchangedPasswordError().message)
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
+  })
+
+  test('Should go to login page', () => {
+    makeSut()
+
+    fireEvent.click(screen.getByTestId('to-login'))
+
+    expect(history.index).toBe(1)
+    expect(history.location.pathname).toBe('/login')
   })
 })

@@ -15,7 +15,7 @@ import { Router } from 'react-router-dom'
 import { MutableSnapshot, RecoilRoot } from 'recoil'
 
 type SutType = {
-  createHistory: MemoryHistory
+  history: MemoryHistory
   setUserInfoResetPasswordMock: (userInfo: UserInfoResetPassword) => Promise<void>
 }
 
@@ -36,7 +36,7 @@ const makeSut = ({ linkValidationSpy, fallbackRoute, urlWithParams, email, hash 
 }): SutType => {
   const setUserInfoResetPasswordMock = jest.fn().mockResolvedValue(Promise.resolve())
   const exp = faker.datatype.datetime().toString()
-  const createHistory = createMemoryHistory({
+  const history = createMemoryHistory({
     initialEntries: [urlWithParams ? '/' : `/?mode=recover-password&email=${email}&exp=${exp}&k=${hash}`]
   })
   render(
@@ -48,7 +48,7 @@ const makeSut = ({ linkValidationSpy, fallbackRoute, urlWithParams, email, hash 
     }}
     >
       <IonReactRouter>
-        <Router history={createHistory}>
+        <Router history={history}>
           <IonRouterOutlet>
             <LinkValidationProxy
               fallbackRoute={fallbackRoute}
@@ -62,7 +62,7 @@ const makeSut = ({ linkValidationSpy, fallbackRoute, urlWithParams, email, hash 
   )
 
   return {
-    createHistory,
+    history,
     setUserInfoResetPasswordMock
   }
 }
@@ -70,17 +70,17 @@ const makeSut = ({ linkValidationSpy, fallbackRoute, urlWithParams, email, hash 
 describe('LinkValidationProxy', () => {
   test('Should LinkValidationProxy render to fallback', async () => {
     const fallbackRoute = faker.internet.url()
-    const { createHistory } = makeSut({ fallbackRoute, urlWithParams: true })
+    const { history } = makeSut({ fallbackRoute, urlWithParams: true })
 
-    await waitFor(() => expect(createHistory.location.pathname).toBe(fallbackRoute))
+    await waitFor(() => expect(history.location.pathname).toBe(fallbackRoute))
   })
 
   test('Should LinkValidationProxy render to "/" with params if RemoteValidation success', () => {
     const linkValidationSpy = new LinkValidationSpy()
     linkValidationSpy.response = { success: true, type: 5 }
-    const { createHistory } = makeSut({ linkValidationSpy })
+    const { history } = makeSut({ linkValidationSpy })
 
-    expect(createHistory.location.pathname).toBe('/')
+    expect(history.location.pathname).toBe('/')
   })
 
   test('Should LinkValidationProxy render to ErrorPage if linkValidation fails', async () => {
@@ -97,11 +97,11 @@ describe('LinkValidationProxy', () => {
     const fallbackRoute = faker.internet.url()
     const error = new UnexpectedError()
     jest.spyOn(linkValidationSpy, 'validate').mockRejectedValueOnce(error)
-    const { createHistory } = makeSut({ linkValidationSpy, fallbackRoute })
+    const { history } = makeSut({ linkValidationSpy, fallbackRoute })
     await waitFor(() => screen.getByTestId('main-error'))
     fireEvent.click(screen.getByTestId('go-fall-back'))
 
-    expect(createHistory.location.pathname).toBe(fallbackRoute)
+    expect(history.location.pathname).toBe(fallbackRoute)
   })
 
   test('Should ensure that ResetPassword will save the return in localstorage on success', async () => {
@@ -109,10 +109,10 @@ describe('LinkValidationProxy', () => {
     linkValidationSpy.response = { success: true, type: 5 }
     const email = faker.internet.email()
     const hash = faker.datatype.uuid()
-    const { createHistory, setUserInfoResetPasswordMock } = makeSut({ linkValidationSpy, email, hash })
+    const { history, setUserInfoResetPasswordMock } = makeSut({ linkValidationSpy, email, hash })
 
     await waitFor(() => expect(setUserInfoResetPasswordMock).toHaveBeenCalledWith({ email, hash }))
-    expect(createHistory.location.pathname).toBe('/')
-    expect(createHistory.index).toBe(0)
+    expect(history.location.pathname).toBe('/')
+    expect(history.index).toBe(0)
   })
 })
