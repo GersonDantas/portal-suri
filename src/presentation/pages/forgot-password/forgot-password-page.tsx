@@ -1,6 +1,7 @@
 import { forgotPasswordPageState, FormStatus, InputWrap, SubmitButton } from './components'
 import Styles from './forgot-password-page.module.scss'
 import { userInfoResetPasswordState } from 'src/__tests__/main/factories/mock'
+import { UnchangedPasswordError } from 'src/domain/errors'
 import { ResetPassword } from 'src/domain/usecases'
 import { FormWrap, Logo } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
@@ -50,6 +51,8 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
           forgotPassword: '',
           forgotPasswordConfirmation: ''
         }))
+      } else {
+        throw new UnchangedPasswordError()
       }
     } catch (error: any) {
       setState(old => ({
