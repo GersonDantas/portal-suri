@@ -19,6 +19,10 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
   const [state, setState] = useRecoilState(forgotPasswordPageState)
   const { getUserInfoResetPassword } = useRecoilValue(userInfoResetPasswordState)
 
+  useEffect(() => resetForgotPasswordPageState(), [])
+  useEffect(() => validate('forgotPassword'), [state.forgotPassword])
+  useEffect(() => validate('forgotPasswordConfirmation'), [state.forgotPasswordConfirmation])
+
   const validate = (field: string): void => {
     const { forgotPassword, forgotPasswordConfirmation } = state
     const formData = { forgotPassword, forgotPasswordConfirmation }
@@ -49,10 +53,6 @@ const ForgotPasswordPage: React.FC<Props> = ({ validation, resetPassword }) => {
       }))
     }
   }
-
-  useEffect(() => resetForgotPasswordPageState(), [])
-  useEffect(() => validate('forgotPassword'), [state.forgotPassword])
-  useEffect(() => validate('forgotPasswordConfirmation'), [state.forgotPasswordConfirmation])
 
   return (
     <IonPage>

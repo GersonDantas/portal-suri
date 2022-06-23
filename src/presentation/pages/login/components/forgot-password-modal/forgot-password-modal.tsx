@@ -6,7 +6,7 @@ import { Button } from 'src/presentation/components'
 import { Validation } from 'src/presentation/protocols'
 import { ForgotYourPassword } from 'src/domain/usecases'
 
-import { IonModal } from '@ionic/react'
+import { IonModal, useIonViewWillEnter } from '@ionic/react'
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -22,6 +22,15 @@ const ForgotPasswordModal: React.FC<Props> = ({ validation, forgotYourPassword }
   const [state, setState] = useRecoilState(modalState)
   const [stateLogin, setStateLogin] = useRecoilState(loginState)
 
+  useIonViewWillEnter(() => validate('forgotEmail'))
+  useEffect(() => validate('forgotEmail'), [state.forgotEmail])
+
+  const validate = (field: string): void => {
+    const { forgotEmail } = state
+    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, { forgotEmail }) }))
+    setState(old => ({ ...old, isFormInvalid: !!old.forgotEmailError }))
+  }
+
   const modalCancelClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
 
@@ -32,9 +41,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ validation, forgotYourPassword }
     e.preventDefault()
 
     try {
-      if (!state.forgotEmail) {
-        setState(old => ({ ...old, isOpen: false }))
-      } else if (stateLogin.isLoading || state.forgotError) {
+      if (stateLogin.isLoading || state.isFormInvalid) {
         return
       }
 
@@ -54,23 +61,15 @@ const ForgotPasswordModal: React.FC<Props> = ({ validation, forgotYourPassword }
         throw new UnexpectedError()
       }
     } catch (error: any) {
-      setState(old => ({ ...old, isOpen: false }))
       setStateLogin(old => ({
         ...old,
         isLoading: false,
         mainInfo: error.message,
         isError: true
       }))
+      setState(old => ({ ...old, isOpen: false }))
     }
   }
-
-  useEffect(() => {
-    const { forgotEmail } = state
-    setState(old => ({
-      ...old,
-      forgotError: validation.validate('forgotEmail', { forgotEmail })
-    }))
-  }, [state.forgotEmail])
 
   return (
     <IonModal

@@ -18,7 +18,7 @@ const InputWrap: React.FC<Props> = ({ state, setState, ...props }) => {
     : capitalizeText(props.name)
 
   const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setState({ ...state, [e.target.name]: e.target.value })
+    setState(old => ({ ...old, [e.target.name]: e.target.value }))
     setInvalid('invalid')
   }
 
