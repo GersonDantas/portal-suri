@@ -8,4 +8,5 @@ public
 .vscode
 .idea
 
-.env**
+.env
+.env.production
