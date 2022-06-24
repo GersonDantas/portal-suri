@@ -22,12 +22,11 @@ const ForgotPasswordModal: React.FC<Props> = ({ validation, forgotYourPassword }
   const [state, setState] = useRecoilState(modalState)
   const [stateLogin, setStateLogin] = useRecoilState(loginState)
 
-  useIonViewWillEnter(() => validate('forgotEmail'))
-  useEffect(() => validate('forgotEmail'), [state.forgotEmail])
+  useIonViewWillEnter(() => validate())
+  useEffect(() => validate(), [state.forgotEmail])
 
-  const validate = (field: string): void => {
-    const { forgotEmail } = state
-    setState(old => ({ ...old, [`${field}Error`]: validation.validate(field, { forgotEmail }) }))
+  const validate = (): void => {
+    setState(old => ({ ...old, forgotEmailError: validation.validate('forgotEmail', { forgotEmail: state.forgotEmail }) }))
     setState(old => ({ ...old, isFormInvalid: !!old.forgotEmailError }))
   }
 

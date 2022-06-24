@@ -168,6 +168,16 @@ describe('ForgotPasswordPage', () => {
     expect(resetPasswordSpy.callsCount).toBe(0)
   })
 
+  test('Should hide mainInfo if closeInfo click', async () => {
+    const { resetPasswordSpy } = makeSut()
+    resetPasswordSpy.response = false
+
+    await simulateValidSubmit()
+    fireEvent.click(screen.getByTestId('close-info'))
+
+    expect(screen.getByTestId('error-wrap').children.length).toBe(0)
+  })
+
   test('Should present UnchangedPasswordError if reset password fails', async () => {
     const { resetPasswordSpy } = makeSut()
     const error = new UnchangedPasswordError()

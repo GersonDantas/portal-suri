@@ -23,6 +23,8 @@ type SutTypes = {
   forgotYourPasswordSpy: ForgotYourPasswordSpy
 }
 
+// jest.mock('@ionic/react', () => ({ ...jest.requireActual<object>('@ionic/react'), useIonViewWillEnter: async (componentCallback: Function) => { await componentCallback() } }))
+
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const forgotYourPasswordSpy = new ForgotYourPasswordSpy()
@@ -73,8 +75,9 @@ describe('ForgotPasswordModal', () => {
 
     fireEvent.click(screen.getByTestId('forgot-button'))
 
-    Helpers.testStatusForField('input-email-forgot', validationError)
     expect(screen.getByTestId('forgot-submit')).toBeDisabled()
+    // expect(screen.getByTestId('input-email-forgot')).toHaveAttribute('data-status', '')
+    Helpers.testStatusForField('input-email-forgot', validationError)
   })
 
   test('Should show email error in title if validations fails', () => {

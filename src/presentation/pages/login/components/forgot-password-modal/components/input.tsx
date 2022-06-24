@@ -7,8 +7,8 @@ import { useRecoilState } from 'recoil'
 type Props = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
 const Input: React.FC<Props> = (props) => {
-  const [state, setState] = useRecoilState(modalState)
   const [invalid, setInvalid] = useState('')
+  const [state, setState] = useRecoilState(modalState)
 
   const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setState(old => ({ ...old, [e.target.name]: e.target.value }))
